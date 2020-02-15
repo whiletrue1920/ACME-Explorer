@@ -1,0 +1,24 @@
+{
+  "name": "acme_explorer",
+  "version": "1.0.0",
+  "description": "ACMEExplorer REST API",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whiletrue1920/ACME-Explorer.git"
+  },
+  "author": "emilioego@hotmail.com, enriqueguefer@gmail.com, vmaciasromero@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/whiletrue1920/ACME-Explorer/issues"
+  },
+  "homepage": "https://github.com/whiletrue1920/ACME-Explorer#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.8.11"
+  }
+}
