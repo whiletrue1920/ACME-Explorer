@@ -1,0 +1,10 @@
+sudo: required
+language: node_js
+node_js:
+    - "9"
+services:
+    - mongodb
+env:
+    - MONGO_URL="mongodb://localhost/api"
+install:
+    - npm install
