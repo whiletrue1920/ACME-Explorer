@@ -8,3 +8,5 @@ env:
     - MONGO_URL="mongodb://localhost/api"
 install:
     - npm install
+script:
+    - npm test
