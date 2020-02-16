@@ -9,7 +9,7 @@ var express = require('express'),
 // MongoDB URI building
 var mongoDBHostname = process.env.mongoDBHostname || "localhost";
 var mongoDBPort = process.env.mongoDBPort || "27017";
-var mongoDBName = process.env.mongoDBName || "ACME-Market";
+var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
 var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
 
 mongoose.connect(mongoDBURI, {
@@ -37,7 +37,7 @@ routesTrips(app);
 console.log("Connecting DB to: " + mongoDBURI);
 mongoose.connection.on("open", function (err, conn) {
     app.listen(port, function () {
-        console.log('ACME-Market RESTful API server started on: ' + port);
+        console.log('ACME-Explorer RESTful API server started on: ' + port);
     });
 });
 
