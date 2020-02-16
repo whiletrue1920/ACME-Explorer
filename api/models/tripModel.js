@@ -64,11 +64,10 @@ var TripSchema = new Schema({
         type: Boolean,
         default: false
     },
-    //TODO: Validar pues no funciona correctamente
     reason: {
         type: String,
         required: [
-            function() { return this.canceled && this.reason===''; },
+            function() { return (this.canceled && this.reason==undefined) || (this.canceled && this.reason===""); },
             'The reason is required if trip is canceled'
         ]
     },
