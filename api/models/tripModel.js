@@ -5,6 +5,21 @@ var Schema = mongoose.Schema;
 const generate = require('nanoid/generate');
 const dateFormat = require('dateformat');
 
+var StageSchema = new Schema({
+    title: {
+        type: String,
+        required: 'Kindly enter the stage title'
+    },
+    description: {
+        type: String,
+        required: 'Kindly enter the stage description'
+    },
+    price: {
+        type: Number,
+        required: 'Kindly enter the stage price'
+    }
+});
+
 var TripSchema = new Schema({
     ticker: {
       type: String,
@@ -57,17 +72,22 @@ var TripSchema = new Schema({
             function() { return this.canceled && this.reason===''; },
             'The reason is required if trip is canceled'
         ]
-    }
-    //TODO: Falta esquema del documento Stage
+    },
+    stages: [StageSchema]
 }, { strict: false, timestamps: true });
 
 // Execute before each item.save() call
 TripSchema.pre('save', function(callback) {
+
+    //Cálculo del ticker
     var new_trip = this;
     var day=dateFormat(new Date(), "yymmdd");
     var generated_ticker = [day, generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 4)].join('-')
     new_trip.ticker = generated_ticker;
+
+    //Cálculo del precio total de Trip a partir de sus Stages
     callback();
   });
 
 module.exports = mongoose.model('Trips', TripSchema);
+module.exports = mongoose.model('Stages', StageSchema);
