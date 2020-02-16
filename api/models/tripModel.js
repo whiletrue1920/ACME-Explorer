@@ -5,6 +5,8 @@ var Schema = mongoose.Schema;
 const generate = require('nanoid/generate');
 const dateFormat = require('dateformat');
 
+//TODO: ¿Error 422 cuando al hacer PUT se añadan atributos que no existen en el schema?
+
 var StageSchema = new Schema({
     title: {
         type: String,
@@ -40,7 +42,7 @@ var TripSchema = new Schema({
         type: String,
         required: 'Kindly enter the trip description'
     },
-    //TODO: Cálculo del full_price también al hacer el PUT
+    //TODO: Recálculo del full_price al hacer el PUT
     full_price: {
         type: Number,
         required: 
@@ -71,6 +73,7 @@ var TripSchema = new Schema({
         type: Boolean,
         default: false
     },
+    //TODO: Recálculo de reason al hacer PUT
     reason: {
         type: String,
         required: [
