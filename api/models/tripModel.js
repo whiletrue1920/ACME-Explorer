@@ -40,10 +40,9 @@ var TripSchema = new Schema({
         type: String,
         required: 'Kindly enter the trip description'
     },
-    //TODO: Cálculo automático de full_price cuando se introduzcan los stages
+    //TODO: Cálculo del full_price también al hacer el PUT
     full_price: {
-        type: Number,
-        required: 'Kindly enter the trip full_price'
+        type: Number
     },
     requirements: {
         type: [String], 
@@ -65,7 +64,7 @@ var TripSchema = new Schema({
         type: Boolean,
         default: false
     },
-     //TODO: Validar pues no funciona correctamente
+    //TODO: Validar pues no funciona correctamente
     reason: {
         type: String,
         required: [
@@ -86,6 +85,11 @@ TripSchema.pre('save', function(callback) {
     new_trip.ticker = generated_ticker;
 
     //Cálculo del precio total de Trip a partir de sus Stages
+    var full_price=0;
+    new_trip.stages.forEach(stage => {
+        full_price=stage.price;
+    });
+    new_trip.full_price=full_price;
     callback();
   });
 
