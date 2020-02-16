@@ -24,5 +24,5 @@ module.exports = function(app) {
    * @param {string} date_range 
   */
   app.route('/v1/trips/search')
-  .get(trip.search_trips);
+  .get(trips.search_trips);
 };

@@ -103,6 +103,16 @@ exports.delete_a_trip = function(req, res) {
     });
 }
 
+/*---------------SEARCH----------------------*/
+
+exports.search_trips = function(req, res) {
+    //Check if trip param exists (trip: req.query.trip)
+    //Check if keyword param exists (keyword: req.query.keyword)
+    //Search depending on params but only if deleted = false
+    console.log('Searching an trip depending on params');
+    res.send('Trips returned from the item search');
+  };
+
 function processErrors(req, res, err){
     switch(err.name){
         case VALIDATION_ERROR:
