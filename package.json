@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/whiletrue1920/ACME-Explorer#readme",
   "dependencies": {
+    "dateformat": "^3.0.3",
     "express": "^4.16.4",
-    "mongoose": "^5.8.11"
+    "mongoose": "^5.8.11",
+    "nanoid": "^2.1.11"
   }
 }
