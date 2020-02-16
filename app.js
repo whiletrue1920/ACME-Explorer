@@ -4,6 +4,7 @@ var express = require('express'),
   mongoose = require('mongoose'),
   Actor = require('./api/models/actorModel'),
   Trip = require('./api/models/tripModel'),
+  Application = require('./api/models/applicationModel'),
   bodyParser = require('body-parser');
 
 // MongoDB URI building
@@ -28,10 +29,12 @@ app.use(bodyParser.json());
 
 var routesActors = require('./api/routes/actorRoutes');
 var routesTrips = require('./api/routes/tripRoutes');
+var routesApplication = require('./api/routes/applicationRoutes');
 
 
 routesActors(app);
 routesTrips(app);
+routesApplication(app);
 
 
 console.log("Connecting DB to: " + mongoDBURI);
