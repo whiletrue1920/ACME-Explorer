@@ -42,7 +42,6 @@ var TripSchema = new Schema({
         type: String,
         required: 'Kindly enter the trip description'
     },
-    //TODO: Recálculo del full_price al hacer el PUT
     full_price: {
         type: Number,
         required: 
@@ -73,7 +72,6 @@ var TripSchema = new Schema({
         type: Boolean,
         default: false
     },
-    //TODO: Recálculo de reason al hacer PUT
     reason: {
         type: String,
         required: [
@@ -93,7 +91,30 @@ TripSchema.pre('save', function(callback) {
     var generated_ticker = [day, generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 4)].join('-')
     new_trip.ticker = generated_ticker;
     callback();
-  });
+});
+
+// Execute before each item.update() call
+TripSchema.pre('findOneAndUpdate', function(callback){
+    console.log('------------->>>>>> findOneAndUpdate: ');
+    
+    //Recálculo de full_price
+    this.getUpdate().$set.full_price=0;
+    if(this.getUpdate().stages!=undefined){
+        this.getUpdate().stages.forEach(stage => {
+            this.getUpdate().$set.full_price+=stage.price;
+        });
+    }
+    
+    //Recálculo de reason
+    if( (this.getUpdate().canceled && this.getUpdate().reason==undefined) 
+        || (this.getUpdate().canceled && this.getUpdate().reason==="")){
+        callback({
+            name: 'ValidationError',
+            message: 'The reason is required if trip is canceled'
+        });
+    }
+    callback();
+});
 
 module.exports = mongoose.model('Trips', TripSchema);
 module.exports = mongoose.model('Stages', StageSchema);
