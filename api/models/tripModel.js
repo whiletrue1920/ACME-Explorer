@@ -42,7 +42,14 @@ var TripSchema = new Schema({
     },
     //TODO: Cálculo del full_price también al hacer el PUT
     full_price: {
-        type: Number
+        type: Number,
+        required: 
+            function() { 
+                this.full_price=0;
+                this.stages.forEach(stage => {
+                    this.full_price+=stage.price;
+                });
+            }
     },
     requirements: {
         type: [String], 
@@ -82,13 +89,6 @@ TripSchema.pre('save', function(callback) {
     var day=dateFormat(new Date(), "yymmdd");
     var generated_ticker = [day, generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 4)].join('-')
     new_trip.ticker = generated_ticker;
-
-    //Cálculo del precio total de Trip a partir de sus Stages
-    var full_price=0;
-    new_trip.stages.forEach(stage => {
-        full_price=stage.price;
-    });
-    new_trip.full_price=full_price;
     callback();
   });
 
