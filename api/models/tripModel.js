@@ -95,8 +95,6 @@ TripSchema.pre('save', function(callback) {
 
 // Execute before each item.update() call
 TripSchema.pre('findOneAndUpdate', function(callback){
-    console.log('------------->>>>>> findOneAndUpdate: ');
-    
     //Recálculo de full_price
     this.getUpdate().$set.full_price=0;
     if(this.getUpdate().stages!=undefined){
