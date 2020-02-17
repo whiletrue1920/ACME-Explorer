@@ -10,4 +10,7 @@ module.exports = function(app) {
     .get(actors.read_an_actor)
 	  .put(actors.update_an_actor)
     .delete(actors.delete_an_actor);
+
+  app.route('/v1/actors/:actorId/validate')
+    .put(actors.validate_an_actor)
 };

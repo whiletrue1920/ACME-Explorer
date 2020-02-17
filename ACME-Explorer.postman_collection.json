@@ -1,0 +1,500 @@
+{
+	"info": {
+		"_postman_id": "a1c23fc4-9025-4134-a5bd-ee99c9d3baab",
+		"name": "ACME-Explorer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Trips",
+			"item": [
+				{
+					"name": "GET ALL Trips",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Trip 200 Ok",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e4963b0b668592a21cf9e45",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e4963b0b668592a21cf9e45"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Trip 404 Not Found",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e46e1354c541425de549e3a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e46e1354c541425de549e3a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Trip 400 Bad Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e46e135d4c541425de549e3a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e46e135d4c541425de549e3a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Trip 201 Created",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Title\",\n\t\"description\": \"My description\",\n\t\"requirements\": \"requirements\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"address\": \"myAddress\",\n\t\"canceled\": true,\n\t\"reason\": \" \",\n\t\"stages\": [{\n\t\t\"title\": \"first stage\",\n\t\t\"description\": \"first stage description\",\n\t\t\"price\": 100\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description\",\n\t\t\"price\": 250\n\t}]\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Trip 422 Unprocessable Entity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"ClerkName\",\n\t\"surname\": \"ClerkSurname\",\n\t\"email\": \"clerk@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345679\",\n\t\"role\": \"CLERK\",\n\t\"address\": \"myAddress\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Trip 200 Ok",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Title UPDATE\",\n\t\"description\": \"My description UPDATE\",\n\t\"requirements\": \"requirements UPDATE\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"address\": \"myAddress UPDATE\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE\",\n\t\t\"description\": \"first stage description UPDATE\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e4963b3b668592a21cf9e46",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e4963b3b668592a21cf9e46"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Trip 404 Not Found",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Title\",\n\t\"description\": \"My description\",\n\t\"full_price\": 500,\n\t\"requirements\": \"requirements\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"address\": \"myAddress\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e472fb81638091727de25fb",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e472fb81638091727de25fb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Trip 400 Bad Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Title\",\n\t\"description\": \"My description\",\n\t\"full_price\": 500,\n\t\"requirements\": \"requirements\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"address\": \"myAddress\",\n\t\"canceled\": false\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e47340e4fde431aa15e891f0",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e47340e4fde431aa15e891f0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Trip 422 Unprocessable Entity",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"ClerkName\",\n\t\"surname\": \"ClerkSurname\",\n\t\"email\": \"clerk@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345679\",\n\t\"role\": \"CLERK\",\n\t\"address\": \"myAddress\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e4963b3b668592a21cf9e46",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e4963b3b668592a21cf9e46"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE trip 204 No content",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e4963b0b668592a21cf9e45",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e4963b0b668592a21cf9e45"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE trip 404 Not Found",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e472fb81638091727de25fb",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e472fb81638091727de25fb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE trip 400 Bad Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e472fb81638091727de25fbh",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e472fb81638091727de25fbh"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Application",
+			"item": [
+				{
+					"name": "POST APPLICATION",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"Customer2Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"CUSTOMER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/applications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"applications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT APPLICATION",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"Customer2Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"CUSTOMER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/applications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"applications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT APPLICATION",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"Customer2Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"CUSTOMER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/applications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"applications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET APPLICATIONS",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Actors",
+			"item": [
+				{
+					"name": "GET ALL ACTORS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/actors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST ACTOR-EXPLORER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Customer2Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"address\": \"Calle Pera\",\n\t\"role\": \"ADMINISTRATORS\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/actors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"actors"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
