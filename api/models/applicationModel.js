@@ -7,7 +7,7 @@ var ApplicationSchema = new Schema({
   actorId: {
     type: Schema.Types.ObjectId
   },
-  tickerId: {
+  tripId: {
     type: Schema.Types.ObjectId
   },
   comment: {
