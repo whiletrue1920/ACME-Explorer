@@ -100,7 +100,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"title\": \"My Title\",\n\t\"description\": \"My description\",\n\t\"requirements\": \"requirements\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"address\": \"myAddress\",\n\t\"canceled\": true,\n\t\"reason\": \" \",\n\t\"stages\": [{\n\t\t\"title\": \"first stage\",\n\t\t\"description\": \"first stage description\",\n\t\t\"price\": 100\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description\",\n\t\t\"price\": 250\n\t}]\n}"
+							"raw": "{\n\t\"title\": \"My Title\",\n\t\"description\": \"My description\",\n\t\"requirements\": \"requirements\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"canceled\": true,\n\t\"reason\": \" \",\n\t\"stages\": [{\n\t\t\"title\": \"first stage\",\n\t\t\"description\": \"first stage description\",\n\t\t\"price\": 100\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description\",\n\t\t\"price\": 250\n\t}]\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/v1/trips",
@@ -156,10 +156,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"title\": \"My Title UPDATE\",\n\t\"description\": \"My description UPDATE\",\n\t\"requirements\": \"requirements UPDATE\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"address\": \"myAddress UPDATE\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE\",\n\t\t\"description\": \"first stage description UPDATE\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
+							"raw": "{\n\t\"title\": \"My Title UPDATE\",\n\t\"description\": \"My description UPDATE\",\n\t\"requirements\": \"requirements UPDATE\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE\",\n\t\t\"description\": \"first stage description UPDATE\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e4963b3b668592a21cf9e46",
+							"raw": "localhost:8080/v1/trips/5e4b091b0032db15838c66d2",
 							"host": [
 								"localhost"
 							],
@@ -167,7 +167,7 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e4963b3b668592a21cf9e46"
+								"5e4b091b0032db15838c66d2"
 							]
 						}
 					},
@@ -185,7 +185,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"title\": \"My Title\",\n\t\"description\": \"My description\",\n\t\"full_price\": 500,\n\t\"requirements\": \"requirements\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"address\": \"myAddress\"\n}"
+							"raw": "{\n\t\"title\": \"My Title UPDATE\",\n\t\"description\": \"My description UPDATE\",\n\t\"requirements\": \"requirements UPDATE\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE\",\n\t\t\"description\": \"first stage description UPDATE\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/v1/trips/5e472fb81638091727de25fb",
@@ -243,10 +243,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"ClerkName\",\n\t\"surname\": \"ClerkSurname\",\n\t\"email\": \"clerk@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345679\",\n\t\"role\": \"CLERK\",\n\t\"address\": \"myAddress\"\n}"
+							"raw": "{\n\t\"title\": \"My Title UPDATE 2\",\n\t\"description\": \"My description UPDATE 2\",\n\t\"requirements\": \"requirements UPDATE 2\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"extraField\": \"EXTRA FIELD FOR THROW EXCEPTION\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE 2\",\n\t\t\"description\": \"first stage description UPDATE 2\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage 2\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e4963b3b668592a21cf9e46",
+							"raw": "localhost:8080/v1/trips/5e4b091b0032db15838c66d2",
 							"host": [
 								"localhost"
 							],
@@ -254,7 +254,7 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e4963b3b668592a21cf9e46"
+								"5e4b091b0032db15838c66d2"
 							]
 						}
 					},
