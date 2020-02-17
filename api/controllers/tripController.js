@@ -6,6 +6,7 @@ const VALIDATION_ERROR='ValidationError';
 const CAST_ERROR='CastError';
 const OBJECT_ID_ERROR='ObjectId'
 const NOT_FOUND='NotFound'
+const STRICT_MODE_ERROR='StrictModeError'
  
 //RESPONSE_STATUS_CODE
 const CREATED=201;
@@ -53,7 +54,13 @@ exports.read_a_trip = function (req, res) {
 
 exports.create_a_trip = function (req, res) {
     console.log(Date(), ` -POST /trips`);
-    var new_trip = new Trip(req.body);
+    var new_trip;
+    try{
+        new_trip = new Trip(req.body);
+    }catch(err){
+        console.error(Date(), ` ERROR: - POST /trips , Some error ocurred while saving a trip: ${err.message}`);
+        return processErrors(req, res, err);
+    }
     new_trip.save(function(err, trip) {
         if(err){
             console.error(Date(), ` ERROR: - POST /trips , Some error ocurred while saving a trip: ${err.message}`);
@@ -113,6 +120,8 @@ function processErrors(req, res, err){
             return res.status(STATUS_CODE_NOT_FOUND).send(err);
         case NOT_FOUND:
             return res.status(STATUS_CODE_NOT_FOUND).send({message: `Not found trip with id : ${req.params.tripId}`});
+        case STRICT_MODE_ERROR:
+                return res.status(STATUS_CODE_VALIDATION_ERROR).send(err);
         default:
             return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send(err);
     }
