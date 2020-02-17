@@ -20,7 +20,7 @@ var StageSchema = new Schema({
         type: Number,
         required: 'Kindly enter the stage price'
     }
-});
+}, { strict: true });
 
 var TripSchema = new Schema({
     ticker: {
@@ -80,7 +80,7 @@ var TripSchema = new Schema({
         ]
     },
     stages: [StageSchema]
-}, { strict: false, timestamps: true });
+}, { strict: true, timestamps: true });
 
 // Execute before each item.save() call
 TripSchema.pre('save', function(callback) {
