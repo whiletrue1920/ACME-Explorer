@@ -5,7 +5,7 @@ var express = require('express'),
   Actor = require('./api/models/actorModel'),
   Trip = require('./api/models/tripModel'),
   Application = require('./api/models/applicationModel'),
-  Finder = require('./api/models/finderModel'),
+  Finder = require('./api/models/searchModel'),
   bodyParser = require('body-parser');
 
 // MongoDB URI building
@@ -33,13 +33,13 @@ app.use(bodyParser.json());
 var routesActors = require('./api/routes/actorRoutes');
 var routesTrips = require('./api/routes/tripRoutes');
 var routesApplication = require('./api/routes/applicationRoutes');
-var finderApplication = require('./api/routes/finderRoutes');
+var finderApplication = require('./api/routes/searchRoutes');
 
 
 routesActors(app);
 routesTrips(app);
 routesApplication(app);
-finderApplication(app);
+searchApplication(app);
 
 
 console.log("Connecting DB to: " + mongoDBURI);
