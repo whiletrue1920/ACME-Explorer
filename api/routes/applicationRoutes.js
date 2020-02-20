@@ -15,7 +15,8 @@ module.exports = function(app) {
   */
   app.route('/v1/applications')
 		.get(applications.list_all_applications)
-    .post(applications.create_an_application);
+    .post(applications.create_an_application)
+    .delete(applications.delete_all_applications);
 
   /**
    * Manage catalogue of a specific application: 
@@ -34,4 +35,5 @@ module.exports = function(app) {
     .get(applications.get_application)
     .put(applications.update_application)
     .delete(applications.delete_application);
+
 };
