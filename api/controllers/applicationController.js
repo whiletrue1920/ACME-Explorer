@@ -76,3 +76,13 @@ exports.delete_application = function(req, res) {
         }
     });
 };
+
+exports.delete_all_applications = function(req, res) {
+  Application.deleteMany({}, function(err, application) {
+    if (err) {
+      console.log(err)
+    } else {
+      res.json({ message:'success'});
+    }
+  });
+};
