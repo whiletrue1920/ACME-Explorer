@@ -6,4 +6,5 @@ module.exports = function(app) {
 	  .get(searches.get_search_by_user)
     .post(searches.post_search_by_user)
     .delete(searches.delete_search_by_user);
+      
 };
