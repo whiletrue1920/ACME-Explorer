@@ -72,6 +72,10 @@ var TripSchema = new Schema({
         type: Boolean,
         default: false
     },
+    publish: {
+        type: Boolean,
+        default: false
+    },
     reason: {
         type: String,
         required: [
