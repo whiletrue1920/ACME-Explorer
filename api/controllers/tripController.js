@@ -52,6 +52,24 @@ exports.read_a_trip = function (req, res) {
     });
 };
 
+//TODO: Búsqueda de trips por keyWord
+exports.search_trips = function(req, res) {
+    console.log(Date(), ` -GET /trips/search/${req.params.keyWord}`)
+    res.json({});
+};
+
+//TODO: Dashboard con la media, mínimo, máximo y desviación estándar del precio de los viajes
+exports.dashboard = function(req, res) {
+    console.log(Date(), ` -GET /trips/search/${req.params.keyWord}`)
+    res.json({});
+};
+
+//TODO: Mostar aleatoriamente un viaje que esté patrocinado
+exports.random_sponsorships = function(req, res) {
+    console.log(Date(), ` -GET /trips/sponsorships/random`)
+    res.json({});
+};
+
 /*---------------POST----------------------*/
 
 exports.create_a_trip = function (req, res) {
@@ -72,6 +90,18 @@ exports.create_a_trip = function (req, res) {
             res.status(CREATED).json(trip);
         }
     });
+};
+
+//TODO: Publicar viaje
+exports.publish_a_trip = function (req, res) {
+    console.log(Date(), ` -POST /trips/publish/${req.params.tripId}`);
+    res.json({});
+};
+
+//TODO: Cancelar viajes que no hayan empezado y no tengan solicitudes aceptadas
+exports.cancel_a_trip = function (req, res) {
+    console.log(Date(), ` -POST /trips/cancel/${req.params.tripId}`);
+    res.json({});
 };
 
 /*---------------PUT----------------------*/
