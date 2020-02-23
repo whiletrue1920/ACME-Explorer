@@ -5,8 +5,6 @@ var Schema = mongoose.Schema;
 const generate = require('nanoid/generate');
 const dateFormat = require('dateformat');
 
-//TODO: ¿Error 422 cuando al hacer PUT se añadan atributos que no existen en el schema?
-
 var StageSchema = new Schema({
     title: {
         type: String,
