@@ -20,7 +20,8 @@ const STATUS_CODE_INTERNAL_SERVER_ERROR=500;
 
 /*---------------GET----------------------*/
 var mongoose = require('mongoose'),
- Trip = mongoose.model('Trips');
+ Trip = mongoose.model('Trips'),
+ Application = mongoose.model('Applications');
 
 exports.list_all_trips = function(req, res) {
     console.log(Date(), ` -GET /trips`)
@@ -101,8 +102,31 @@ exports.publish_a_trip = function (req, res) {
 //TODO: Cancelar viajes que no hayan empezado y no tengan solicitudes aceptadas
 exports.cancel_a_trip = function (req, res) {
     console.log(Date(), ` -POST /trips/cancel/${req.params.tripId}`);
+    search_trips_publish_not_started_and_not_accepted();
     res.json({});
 };
+
+//Búsqueda de los Trips publicados que no han comenzado y no estén aceptados por alguna aplicación.
+async function search_trips_publish_not_started_and_not_accepted(){
+    console.log(Date(), ` search_trips_publish_not_started_and_not_accepted`);
+    
+    var applications = await Application.aggregate(
+        [
+            {$match:{status: {$ne:"ACCEPTED"}}},
+            {$group:{_id:"$tripId"}}
+        ]).exec();
+
+    var trips = await Trip.find(
+        {
+            $and:[
+                {_id:{$in:applications}},
+                {publish:false},
+                {date_start:{$gt: new Date()}}
+            ]
+        }).exec();
+
+    return trips;
+}
 
 /*---------------PUT----------------------*/
 
