@@ -118,5 +118,9 @@ TripSchema.pre('findOneAndUpdate', function(callback){
     callback();
 });
 
+TripSchema.index({ date_start: 1 });
+TripSchema.index({ title: 2, description: 1, ticker: 1 });
+TripSchema.index({ full_price: 1, date_start: 1, date_end: 1 });
+
 module.exports = mongoose.model('Trips', TripSchema);
 module.exports = mongoose.model('Stages', StageSchema);
