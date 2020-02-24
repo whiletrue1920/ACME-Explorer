@@ -8,9 +8,11 @@ exports.list_all_applications = function(req, res) {
   //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
   Application.find(function(err, applications) {
     if (err){
+      console.error(Date(), ` ERROR: - GET /trips , Some error ocurred while retrieving trips: ${err.message}`);
       res.status(500).send(err);
     }
     else{
+      console.log(Date(), ` SUCCESS: -GET /trips`);
       res.json(applications);
     }
   });
@@ -23,13 +25,16 @@ exports.create_an_application = function(req, res) {
   new_application.save(function(err, application) {
     if (err){
       if(err.name=='ValidationError') {
-          res.status(422).send(err);
+        console.error(Date(), ` ERROR: - POST /trips , Some error ocurred validating the apllication: ${err.message}`);
+        res.status(422).send(err);
       }
       else{
+        console.error(Date(), ` ERROR: - POST /trips , Some error ocurred while saving the application: ${err.message}`);
         res.status(500).send(err);
       }
     }
     else{
+      console.log(Date(), ` -POST /trips`);
       res.json(application);
     }
   });
@@ -42,6 +47,7 @@ exports.get_application = function(req, res) {
         res.status(500).send(err);
       }
       else{
+        console.log(Date(), ` SUCCESS: -GET /trips`);
         res.json(application);
       }
     });
@@ -69,10 +75,11 @@ exports.delete_application = function(req, res) {
   //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
   Application.deleteOne({_id: req.params.applicationId}, function(err, application) {
         if (err){
-            res.status(500).send(err);
+          res.status(500).send(err);
         }
         else{
-            res.json({ message: 'Application successfully deleted' });
+          console.log(Date(), ` SUCCESS: -DELETE /application/${req.params.applicationId}`);
+          res.json({ message: 'Application successfully deleted' });
         }
     });
 };
