@@ -34,7 +34,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e4963b0b668592a21cf9e45",
+							"raw": "localhost:8080/v1/trips/5e556da9820e654e50d39c7c",
 							"host": [
 								"localhost"
 							],
@@ -42,7 +42,7 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e4963b0b668592a21cf9e45"
+								"5e556da9820e654e50d39c7c"
 							]
 						}
 					},
@@ -156,10 +156,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"title\": \"My Title UPDATE\",\n\t\"description\": \"My description UPDATE\",\n\t\"requirements\": \"requirements UPDATE\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE\",\n\t\t\"description\": \"first stage description UPDATE\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
+							"raw": "{\n\t\"title\": \"My Title 2 UPDATE\",\n\t\"description\": \"My description UPDATE 66\",\n\t\"requirements\": \"requirements UPDATE 66\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE\",\n\t\t\"description\": \"first stage description UPDATE\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e4b091b0032db15838c66d2",
+							"raw": "localhost:8080/v1/trips/5e556f4023d54d21bd1c5f33",
 							"host": [
 								"localhost"
 							],
@@ -167,7 +167,36 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e4b091b0032db15838c66d2"
+								"5e556f4023d54d21bd1c5f33"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Trip publish 400 Bad Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Title UPDATE\",\n\t\"description\": \"My description UPDATE 66\",\n\t\"requirements\": \"requirements UPDATE 66\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"canceled\": false,\n\t\"publish\": true,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE\",\n\t\t\"description\": \"first stage description UPDATE\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e556e0123d54d21bd1c5f2b",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e556e0123d54d21bd1c5f2b"
 							]
 						}
 					},
@@ -246,7 +275,7 @@
 							"raw": "{\n\t\"title\": \"My Title UPDATE 2\",\n\t\"description\": \"My description UPDATE 2\",\n\t\"requirements\": \"requirements UPDATE 2\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"extraField\": \"EXTRA FIELD FOR THROW EXCEPTION\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE 2\",\n\t\t\"description\": \"first stage description UPDATE 2\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage 2\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e4b091b0032db15838c66d2",
+							"raw": "localhost:8080/v1/trips/5e556f4023d54d21bd1c5f33",
 							"host": [
 								"localhost"
 							],
@@ -254,7 +283,7 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e4b091b0032db15838c66d2"
+								"5e556f4023d54d21bd1c5f33"
 							]
 						}
 					},
@@ -266,7 +295,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e4963b0b668592a21cf9e45",
+							"raw": "localhost:8080/v1/trips/5e5082d77f14057102207ceb",
 							"host": [
 								"localhost"
 							],
@@ -274,7 +303,27 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e4963b0b668592a21cf9e45"
+								"5e5082d77f14057102207ceb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE trip publish 400 Bad Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e556e0123d54d21bd1c5f2b",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e556e0123d54d21bd1c5f2b"
 							]
 						}
 					},
