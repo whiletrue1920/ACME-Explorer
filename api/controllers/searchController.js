@@ -5,7 +5,6 @@ var mongoose = require('mongoose'),
   Search = mongoose.model('Searches');
 
 exports.get_search_by_user = function(req, res) {
-  
     Search.find(function(err, search) {
     if (err){
       res.status(500).send(err);

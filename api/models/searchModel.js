@@ -17,8 +17,8 @@ var SearchesSchema = new Schema({
     date_max: {
         type: Date,
         required: 'Kindly enter the trip date_end'
-    },
-    trips: [StageSchema]
+    }//,
+    //trips: [TripSchema]
 }, { strict: 'throw', timestamps: true });
 
 
