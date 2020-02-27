@@ -87,7 +87,7 @@ function createDataWareHouseJob(){
 module.exports.createDataWareHouseJob = createDataWareHouseJob;
 
 function computeTripsPerManager(callback) {
-  callback([]);
+  callback();
 };
 
 function computeApplicationsPerTrips(callback) {
@@ -124,5 +124,5 @@ function computeFullPriceTrips (callback) {
 };
 
 function computeRatioApplicationsPerStatus (callback) {
-  callback([]);
+  callback();
 };
