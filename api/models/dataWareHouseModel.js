@@ -2,21 +2,26 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var DataWareHouseSchema = new mongoose.Schema({
-  tripsPerManager: [{
-    type: Schema.Types.ObjectId
-  }],
-  applicationsPerTrips: [{
-    type: Schema.Types.ObjectId
-  }],
-  fullPriceTrips: [{
-    type: Schema.Types.ObjectId
-  }],
-  ratioApplicationsPerStatus:{
-    type: Number,
-    max: 1,
-    min: 0
+var AvgMinMaxStdDevSchema = new Schema({
+  avg: {
+      type: Number
   },
+  min: {
+      type: Number
+  },
+  max: {
+      type: Number
+  },
+  standard_desviation: {
+    type: Number
+}
+});
+
+var DataWareHouseSchema = new mongoose.Schema({
+  tripsPerManager: [],
+  applicationsPerTrips: [AvgMinMaxStdDevSchema],
+  fullPriceTrips: [AvgMinMaxStdDevSchema],
+  ratioApplicationsPerStatus: [],
   computationMoment: {
     type: Date,
     default: Date.now

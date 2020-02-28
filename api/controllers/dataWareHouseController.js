@@ -1,7 +1,9 @@
 
 var async = require("async");
 var mongoose = require('mongoose'),
-  DataWareHouse = mongoose.model('DataWareHouse');
+  DataWareHouse = mongoose.model('DataWareHouse'),
+  Trips = mongoose.model('Trips'),
+  Application = mongoose.model('Applications');
 
 exports.list_all_indicators = function(req, res) {
   console.log('Requesting indicators');
@@ -62,7 +64,7 @@ function createDataWareHouseJob(){
           console.log("Error computing datawarehouse: "+err);
         }
         else{
-          //console.log("Resultados obtenidos por las agregaciones: "+JSON.stringify(results));
+          console.log("Resultados obtenidos por las agregaciones: "+JSON.stringify(results));
           new_dataWareHouse.tripsPerManager = results[0];
           new_dataWareHouse.applicationsPerTrips = results[1];
           new_dataWareHouse.fullPriceTrips = results[2];
@@ -85,17 +87,42 @@ function createDataWareHouseJob(){
 module.exports.createDataWareHouseJob = createDataWareHouseJob;
 
 function computeTripsPerManager(callback) {
-  
+  callback();
 };
 
 function computeApplicationsPerTrips(callback) {
-  
+  Application.aggregate([
+    {$group: {
+      "_id": "$tripId",
+      "num": {$sum:1}}}
+    ,{$project: {
+      "tripId": "$_id",
+      "_id": 0, 
+      "avg": {$avg: "$num"},
+      "min":{$min:"$num"},
+      "max":{$max:"$num"},
+      "standard_desviation":{$stdDevPop:"$num"}}}
+    ], function(err, res){
+      console.log('Application per Trips ', res)
+        callback(err, res)
+    }); 
 };
 
 function computeFullPriceTrips (callback) {
-  
+  Trips.aggregate([
+    {$group: {
+      "_id": null,
+      "avg": {$avg: "$full_price"}, 
+      "min":{$min:"$full_price"},
+      "max":{$max:"$full_price"},
+      "standard_desviation":{$stdDevPop:"$full_price"}}},
+  {$project:{"_id":0}}
+    ], function(err, res){
+      console.log('FULL PRICE ', res)
+        callback(err, res)
+    }); 
 };
 
 function computeRatioApplicationsPerStatus (callback) {
-  
+  callback();
 };
