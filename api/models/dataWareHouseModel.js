@@ -18,16 +18,10 @@ var AvgMinMaxStdDevSchema = new Schema({
 });
 
 var DataWareHouseSchema = new mongoose.Schema({
-  tripsPerManager: [{
-    type: Schema.Types.ObjectId
-  }],
+  tripsPerManager: [],
   applicationsPerTrips: [AvgMinMaxStdDevSchema],
   fullPriceTrips: [AvgMinMaxStdDevSchema],
-  ratioApplicationsPerStatus:{
-    type: Number,
-    max: 1,
-    min: 0
-  },
+  ratioApplicationsPerStatus: [],
   computationMoment: {
     type: Date,
     default: Date.now
