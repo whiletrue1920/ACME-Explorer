@@ -1,6 +1,8 @@
 'use strict';
 var mongoose = require('mongoose');
+var TripSchema = require('mongoose').model('Trips').schema;
 var Schema = mongoose.Schema;
+
 
 var SearchesSchema = new Schema({
     actorId: {
@@ -17,8 +19,12 @@ var SearchesSchema = new Schema({
     date_max: {
         type: Date,
         required: 'Kindly enter the trip date_end'
-    }//,
-    //trips: [TripSchema]
+    },
+    price_max: {
+        type: Number,
+        required: 'Kindly enter the trip price max'
+    },
+    trips: [TripSchema]
 }, { strict: 'throw', timestamps: true });
 
 
