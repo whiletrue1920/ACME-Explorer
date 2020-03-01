@@ -1,20 +1,28 @@
 'use strict';
 
 /*---------------SEARCH----------------------*/
-var mongoose = require('mongoose'),
-  Search = mongoose.model('Searches');
 
 exports.get_search_by_user = function(req, res) {
-    Search.find(function(err, search) {
+  var query = {};
+
+  var skip=0;
+
+  console.log("Query: "+query);
+
+  Order.find(query)
+       .lean()
+       .exec(function(err, order){
+    console.log('Start searching trips');
     if (err){
-      res.status(500).send(err);
+      res.send(err);
     }
     else{
-      res.json(search);
+      res.json(order);
     }
+    console.log('End searching orders');
   });
-};
 
+};
 
 exports.post_search_by_user = function(req, res) {
   //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
