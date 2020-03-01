@@ -18,7 +18,7 @@ var AvgMinMaxStdDevSchema = new Schema({
 });
 
 var DataWareHouseSchema = new mongoose.Schema({
-  tripsPerManager: [],
+  tripsPerManager: [AvgMinMaxStdDevSchema],
   applicationsPerTrips: [AvgMinMaxStdDevSchema],
   fullPriceTrips: [AvgMinMaxStdDevSchema],
   ratioApplicationsPerStatus: [],

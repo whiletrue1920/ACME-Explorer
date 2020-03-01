@@ -81,6 +81,10 @@ var TripSchema = new Schema({
             'The reason is required if trip is canceled'
         ]
     },
+    organizedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'Actors',
+    },
     stages: [StageSchema]
 }, { strict: 'throw', timestamps: true });
 

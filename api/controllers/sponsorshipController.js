@@ -80,3 +80,10 @@ exports.delete_an_sponsorship = function(req, res) {
         }
     });
 };
+
+
+//TODO: pagar un sponsorship
+exports.pay_an_sponsorship = function(req, res) {
+  console.log(Date(), ` -POT /sponsorships/pay/${req.params.sponsorshipId}`)
+  res.json({});
+};

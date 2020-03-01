@@ -87,7 +87,22 @@ function createDataWareHouseJob(){
 module.exports.createDataWareHouseJob = createDataWareHouseJob;
 
 function computeTripsPerManager(callback) {
-  callback();
+  Trips.aggregate([
+    {$group: {
+      "_id": "$organizedBy",
+      "num": {$sum:1}}}
+    ,{$project: {
+      "organizedBy": "$_id",
+      "_id": 0, 
+      "avg": {$avg: "$num"},
+      "min":{$min:"$num"},
+      "max":{$max:"$num"},
+      "standard_desviation":{$stdDevPop:"$num"}}},
+  {$project:{"_id":0}}
+    ], function(err, res){
+      console.log('Trip per Manager ', res)
+        callback(err, res)
+    }); 
 };
 
 function computeApplicationsPerTrips(callback) {

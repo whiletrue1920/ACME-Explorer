@@ -12,11 +12,11 @@ var express = require('express'),
   bodyParser = require('body-parser');
 
 // MongoDB URI building
-//var mongoDBHostname = process.env.mongoDBHostname || "localhost";
-//var mongoDBPort = process.env.mongoDBPort || "27017";
-//var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
-//var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
-var mongoDBURI = "mongodb+srv://consulta:consulta@acme-explorer-rmm7f.mongodb.net/test?retryWrites=true&w=majority";
+var mongoDBHostname = process.env.mongoDBHostname || "localhost";
+var mongoDBPort = process.env.mongoDBPort || "27017";
+var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
+var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
+//var mongoDBURI = "mongodb+srv://consulta:consulta@acme-explorer-rmm7f.mongodb.net/test?retryWrites=true&w=majority";
 
 mongoose.connect(mongoDBURI, {
     //reconnectTries: 10,
