@@ -11,10 +11,8 @@ module.exports = function(app) {
    * @url /v1/searches
    * @param {string} actorId 
    * @param {string} keyword
-   * @param {string} text
    * @param {string} date_max
-   * @param {string} price_min
-   * @param {string} price_max
+   * @param {string} price_range
   */
  app.route('/v1/searches')
  .get(searches.get_search_by_user)
