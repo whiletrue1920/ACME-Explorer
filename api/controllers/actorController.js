@@ -86,3 +86,27 @@ exports.delete_an_actor = function(req, res) {
         }
     });
 };
+
+
+//Suma de dinero gastado de cada usuario(rol=explorer) durante un intervalo de tiempo (min 1 mes, máximo 36 meses).
+async function amount_of_money_that_explorer_has_spent_on_trips_during_period(){
+  console.log(Date(), ` amount_of_money_that_explorer_has_spent_on_trips_during_period`);
+  
+
+  //REVISARLO
+  // var money = await Application.aggregate(
+  //     [
+  //       {$group:{_id:"$actorId", 
+  //       viajes:{$push: "$tripId"}}}
+  //     ]).toArray().exec();
+
+  // var trips = await Trip.aggregate([
+  //     {$group:{_id:"$full_price"}}
+  //     ]).exec();
+
+  // var actors = await Trip.aggregate([
+  //   {$match:{role: {$eq:"EXPLORERS"}}}
+  //   ]).exec();
+
+  return money;
+}
