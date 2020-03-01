@@ -4,6 +4,29 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
 
+// var SponsorshipSchema = new Schema({
+//   actorId: {
+//     type: Schema.Types.ObjectId,
+//     ref: 'Actors'
+//   },
+//   tripId: {
+//     type: Schema.Types.ObjectId,
+//     ref: 'Trips'
+//   },
+//   banner: {
+//     data: Buffer, 
+//     contentType: String
+//   },
+//   link: {
+//     type: String,
+//     // required: 'Kindly enter the link'
+//   },
+//   payed: {
+//     type: Boolean,
+//     default: false
+//   }
+// }, { strict: false });
+
 var ActorSchema = new Schema({
   name: {
     type: String,
@@ -16,8 +39,8 @@ var ActorSchema = new Schema({
   email: {
     type: String,
     required: 'Kindly enter the actor email',
-    // unique: true,
-    // match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']    
+    unique: true,
+    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']    
   },
   password: {
     type: String,
@@ -36,25 +59,11 @@ var ActorSchema = new Schema({
     required: 'Kindly enter the user role(s)',
     enum: ['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']
   }],
-  validated:{
-    type: Boolean,
-    default: false
-  },
-  created: {
-    type: Date,
-    default: Date.now
-  }
-}, { strict: false });
-
-var SponsorSchema = new Schema({
-  banner: {
-    data: Buffer, 
-    contentType: String
-  },
-  link: {
+  state: [{
     type: String,
-    required: 'Kindly enter the actor surname'
-  },
+    required: 'Kindly enter the state',
+    enum: ['ACTIVATED', 'DESACTIVATED', 'REACTIVATED']
+  }],
   validated:{
     type: Boolean,
     default: false
@@ -63,6 +72,10 @@ var SponsorSchema = new Schema({
     type: Date,
     default: Date.now
   }
+  // sponsorship: {
+  //   type: SponsorshipSchema,
+  //   required: function() { return this.role === 'SPONSORS'}
+  // }
 }, { strict: false });
 
 
@@ -93,4 +106,4 @@ ActorSchema.methods.verifyPassword = function(password, cb) {
 };
 
 module.exports = mongoose.model('Actors', ActorSchema);
-module.exports = mongoose.model('Sponsors', SponsorSchema);
+// module.exports = mongoose.model('Sponsorships', SponsorshipSchema);

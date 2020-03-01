@@ -1,5 +1,14 @@
 'use strict';
 
+//RESPONSE_STATUS_CODE
+const CREATED=201;
+const NO_CONTENT=204;
+const STATUS_CODE_NOT_FOUND=404;  
+const STATUS_CODE_CAST_ERROR=400;  
+const STATUS_CODE_VALIDATION_ERROR=422;  
+const STATUS_CODE_INTERNAL_SERVER_ERROR=500;
+
+
 /*---------------ACTOR----------------------*/
 var mongoose = require('mongoose'),
   Actor = mongoose.model('Actors');
@@ -27,7 +36,7 @@ exports.create_an_actor = function(req, res) {
       res.send(err);
     }
     else{
-      res.json(actor);
+      res.status(CREATED).json(actor);
     }
   });
 };
@@ -68,12 +77,12 @@ exports.validate_an_actor = function(req, res) {
 };
 
 exports.delete_an_actor = function(req, res) {
-    Actor.remove({_id: req.params.actorId}, function(err, actor) {
+    Actor.deleteOne({_id: req.params.actorId}, function(err, actor) {
         if (err){
             res.status(500).send(err);
         }
         else{
-            res.json({ message: 'Actor successfully deleted' });
+            res.status(NO_CONTENT).json({ message: 'Actor successfully deleted' });
         }
     });
 };

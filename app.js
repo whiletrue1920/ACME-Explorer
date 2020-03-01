@@ -3,6 +3,7 @@ var express = require('express'),
   port = process.env.PORT || 8080,
   mongoose = require('mongoose'),
   Actor = require('./api/models/actorModel'),
+  Sponsorship = require('./api/models/sponsorshipModel'),
   Trip = require('./api/models/tripModel'),
   Application = require('./api/models/applicationModel'),
   bodyParser = require('body-parser');
@@ -30,11 +31,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var routesActors = require('./api/routes/actorRoutes');
+var routesSponsorships = require('./api/routes/sponsorshipRoutes');
 var routesTrips = require('./api/routes/tripRoutes');
 var routesApplication = require('./api/routes/applicationRoutes');
 
 
 routesActors(app);
+routesSponsorships(app);
 routesTrips(app);
 routesApplication(app);
 
