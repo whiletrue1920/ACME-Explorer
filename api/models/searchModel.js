@@ -8,9 +8,14 @@ var SearchesSchema = new Schema({
     actorId: {
         type: Schema.Types.ObjectId
     },
-    keyword: {
+    title: {
         type: String,
-        required: 'Kindly enter your keyword'  
+    },
+    ticker: {
+        type: String,
+    },
+    description: {
+        type: String,
     },
     date_min: {
         type: Date,
@@ -18,14 +23,16 @@ var SearchesSchema = new Schema({
     },
     date_max: {
         type: Date,
-        required: 'Kindly enter the trip date_end'
+        //required: 'Kindly enter the trip date_end'
     },
-    price_max: {
-        type: Number,
-        required: 'Kindly enter the trip price max'
+    price_range: {
+        type: String,
+        //required: 'Kindly enter the trip price max'
     },
-    trips: [TripSchema]
-}, { strict: 'throw', timestamps: true });
+    trips:{
+        type: String
+    } //[TripSchema]
+}, {strict:false, timestamps: true });
 
 
 module.exports = mongoose.model('Searches', SearchesSchema);
