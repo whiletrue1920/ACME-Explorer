@@ -34,5 +34,6 @@ var SearchesSchema = new Schema({
     } //[TripSchema]
 }, {strict:false, timestamps: true });
 
+SearchesSchema.index({ actorId: 1 });
 
 module.exports = mongoose.model('Searches', SearchesSchema);
