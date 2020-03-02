@@ -33,7 +33,6 @@ exports.get_search_by_user = function(req, res) {
   if (req.query.description) {
     query.description = req.query.description;
     query_search.description = req.query.description;
-    array.description = req.query.description;
     descrip = req.query.description;
   }
   //Rango de fechas
@@ -62,9 +61,8 @@ exports.get_search_by_user = function(req, res) {
   if(req.query.sortedBy){
     sort+=req.query.sortedBy;
   }
-  console.log(JSON.stringify(query));
+  //console.log(JSON.stringify(query));
   console.log(JSON.stringify(query_search));
-  console.log(array);
   //console.log("Query: "+query+" Sort:" + sort);
 
   Search.find(query_search,function(err, categs) {
