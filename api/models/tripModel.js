@@ -5,8 +5,6 @@ var Schema = mongoose.Schema;
 const generate = require('nanoid/generate');
 const dateFormat = require('dateformat');
 
-//TODO: ¿Error 422 cuando al hacer PUT se añadan atributos que no existen en el schema?
-
 var StageSchema = new Schema({
     title: {
         type: String,
@@ -20,7 +18,7 @@ var StageSchema = new Schema({
         type: Number,
         required: 'Kindly enter the stage price'
     }
-});
+}, { strict: 'throw' });
 
 var TripSchema = new Schema({
     ticker: {
@@ -72,6 +70,10 @@ var TripSchema = new Schema({
         type: Boolean,
         default: false
     },
+    publish: {
+        type: Boolean,
+        default: false
+    },
     reason: {
         type: String,
         required: [
@@ -79,8 +81,12 @@ var TripSchema = new Schema({
             'The reason is required if trip is canceled'
         ]
     },
+    organizedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'Actors',
+    },
     stages: [StageSchema]
-}, { strict: false, timestamps: true });
+}, { strict: 'throw', timestamps: true });
 
 // Execute before each item.save() call
 TripSchema.pre('save', function(callback) {
@@ -113,6 +119,10 @@ TripSchema.pre('findOneAndUpdate', function(callback){
     }
     callback();
 });
+
+TripSchema.index({ date_start: 1 });
+TripSchema.index({ title: 2, description: 1, ticker: 1 });
+TripSchema.index({ full_price: 1, date_start: 1, date_end: 1 });
 
 module.exports = mongoose.model('Trips', TripSchema);
 module.exports = mongoose.model('Stages', StageSchema);
