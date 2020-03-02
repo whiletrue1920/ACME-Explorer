@@ -119,3 +119,21 @@ function saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,trips) {
   })
 }
 
+//Búsqueda de la media de dinero gastado dentro de un rango de precio
+async function search_searches_avg_by_money_inside_range(){
+  console.log(Date(), ` search_searches_avg_by_money_inside_range`);
+
+  var trips_inside = await Search.aggregate(
+    [
+        {$match:{"price_range":"$price_range"}},
+        {$group:{_id:"$price_range"}}
+    ]).toArray().exec();
+  
+  var searches_by_range = await Search.aggregate(
+      [
+          {$match:{"price_range":"$price_range"}},
+          {$group:{_id:"$price_range"}}
+      ]).toArray().exec();
+
+  return searches_by_range;
+}

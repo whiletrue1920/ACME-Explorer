@@ -97,3 +97,16 @@ exports.delete_all_applications = function(req, res) {
     }
   });
 };
+
+//Búsqueda de las aplicaciones por “actor_id” y agrupado por “status”. 
+async function search_applications_by_actor_id_group_by_status(){
+  console.log(Date(), ` search_applications_by_actor_id_group_by_status`);
+  
+  var applications_by_actor = await Application.aggregate(
+      [
+          {$match:{actorId: {$eq:'$actorId'}}},
+          {$group:{_id:"$status"}}
+      ]).toArray().exec();
+
+  return applications_by_actor;
+}
