@@ -124,5 +124,19 @@ function computeFullPriceTrips (callback) {
 };
 
 function computeRatioApplicationsPerStatus (callback) {
-  callback();
+  Application.aggregate([
+    {$group: {
+      "_id": "$status",
+      "num": {$sum:1}}}
+    ,{$project: {
+      "status": 1,
+      "_id": 0, 
+      "avg": {$avg: "$num"},
+      "min":{$min:"$num"},
+      "max":{$max:"$num"},
+      "standard_desviation":{$stdDevPop:"$num"}}}
+    ], function(err, res){
+      console.log('Application per Status ', res)
+        callback(err, res)
+    });
 };
