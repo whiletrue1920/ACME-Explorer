@@ -16,7 +16,5 @@ module.exports = function(app) {
   */
  app.route('/v1/searches')
  .get(searches.get_search_by_user)
- .post(searches.post_search_by_user)
- .delete(searches.delete_search_by_user);
       
 };
