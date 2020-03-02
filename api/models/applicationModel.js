@@ -55,4 +55,6 @@ ApplicationSchema.pre('save', function(callback) {
     });
 });
 
+ApplicationSchema.index({ actorId: 1 });
+
 module.exports = mongoose.model('Applications', ApplicationSchema);
