@@ -94,19 +94,19 @@ async function amount_of_money_that_explorer_has_spent_on_trips_during_period(){
   
 
   //REVISARLO
+  // var actors_explorer = await Actor.aggregate([
+  //   {$match:{role: {$eq:"EXPLORERS"}}}
+  // ]).toArray().exec();
+
   // var money = await Application.aggregate(
   //     [
-  //       {$group:{_id:"$actorId", 
+  //       {$group:{_id:{$in:actors_explorer},
   //       viajes:{$push: "$tripId"}}}
-  //     ]).toArray().exec();
+  //     ]).exec();
+  // console.log(money);
 
   // var trips = await Trip.aggregate([
   //     {$group:{_id:"$full_price"}}
   //     ]).exec();
-
-  // var actors = await Trip.aggregate([
-  //   {$match:{role: {$eq:"EXPLORERS"}}}
-  //   ]).exec();
-
   return money;
 }
