@@ -19,7 +19,7 @@ module.exports = function(app) {
   */
   app.route('/v1/configs')
 		.get(configs.get_configs)
-    .post(configs.post_configs)
+    .post(configs.create_configs)
     .delete(configs.delete_config)
     .put(configs.edit_config);
 
