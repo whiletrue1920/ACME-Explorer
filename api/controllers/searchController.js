@@ -7,33 +7,34 @@ var mongoose = require('mongoose'),
 exports.get_search_by_user = function(req, res) {
   var query = {};
   var query_search = {};
-  var array = [];
-  console.log(req.query.title);
+  var tick = "";
+  var descrip = "";
+  var actor = "";
+  var tit = "";
+  var date_mini = new Date();
+  var date_maxi = new Date();
+  var range_pri = "";
 
   if (req.query.ticker) {
     query.ticker = req.query.ticker;
     query_search.ticker = req.query.ticker;
-    var expor = {'ticker':req.query.ticker}
-    array.push(expor);
+    tick = req.query.ticker;
   }
   if (req.query.actorId) {
     query.actorId = req.query.actorId;
     query_search.actorId = req.query.actorId;
-    var expor = {'actorId':req.query.actorId}
-    array.push(expor);
+    actor = req.query.actorId;
   }
   if (req.query.title) {
     query.title = req.query.title;
     query_search.title = req.query.title;
-    var expor = {'title':req.query.title}
-    array.push(expor);
+    tit = req.query.title;
   }
   if (req.query.description) {
     query.description = req.query.description;
     query_search.description = req.query.description;
     array.description = req.query.description;
-    var expor = {'description':req.query.description}
-    array.push(expor);
+    descrip = req.query.description;
   }
   //Rango de fechas
   if (req.query.date_max) {
@@ -41,14 +42,12 @@ exports.get_search_by_user = function(req, res) {
     var date_end_concat = date_list+"T00:00:00.000Z";
     query.date_end = {"$lte": new Date(date_end_concat)};
     query_search.date_max = {"$lte": new Date(date_end_concat)};
-    var expor = {'date_max':new Date(date_end_concat)}
-    array.push(expor);
+    date_maxi = new Date(date_end_concat);
     var utc = new Date().toJSON().slice(0,10);
     var utc = utc+"T00:00:00.000Z";
     query.date_start = {"$gte": new Date(utc)};
     query_search.date_min = {"$gte": new Date(utc)};
-    var expor = {'date_min':new Date(utc)}
-    array.push(expor);
+    date_mini = new Date(utc);
   }
   //Rango de precios
   if (req.query.price_range) {
@@ -56,8 +55,7 @@ exports.get_search_by_user = function(req, res) {
     var range_list = price_range.split("-");
     query.full_price = {"$gte": range_list[0],"$lte":range_list[1]};
     query_search.price_range = price_range;
-    var expor = {'price_range':price_range}
-    array.push(expor);
+    range_pri = req.query.price_range;
   }
 
   var sort="";
@@ -81,12 +79,9 @@ exports.get_search_by_user = function(req, res) {
           res.send(err);
         }
         else{
-          console.log(searc);
-          expor = {"trips":[JSON.stringify(searc)]};
-          array.push(expor);
-          console.log(JSON.stringify(searc));
-          console.log(array);
-          saveData(array);
+          var trips = JSON.stringify(searc);
+          console.log(trips);
+          saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,trips);
           res.json(searc);
         }
       });
@@ -98,12 +93,27 @@ exports.get_search_by_user = function(req, res) {
 
 };
 
-function saveData(data) {
+function saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,trips) {
   var search = new Search();
-  console.log(data[0]);
-  search.title = data[0].title;
-  search.trips = JSON.stringify(data[1]);
-  console.log(data);
+  if(tick != ""){
+    search.ticker = tick;
+  }
+  if(tit != ""){
+    console.log(tit);
+    search.title = tit;
+  }
+  if(descrip != ""){
+    search.description = descrip;
+  }
+  if(actor != ""){
+    search.actorId = actor;
+  }
+  if(range_pri != ""){
+    search.price_range = range_pri;
+  }
+  search.date_min = date_mini;
+  search.date_max = date_maxi;
+  search.trips = trips;
   console.log(search);
   search.save(function (err) {
       if (err) return console.log(err);
@@ -111,33 +121,3 @@ function saveData(data) {
   })
 }
 
-exports.post_search_by_user = function(req, res) {
-  //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
-  var new_search = new Search(req.body);
-  new_search.save(function(err, search) {
-    if (err){
-      if(err.name=='ValidationError') {
-          res.status(422).send(err);
-      }
-      else{
-        res.status(500).send(err);
-      }
-    }
-    else{
-      res.json(search);
-    }
-  });
-};
-
-
-exports.delete_search_by_user = function(req, res) {
-  //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
-  Search.deleteMany({_id: req.params.searchId}, function(err, search) {
-        if (err){
-            res.status(500).send(err);
-        }
-        else{
-            res.json({ message: 'Application successfully deleted' });
-        }
-    });
-};
