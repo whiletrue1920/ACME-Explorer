@@ -21,7 +21,7 @@ var DataWareHouseSchema = new mongoose.Schema({
   tripsPerManager: [AvgMinMaxStdDevSchema],
   applicationsPerTrips: [AvgMinMaxStdDevSchema],
   fullPriceTrips: [AvgMinMaxStdDevSchema],
-  ratioApplicationsPerStatus: [],
+  ratioApplicationsPerStatus: [AvgMinMaxStdDevSchema],
   computationMoment: {
     type: Date,
     default: Date.now
