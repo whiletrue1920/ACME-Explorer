@@ -41,11 +41,11 @@ exports.create_configs = function(req, res) {
 };
 
 exports.edit_config = function(req, res) {
-  console.log(Date(), ` -PUT /configs/${req.params.applicationId}`)
-  Config.findOneAndUpdate({_id: req.params.applicationId}, req.body, {new: true}, function(err, application) {
+  console.log(Date(), ` -PUT /configs/${req.params.configId}`)
+  Config.findOneAndUpdate({_id: req.params.configId}, req.body, function(err, config) {
       if (err){
         if(err.name=='ValidationError') {
-          console.error(Date(), ` ERROR: - PUT /configs/${req.params.applicationId} , The trip is publish can not update`);  
+          console.error(Date(), ` ERROR: - PUT /configs/${req.params.configId} , The config is publish can not update`);  
           res.status(422).send(err);
         }
         else{
@@ -53,31 +53,20 @@ exports.edit_config = function(req, res) {
         }
       }
       else{
-        res.json(application);
+        res.json(config);
       }
     });
 };
 
 exports.delete_config = function(req, res) {
   //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
-  Application.deleteOne({_id: req.params.applicationId}, function(err, application) {
+  Application.deleteMany({}, function(err, application) {
         if (err){
           res.status(500).send(err);
         }
         else{
-          console.log(Date(), ` SUCCESS: -DELETE /configs/${req.params.applicationId}`);
+          console.log(Date(), ` SUCCESS: -DELETE /configs`);
           res.json({ message: 'Application successfully deleted' });
         }
     });
-};
-
-exports.delete_all_applications = function(req, res) {
-  Application.deleteMany({}, function(err, application) {
-    if (err) {
-      console.log(err)
-    } else {
-      console.log(Date(), ` SUCCESS: -DELETE /applications`);
-      res.json({ message:'success'});
-    }
-  });
 };
