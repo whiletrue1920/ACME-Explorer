@@ -7,16 +7,17 @@ var express = require('express'),
   Trip = require('./api/models/tripModel'),
   Application = require('./api/models/applicationModel'),
   Search = require('./api/models/searchModel'),
+  Config = require('./api/models/configModel'),
   DataWareHouse = require('./api/models/dataWareHouseModel'),
   DataWareHouseTools = require('./api/controllers/dataWareHouseController'),
   bodyParser = require('body-parser');
 
 // MongoDB URI building
-var mongoDBHostname = process.env.mongoDBHostname || "localhost";
-var mongoDBPort = process.env.mongoDBPort || "27017";
-var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
-var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
-//var mongoDBURI = "mongodb+srv://consulta:consulta@acme-explorer-rmm7f.mongodb.net/test?retryWrites=true&w=majority";
+//var mongoDBHostname = process.env.mongoDBHostname || "localhost";
+//var mongoDBPort = process.env.mongoDBPort || "27017";
+//var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
+//var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
+var mongoDBURI = "mongodb+srv://consulta:consulta@acme-explorer-rmm7f.mongodb.net/test?retryWrites=true&w=majority";
 
 mongoose.connect(mongoDBURI, {
     //reconnectTries: 10,
@@ -39,6 +40,7 @@ var routesSponsorships = require('./api/routes/sponsorshipRoutes');
 var routesTrips = require('./api/routes/tripRoutes');
 var routesApplication = require('./api/routes/applicationRoutes');
 var searchApplication = require('./api/routes/searchRoutes');
+var configApplication = require('./api/routes/configRoutes');
 var routesDataWareHouse = require('./api/routes/dataWareHouseRoutes');
 
 
@@ -47,6 +49,7 @@ routesSponsorships(app);
 routesTrips(app);
 routesApplication(app);
 searchApplication(app);
+configApplication(app);
 routesDataWareHouse(app);
 
 

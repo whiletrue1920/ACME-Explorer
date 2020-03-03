@@ -108,5 +108,5 @@ async function amount_of_money_that_explorer_has_spent_on_trips_during_period(){
   // var trips = await Trip.aggregate([
   //     {$group:{_id:"$full_price"}}
   //     ]).exec();
-  return money;
+  //return money;
 }

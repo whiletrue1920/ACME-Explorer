@@ -60,13 +60,13 @@ exports.edit_config = function(req, res) {
 
 exports.delete_config = function(req, res) {
   //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
-  Application.deleteMany({}, function(err, application) {
+  Config.deleteMany({}, function(err, config) {
         if (err){
           res.status(500).send(err);
         }
         else{
           console.log(Date(), ` SUCCESS: -DELETE /configs`);
-          res.json({ message: 'Application successfully deleted' });
+          res.json({ message: 'Config successfully deleted' });
         }
     });
 };
