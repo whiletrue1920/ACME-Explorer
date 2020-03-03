@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ad67aab2-cf17-4c9a-82a6-e88b83173b4f",
+		"_postman_id": "f65b93dc-0b22-408b-a79f-896d0adb05d0",
 		"name": "ACME-Explorer",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -485,6 +485,66 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "DELETE ALL APPLICATIONS",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"Customer2Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"CUSTOMER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/applications/5e4ad7eac268f06c0d6debc5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"applications",
+								"5e4ad7eac268f06c0d6debc5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE APPLICATION",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"Customer2Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"CUSTOMER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/applications/5e4ad7eac268f06c0d6debc5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"applications",
+								"5e4ad7eac268f06c0d6debc5"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -615,6 +675,55 @@
 								"v1",
 								"actors",
 								"5e52b709c529db1db8c36929"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "GET ",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/searches?ticker=0413-HFEV&title=My Title&date_max=2020-04-01&price_range=0-350",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"searches"
+							],
+							"query": [
+								{
+									"key": "actorId",
+									"value": "5e5bc0ffe54fd053125b0e9e",
+									"disabled": true
+								},
+								{
+									"key": "ticker",
+									"value": "0413-HFEV"
+								},
+								{
+									"key": "title",
+									"value": "My Title"
+								},
+								{
+									"key": "date_max",
+									"value": "2020-04-01"
+								},
+								{
+									"key": "price_range",
+									"value": "0-350"
+								}
 							]
 						}
 					},
