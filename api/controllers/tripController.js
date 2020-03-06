@@ -9,6 +9,7 @@ const NOT_FOUND='NotFound';
 const STRICT_MODE_ERROR='StrictModeError';
 const UPDATE_NOT_ALLOWED='UpdateNotAllowed';
 const DELETE_NOT_ALLOWED='DeleteNotAllowed';
+const CANCEL_NOT_ALLOWED='CancelNotAllowed';
  
 //RESPONSE_STATUS_CODE
 const CREATED=201;
@@ -53,24 +54,6 @@ exports.read_a_trip = function (req, res) {
     });
 };
 
-//TODO: Búsqueda de trips por keyWord
-exports.search_trips = function(req, res) {
-    console.log(Date(), ` -GET /trips/search/${req.params.keyWord}`)
-    res.json({});
-};
-
-//TODO: Dashboard con la media, mínimo, máximo y desviación estándar del precio de los viajes
-exports.dashboard = function(req, res) {
-    console.log(Date(), ` -GET /trips/search/${req.params.keyWord}`)
-    res.json({});
-};
-
-//TODO: Mostar aleatoriamente un viaje que esté patrocinado
-exports.random_sponsorships = function(req, res) {
-    console.log(Date(), ` -GET /trips/sponsorships/random`)
-    res.json({});
-};
-
 /*---------------POST----------------------*/
 
 exports.create_a_trip = function (req, res) {
@@ -91,18 +74,6 @@ exports.create_a_trip = function (req, res) {
             res.status(CREATED).json(trip);
         }
     });
-};
-
-//TODO: Publicar viaje
-exports.publish_a_trip = function (req, res) {
-    console.log(Date(), ` -POST /trips/publish/${req.params.tripId}`);
-    res.json({});
-};
-
-//TODO: Cancelar viajes que no hayan empezado y no tengan solicitudes aceptadas
-exports.cancel_a_trip = function (req, res) {
-    console.log(Date(), ` -POST /trips/cancel/${req.params.tripId}`);
-    res.json({});
 };
 
 /*---------------PUT----------------------*/
@@ -138,6 +109,76 @@ exports.update_a_trip = async function(req, res) {
     }
 
     
+};
+
+//TODO: Publicar viaje
+exports.publish_a_trip = function (req, res) {
+    console.log(Date(), ` -PUT /trips/publish/${req.params.tripId}`);
+    res.json({});
+};
+
+//Cancelar un viaje publicado, que no esté empezado ni tenga solicitudes aceptadas
+exports.cancel_a_trip = async function (req, res) {
+    console.log(Date(), ` -PUT /trips/cancel/${req.params.tripId}`);
+
+    //1. Recuperamos el viaje
+    var trip = await Trip.findById(req.params.tripId, function(err, trip){
+        if(err){
+            console.error(Date(), ` ERROR: - PUT /trips/cancel/${req.params.tripId} , Some error ocurred while retrieving a trip : ${err.message}`);
+            return processErrors(req, res, err);
+        }else{
+            return trip;
+        }
+    });
+
+    if(!trip){
+        console.error(Date(), ` ERROR: - PUT /trips/cancel/${req.params.tripId} , Not found trip with id : ${req.params.tripId}`);
+        return processErrors(req, res, {name: NOT_FOUND})
+    }
+
+    //2. Comprobamos que el viaje esté publicado
+    if(!trip.publish){
+        console.error(Date(), ` ERROR: - PUT /trips/cancel/${req.params.tripId} , The trip is not publish, can not cancel: ${req.params.tripId}`);
+        return processErrors(req, res, {name: CANCEL_NOT_ALLOWED, message: 'Cancel is not allowed because the trip is not publish, try to update it'})
+    }
+
+    //3. Comprobamos la fecha de realización
+    if(trip.date_start <= new Date()){
+        console.error(Date(), ` ERROR: - PUT /trips/cancel/${req.params.tripId} , The trip date_start is over, can not cancel: ${req.params.tripId}`);
+        return processErrors(req, res, {name: CANCEL_NOT_ALLOWED, message: 'Cancel is not allowed because the trip date_start is over'})
+    }
+
+    //4. Recuperamos las solicitudes aceptadas del viaje
+    var applications_accepted_by_tripId = await Application.aggregate([
+        { $match: { 
+            $and: [
+                {tripId:{$eq:trip._id}},
+                {status: {$eq:"ACCEPTED"}}]
+        }},
+        { $group: {_id:"$tripId"}}
+        ]).exec();
+    
+    //5. Comprobamos si el viaje tiene solicitudes aceptadas
+    if(applications_accepted_by_tripId.length>0){
+        console.error(Date(), ` ERROR: - PUT /trips/cancel/${req.params.tripId} , The trip has accepted applications, can not cancel: ${req.params.tripId}`);
+        return processErrors(req, res, {name: CANCEL_NOT_ALLOWED, message: 'Cancel is not allowed because the trip has accepted applications'})
+    }
+
+    //6. Actualizamos el viaje canceled = true
+    trip.canceled=true;
+    Trip.findOneAndUpdate({_id: trip._id}, trip, {new: true}, function(err, tripUpdate) {
+        if(err){
+            console.error(Date(), ` ERROR: - PUT /trips/cancel/${trip._id} , Some error ocurred while updating a trip : ${err.message}`);
+            return processErrors(req, res, err);
+        }else{
+            if(!trip){
+                console.error(Date(), ` ERROR: - PUT /trips/cancel/${trip._id} , Not found trip with id : ${req.params.tripId}`);
+                return processErrors(req, res, {name: NOT_FOUND});
+            }
+            console.log(Date(), ` SUCCESS: -PUT /trips/cancel/${trip._id}`);
+            res.json(tripUpdate);
+        }
+    });
 };
 
 /*---------------DELETE----------------------*/
@@ -222,6 +263,8 @@ function processErrors (req, res, err) {
             return res.status(STATUS_CODE_BAD_REQUEST).send(err);
         case DELETE_NOT_ALLOWED:
             return res.status(STATUS_CODE_BAD_REQUEST).send(err);
+        case CANCEL_NOT_ALLOWED:
+                return res.status(STATUS_CODE_BAD_REQUEST).send(err);
         default:
             return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send(err);
     }
