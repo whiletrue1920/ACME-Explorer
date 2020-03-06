@@ -108,91 +108,81 @@ exports.cancel_a_trip = function (req, res) {
 /*---------------PUT----------------------*/
 
 exports.update_a_trip = async function(req, res) {
+
+    //Un viaje puede ser actualizado siempre que no esté publicado
     console.log(Date(), ` -PUT /trips/${req.params.tripId}`)
-    var tripPublish;
-    
+
     try{
-        tripPublish = await isPublish(req.params.tripId);
-        if(tripPublish==null){
-            return processErrors(req, res, {name: NOT_FOUND});
+        var publicado = await isPublish(req.params.tripId);
+        if(publicado){
+            console.error(Date(), ` ERROR: - PUT /trips/${req.params.tripId} , The trip is publish can not update`);
+            var err = {name: UPDATE_NOT_ALLOWED, message: 'Update is not allowed because the trip is publish'};
+            throw err;
+        }else{
+            Trip.findOneAndUpdate({_id: req.params.tripId}, req.body, {new: true}, function(err, trip) {
+                if(err){
+                    console.error(Date(), ` ERROR: - PUT /trips/${req.params.tripId} , Some error ocurred while updating a trip : ${err.message}`);
+                    return processErrors(req, res, err);
+                }else{
+                    if(!trip){
+                        console.error(Date(), ` ERROR: - PUT /trips/${req.params.tripId} , Not found trip with id : ${req.params.tripId}`);
+                        return processErrors(req, res, {name: NOT_FOUND});
+                    }
+                    console.log(Date(), ` SUCCESS: -PUT /trips/${req.params.tripId}`);
+                    res.json(trip);
+                }
+            });
         }
     }catch(err){
         return processErrors(req, res, err);
     }
 
-    //Un viaje puede ser actualizado siempre que no esté publicado
-    if(tripPublish.publish){
-        console.error(Date(), ` ERROR: - PUT /trips/${req.params.tripId} , The trip is publish can not update`);
-        return processErrors(req, res, {
-            name: UPDATE_NOT_ALLOWED,
-            message: 'Update is not allowed because the trip is publish'});
-    }else{
-        Trip.findOneAndUpdate({_id: req.params.tripId}, req.body, {new: true}, function(err, trip) {
-            if(err){
-                console.error(Date(), ` ERROR: - PUT /trips/${req.params.tripId} , Some error ocurred while updating a trip : ${err.message}`);
-                return processErrors(req, res, err);
-            }else{
-                if(!trip){
-                    console.error(Date(), ` ERROR: - PUT /trips/${req.params.tripId} , Not found trip with id : ${req.params.tripId}`);
-                    return processErrors(req, res, {name: NOT_FOUND});
-                }
-                console.log(Date(), ` SUCCESS: -PUT /trips/${req.params.tripId}`);
-                res.json(trip);
-            }
-        });
-    }
+    
 };
 
 /*---------------DELETE----------------------*/
 
 exports.delete_a_trip = async function(req, res) {
-    console.log(Date(), ` -DELETE /trips/${req.params.tripId}`)
-    var tripPublish;
+    
      //Un viaje puede ser eliminado siempre que no esté publicado
+     console.log(Date(), ` -DELETE /trips/${req.params.tripId}`)
 
-    try{
-        tripPublish = await isPublish(req.params.tripId);
-        if(tripPublish==null){
-            return processErrors(req, res, {name: NOT_FOUND});
-        }
-    }catch(err){
-        return processErrors(req, res, err);
-    }
-
-    if(tripPublish.publish){
-        console.error(Date(), ` ERROR: - DELETE /trips/${req.params.tripId} , The trip is publish can not delete`);
-        return processErrors(req, res, {
-            name: DELETE_NOT_ALLOWED,
-            message: 'Delete is not allowed because the trip is publish'});
-    }else{
-        Trip.findByIdAndRemove(req.params.tripId, function(err, trip) {
-            if(err){
-                console.error(Date(), ` DELETE: - DELETE /trips/${req.params.tripId} , Some error ocurred while deleting a trip : ${err.message}`);
-                return processErrors(req, res, err);
-            }else{
-                if(!trip){
-                    console.error(Date(), ` ERROR: - DELETE /trips/${req.params.tripId} , Not found trip with id : ${req.params.tripId}`);
-                    return processErrors(req, res, {name: NOT_FOUND});
+     try{
+        var publicado = await isPublish(req.params.tripId);
+        if(publicado){
+            console.error(Date(), ` ERROR: - DELETE /trips/${req.params.tripId} , The trip is publish can not delete`);
+            var err = {name: DELETE_NOT_ALLOWED, message: 'Delete is not allowed because the trip is publish'};
+            throw err;
+        }else{
+            Trip.findByIdAndRemove(req.params.tripId, function(err, trip) {
+                if(err){
+                    console.error(Date(), ` DELETE: - DELETE /trips/${req.params.tripId} , Some error ocurred while deleting a trip : ${err.message}`);
+                    return processErrors(req, res, err);
+                }else{
+                    if(!trip){
+                        console.error(Date(), ` ERROR: - DELETE /trips/${req.params.tripId} , Not found trip with id : ${req.params.tripId}`);
+                        return processErrors(req, res, {name: NOT_FOUND});
+                    }
+                    console.log(Date(), ` SUCCESS: -DELETE /trips/${req.params.tripId}`);
+                    res.status(NO_CONTENT).json({ message: 'Trip successfully deleted' });
                 }
-                console.log(Date(), ` SUCCESS: -DELETE /trips/${req.params.tripId}`);
-                res.status(NO_CONTENT).json({ message: 'Trip successfully deleted' });
-            }
-        });
-    }
+            });
+        }
+     }catch(err){
+        return processErrors(req, res, err);
+     }
 };
 
+//Función que devuelve si un viaje está publicado o no
 function isPublish(tripId){
-    return Trip.findById(tripId, function(err, trip) {
-        if(err){
-            console.error(Date(), ` ERROR: isPublish tripId?: ${tripId}, Some error ocurred: ${err.message}`);
-            return err;
+    return Trip.findById(tripId).then((trip) => {
+        if(!trip){
+            console.error(Date(), ` ERROR: isPublish tripId?: ${tripId}, Not found trip`);
+            var err = {name: NOT_FOUND};
+            throw err;
         }else{
-            if(!trip){
-                console.error(Date(), ` ERROR: isPublish tripId?: ${tripId}, Not found trip`);
-            }else{
-                console.log(Date(), ` isPublish tripId?: ${tripId}, ${trip.publish}`);
-            }
-            return trip;
+            console.log(Date(), ` isPublish tripId?: ${tripId}, ${trip.publish}`);
+            return trip.publish;
         }
     });
 }
