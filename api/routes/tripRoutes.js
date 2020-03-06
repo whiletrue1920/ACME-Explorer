@@ -12,11 +12,9 @@ module.exports = function(app) {
     .delete(trips.delete_a_trip);
 
   app.route('/v1/trips/publish/:tripId')
-    //TODO: Publicar viajes
     .put(trips.publish_a_trip)
     
   app.route('/v1/trips/cancel/:tripId')
-    //TODO: Cancelar un viaje publicado, que no esté empezado ni tenga solicitudes aceptadas
     .put(trips.cancel_a_trip)
 
 };
