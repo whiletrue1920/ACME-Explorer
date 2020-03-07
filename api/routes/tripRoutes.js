@@ -17,4 +17,6 @@ module.exports = function(app) {
   app.route('/v1/trips/cancel/:tripId')
     .put(trips.cancel_a_trip)
 
+  app.route('/v1/trips/pay/:tripId/:actorId')
+    .put(trips.pay_a_trip)
 };

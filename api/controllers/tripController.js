@@ -6,6 +6,7 @@ const VALIDATION_ERROR='ValidationError';
 const CAST_ERROR='CastError';
 const OBJECT_ID_ERROR='ObjectId';
 const NOT_FOUND='NotFound';
+const NOT_FOUND_APPLICATION='NotFoundApplication';
 const STRICT_MODE_ERROR='StrictModeError';
 const UPDATE_NOT_ALLOWED='UpdateNotAllowed';
 const DELETE_NOT_ALLOWED='DeleteNotAllowed';
@@ -29,7 +30,7 @@ exports.list_all_trips = function(req, res) {
     console.log(Date(), ` -GET /trips`)
     Trip.find({}, function(err, trips){
         if(err){
-            console.error(Date(), ` ERROR: - GET /trips , Some error ocurred while retrieving trips: ${err.message}`);
+            console.error(Date(), ` ERROR: - GET /trips , Some error occurred while retrieving trips: ${err.message}`);
             return processErrors(req, res, err);
         }else{
             console.log(Date(), ` SUCCESS: -GET /trips`);
@@ -42,7 +43,7 @@ exports.read_a_trip = function (req, res) {
     console.log(Date(), ` -GET /trips/${req.params.tripId}`)
     Trip.findById(req.params.tripId, function(err, trip){
         if(err){
-            console.error(Date(), ` ERROR: - GET /trips/${req.params.tripId} , Some error ocurred while retrieving a trip : ${err.message}`);
+            console.error(Date(), ` ERROR: - GET /trips/${req.params.tripId} , Some error occurred while retrieving a trip : ${err.message}`);
             return processErrors(req, res, err);
         }else{
             if(!trip){
@@ -63,12 +64,12 @@ exports.create_a_trip = function (req, res) {
     try{
         new_trip = new Trip(req.body);
     }catch(err){
-        console.error(Date(), ` ERROR: - POST /trips , Some error ocurred while saving a trip: ${err.message}`);
+        console.error(Date(), ` ERROR: - POST /trips , Some error occurred while saving a trip: ${err.message}`);
         return processErrors(req, res, err);
     }
     new_trip.save(function(err, trip) {
         if(err){
-            console.error(Date(), ` ERROR: - POST /trips , Some error ocurred while saving a trip: ${err.message}`);
+            console.error(Date(), ` ERROR: - POST /trips , Some error occurred while saving a trip: ${err.message}`);
             return processErrors(req, res, err);
         }else{
             console.log(Date(), ` SUCCESS: -POST /trips`);
@@ -93,7 +94,7 @@ exports.update_a_trip = async function(req, res) {
         }else{
             Trip.findOneAndUpdate({_id: req.params.tripId}, req.body, {new: true}, function(err, trip) {
                 if(err){
-                    console.error(Date(), ` ERROR: - PUT /trips/${req.params.tripId} , Some error ocurred while updating a trip : ${err.message}`);
+                    console.error(Date(), ` ERROR: - PUT /trips/${req.params.tripId} , Some error occurred while updating a trip : ${err.message}`);
                     return processErrors(req, res, err);
                 }else{
                     if(!trip){
@@ -142,7 +143,7 @@ exports.publish_a_trip = async function (req, res) {
         trip.publish=true;
         var updateTrip = await Trip.findOneAndUpdate({_id: trip._id}, trip, {new: true}, function(err, tripUpdate) {
             if(err){
-                console.error(Date(), ` ERROR => findOneAndUpdate: ${tripUpdate._id} , Some error ocurred while updating a trip : ${err.message}`);
+                console.error(Date(), ` ERROR => findOneAndUpdate: ${tripUpdate._id} , Some error occurred while updating a trip : ${err.message}`);
                 throw err;
             }else{
                 if(!tripUpdate){
@@ -169,7 +170,7 @@ exports.cancel_a_trip = async function (req, res) {
     //1. Recuperamos el viaje
     var trip = await Trip.findById(req.params.tripId, function(err, trip){
         if(err){
-            console.error(Date(), ` ERROR => findById:${req.params.tripId} , Some error ocurred while retrieving a trip : ${err.message}`);
+            console.error(Date(), ` ERROR => findById:${req.params.tripId} , Some error occurred while retrieving a trip : ${err.message}`);
             return processErrors(req, res, err);
         }else{
             console.log(Date(), ` SUCCESS => findById: ${req.params.tripId}`);
@@ -214,7 +215,7 @@ exports.cancel_a_trip = async function (req, res) {
     trip.canceled=true;
     Trip.findOneAndUpdate({_id: trip._id}, trip, {new: true}, function(err, tripUpdate) {
         if(err){
-            console.error(Date(), ` ERROR => findOneAndUpdate:${trip._id} , Some error ocurred while updating a trip : ${err.message}`);
+            console.error(Date(), ` ERROR => findOneAndUpdate:${trip._id} , Some error occurred while updating a trip : ${err.message}`);
             return processErrors(req, res, err);
         }else{
             if(!trip){
@@ -225,6 +226,37 @@ exports.cancel_a_trip = async function (req, res) {
             res.json(tripUpdate);
         }
     });
+};
+
+//Pagar un viaje con estado "DUE" a "ACCEPTED"
+exports.pay_a_trip = async function (req, res) {
+    
+    console.log(Date(), ` -PUT /trips/pay/${req.params.tripId}/${req.params.actorId}`);
+
+    Application.findOneAndUpdate( 
+        { $and: [
+            {actorId: req.params.actorId},
+            {tripId: req.params.tripId},
+            {status: 'DUE'} 
+        ]}, 
+        { $set: {
+            status: 'ACCEPTED'
+        }},
+        {new: true},
+        
+        function(err, applicationUpdate){
+            if(err){
+                console.error(Date(), ` ERROR -PUT /trips/pay/${req.params.tripId}/${req.params.actorId} , Some error occurred while paying a trip : ${err.message}`);
+                return processErrors(req, res, err);
+            }else{
+                if(!applicationUpdate){
+                    console.error(Date(), ` ERROR -PUT /trips/pay/${req.params.tripId}/${req.params.actorId} ,  Not found trip application`);
+                    return processErrors(req, res, {name: NOT_FOUND_APPLICATION, message: 'Not found trip application'});
+                }
+                console.log(Date(), ` SUCCESS: -PUT /trips/pay/${req.params.tripId}/${req.params.actorId}`);
+                res.json(applicationUpdate);
+            }
+        });
 };
 
 /*---------------DELETE----------------------*/
@@ -243,7 +275,7 @@ exports.delete_a_trip = async function(req, res) {
         }else{
             Trip.findByIdAndRemove(req.params.tripId, function(err, trip) {
                 if(err){
-                    console.error(Date(), ` DELETE: - DELETE /trips/${req.params.tripId} , Some error ocurred while deleting a trip : ${err.message}`);
+                    console.error(Date(), ` DELETE: - DELETE /trips/${req.params.tripId} , Some error occurred while deleting a trip : ${err.message}`);
                     return processErrors(req, res, err);
                 }else{
                     if(!trip){
@@ -303,6 +335,8 @@ function processErrors (req, res, err) {
             return res.status(STATUS_CODE_NOT_FOUND).send(err);
         case NOT_FOUND:
             return res.status(STATUS_CODE_NOT_FOUND).send({message: `Not found trip with id : ${req.params.tripId}`});
+        case NOT_FOUND_APPLICATION:
+            return res.status(STATUS_CODE_NOT_FOUND).send(err);
         case STRICT_MODE_ERROR:
             return res.status(STATUS_CODE_VALIDATION_ERROR).send(err);
         case UPDATE_NOT_ALLOWED:
