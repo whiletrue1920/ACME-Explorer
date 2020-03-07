@@ -62,7 +62,7 @@ var ActorSchema = new Schema({
   state: [{
     type: String,
     required: 'Kindly enter the state',
-    enum: ['ACTIVATED', 'DESACTIVATED', 'REACTIVATED']
+    enum: ['ACTIVATED', 'DEACTIVATED', 'REACTIVATED']
   }],
   validated:{
     type: Boolean,
