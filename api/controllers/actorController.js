@@ -100,7 +100,7 @@ exports.ban_an_actor = function(req,res){
               if (err){
                   res.status(500).send(err);
               }else{
-                  res.json.send(actor);
+                  res.json(actor);
               }
           })
 }
@@ -114,7 +114,7 @@ exports.unban_an_actor = function(req,res){
               if (err){
                   res.status(500).send(err);
               }else{
-                  res.json.send(actor);
+                  res.json(actor);
               }
           })
 }

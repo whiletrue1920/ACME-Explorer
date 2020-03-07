@@ -13,5 +13,11 @@ module.exports = function(app) {
     .delete(actors.delete_an_actor);
 
   app.route('/v1/actors/:actorId/validate')
-    .put(actors.validate_an_actor)
+    .put(actors.validate_an_actor);
+
+  app.route('/v1/actors/:actorId/ban')
+    .put(actors.ban_an_actor);
+
+  app.route('/v1/actors/:actorId/unban')
+    .put(actors.unban_an_actor)
 };

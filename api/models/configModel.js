@@ -8,9 +8,9 @@ var ConfigSchema = new Schema({
     type: Number,
     required: 'Kindly enter the status of the application'
   },
-  flate_rate: {
+  flat_rate: {
     type: Number,
-    required: 'Kindly enter the flate_rate of the application'
+    required: 'Kindly enter the flat rate'
   },
   finder_limit: {
     type: Number,
