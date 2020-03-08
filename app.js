@@ -1,6 +1,7 @@
 var express = require('express'),
   app = express(),
-  port = process.env.PORT || 8080,
+  port = process.env.PORT || 443,
+  fs = require('fs'),
   mongoose = require('mongoose'),
   Actor = require('./api/models/actorModel'),
   Sponsorship = require('./api/models/sponsorshipModel'),
@@ -11,7 +12,9 @@ var express = require('express'),
   DataWareHouse = require('./api/models/dataWareHouseModel'),
   DataWareHouseTools = require('./api/controllers/dataWareHouseController'),
   bodyParser = require('body-parser'),
-  admin = require("firebase-admin");
+  https = require('https'),
+  admin = require("firebase-admin"),
+  serviceAccount = require("./whiletrue-1920-firebase-adminsdk-ue5hg-137a99caa4.json");
 
 // MongoDB URI building
 //var mongoDBHostname = process.env.mongoDBHostname || "localhost";
@@ -55,7 +58,6 @@ var searchApplication = require('./api/routes/searchRoutes');
 var configApplication = require('./api/routes/configRoutes');
 var routesDataWareHouse = require('./api/routes/dataWareHouseRoutes');
 var routesLogin = require('./api/routes/loginRoutes');
-var serviceAccount = require("./firebase/whiletrue-1920-firebase-adminsdk-ue5hg-137a99caa4.json");
 
 routesActors(app);
 routesSponsorships(app);
@@ -69,8 +71,11 @@ routesLogin(app);
 
 console.log("Connecting DB to: " + mongoDBURI);
 mongoose.connection.on("open", function (err, conn) {
-    app.listen(port, function () {
-        console.log('ACME-Explorer RESTful API server started on: ' + port);
+    https.createServer({
+        key: fs.readFileSync('my_cert.key'),
+        cert: fs.readFileSync('my_cert.crt')
+    }, app).listen(port, function(){
+        console.log("My https server listening on port " + port + "...");
     });
 });
 
