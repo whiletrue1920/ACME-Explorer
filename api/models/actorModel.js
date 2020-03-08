@@ -71,6 +71,9 @@ var ActorSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
+  },
+  customToken: {
+    type: String
   }
   // sponsorship: {
   //   type: SponsorshipSchema,
