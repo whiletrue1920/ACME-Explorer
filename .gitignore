@@ -108,3 +108,13 @@ dist
 
 # Vscode
 .vscode
+
+#Certificados
+
+my_cert.crt
+my_cert.csr
+my_cert.key
+
+#firebase config
+
+whiletrue-1920-firebase-adminsdk-ue5hg-137a99caa4.json
