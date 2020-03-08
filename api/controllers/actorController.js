@@ -76,7 +76,7 @@ exports.update_a_verified_actor = function(req, res) {
     else{
       console.log('actor: '+actor);
       var idToken = req.headers['idtoken'];//WE NEED the FireBase custom token in the req.header['idToken']... it is created by FireBase!!
-      if (actor.role.includes('CUSTOMER') || actor.role.includes('CLERK')){
+      if (actor.role.includes('MANAGERS') || actor.role.includes('EXPLORERS') || actor.role.includes('SPONSOR')){
         var authenticatedUserId = await authController.getUserId(idToken);
         if (authenticatedUserId == req.params.actorId){
           Actor.findOneAndUpdate({_id: req.params.actorId}, req.body, {new: true}, function(err, actor) {
@@ -184,9 +184,9 @@ exports.login_an_actor = async function(req, res) {
         res.json({message: 'forbidden',error: err});
       }
 
-      else if ((actor.role.includes( 'CLERK' )) && (actor.validated == false)) {
+      else if ((actor.state === 'DEACTIVATED') && (actor.validated == false)) {
         console.error(Date(), ` ERROR: - GET /login/?=${req.query.email} , Invalid actor role for login`);
-        res.status(403); //an access token is valid, but requires more privileges
+        res.status(403); //an access token is valid, but the actor is deactivated
         res.json({message: 'forbidden',error: err});
       }
       else{

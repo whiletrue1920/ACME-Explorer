@@ -20,7 +20,7 @@ module.exports = function(app) {
     .put(actors.ban_an_actor);
 
   app.route('/v1/actors/:actorId/unban')
-    .put(actors.unban_an_actor)
+    .put(actors.unban_an_actor);
 
   /**
    * Put an actor
@@ -33,8 +33,8 @@ module.exports = function(app) {
 	 * @url /v1/actors/:actorId
   */  
  app.route('/v2/actors/:actorId')
- .get(actors.read_an_actor)
- .put(authController.verifyUser(['ADMINISTRATORS']),actors.update_a_verified_actor) //Consumer y clerk no puede modificar la info de otro consumer/clerk
+    .get(actors.read_an_actor)
+    .put(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),actors.update_a_verified_actor) 
      
 
 };
