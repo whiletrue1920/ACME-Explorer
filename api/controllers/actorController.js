@@ -11,6 +11,7 @@ const STATUS_CODE_INTERNAL_SERVER_ERROR=500;
 
 /*---------------ACTOR----------------------*/
 var mongoose = require('mongoose'),
+  admin = require('firebase-admin'),
   Actor = mongoose.model('Actors');
 
 exports.list_all_actors = function(req, res) {
@@ -65,6 +66,48 @@ exports.update_an_actor = function(req, res) {
     });
 };
 
+exports.update_a_verified_actor = function(req, res) {
+  //Customer and Clerks can update theirselves, administrators can update any actor
+  console.log('Starting to update the actor...');
+  Actor.findById(req.params.actorId, async function(err, actor) {
+    if (err){
+      res.send(err);
+    }
+    else{
+      console.log('actor: '+actor);
+      var idToken = req.headers['idtoken'];//WE NEED the FireBase custom token in the req.header['idToken']... it is created by FireBase!!
+      if (actor.role.includes('CUSTOMER') || actor.role.includes('CLERK')){
+        var authenticatedUserId = await authController.getUserId(idToken);
+        if (authenticatedUserId == req.params.actorId){
+          Actor.findOneAndUpdate({_id: req.params.actorId}, req.body, {new: true}, function(err, actor) {
+            if (err){
+              res.send(err);
+            }
+            else{
+              res.json(actor);
+            }
+          });
+        } else{
+          res.status(403); //Auth error
+          res.send('The Actor is trying to update an Actor that is not himself!');
+        }    
+      } else if (actor.role.includes('ADMINISTRATORS')){
+          Actor.findOneAndUpdate({_id: req.params.actorId}, req.body, {new: true}, function(err, actor) {
+            if (err){
+              res.send(err);
+            }
+            else{
+              res.json(actor);
+            }
+          });
+      } else {
+        res.status(405); //Not allowed
+        res.send('The Actor has unidentified roles');
+      }
+    }
+  });
+  };
+
 exports.validate_an_actor = function(req, res) {
   //Check that the user is an Administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
   console.log("Validating an actor with id: "+req.params.actorId)
@@ -118,6 +161,64 @@ exports.unban_an_actor = function(req,res){
               }
           })
 }
+
+/*---------------LOGIN----------------------*/
+
+exports.login_an_actor = async function(req, res) {
+  
+  console.log(Date(), ` -GET /login/?=${req.query.email} , starting login an actor`)
+  
+  var emailParam = req.query.email;
+  var password = req.query.password;
+  Actor.findOne({ email: emailParam }, function (err, actor) {
+      if (err) { 
+        console.error(Date(), ` ERROR: - GET /login/?=${req.query.email} , Some error occurred: ${err.message}`);
+        res.status(500);
+        res.send({message: 'forbidden',error: err}); 
+      }
+
+      // No actor found with that email as username
+      else if (!actor) {
+        console.error(Date(), ` ERROR: - GET /login/?=${req.query.email} , Not found user with email: ${req.query.email}`);
+        res.status(401); //an access token isn’t provided, or is invalid
+        res.json({message: 'forbidden',error: err});
+      }
+
+      else if ((actor.role.includes( 'CLERK' )) && (actor.validated == false)) {
+        console.error(Date(), ` ERROR: - GET /login/?=${req.query.email} , Invalid actor role for login`);
+        res.status(403); //an access token is valid, but requires more privileges
+        res.json({message: 'forbidden',error: err});
+      }
+      else{
+        // Make sure the password is correct
+        actor.verifyPassword(password, async function(err, isMatch) {
+          if (err) {
+            console.error(Date(), ` ERROR: - GET /login/?=${req.query.email} , Some error occurred: ${err.message}`);
+            res.status(401);
+            res.send({message: 'forbidden',error: err});
+          }
+
+          // Password did not match
+          else if (!isMatch) {
+            console.error(Date(), ` ERROR: - GET /login/?=${req.query.email} , Password did not match`);
+            res.status(401); //an access token isn’t provided, or is invalid
+            res.json({message: 'forbidden',error: err});
+          }
+
+          else {
+              try{
+                var customToken = await admin.auth().createCustomToken(actor.email);
+              } catch (error){
+                console.log("Error creating custom token:", error);
+              }
+              actor.customToken = customToken;
+              console.log('Login Success... sending JSON with custom token');
+              res.json(actor);
+          }
+      });
+    }
+  });
+};
 
 //Suma de dinero gastado de cada usuario(rol=explorer) durante un intervalo de tiempo (min 1 mes, máximo 36 meses).
 async function amount_of_money_that_explorer_has_spent_on_trips_during_period(){

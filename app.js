@@ -10,7 +10,8 @@ var express = require('express'),
   Config = require('./api/models/configModel'),
   DataWareHouse = require('./api/models/dataWareHouseModel'),
   DataWareHouseTools = require('./api/controllers/dataWareHouseController'),
-  bodyParser = require('body-parser');
+  bodyParser = require('body-parser'),
+  admin = require("firebase-admin");
 
 // MongoDB URI building
 //var mongoDBHostname = process.env.mongoDBHostname || "localhost";
@@ -35,6 +36,17 @@ mongoose.connect(mongoDBURI, {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, idToken" //ojo, que si metemos un parametro propio por la cabecera hay que declararlo aquí para que no de el error CORS
+    );
+    //res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+    next();
+});
+
 var routesActors = require('./api/routes/actorRoutes');
 var routesSponsorships = require('./api/routes/sponsorshipRoutes');
 var routesTrips = require('./api/routes/tripRoutes');
@@ -42,7 +54,8 @@ var routesApplication = require('./api/routes/applicationRoutes');
 var searchApplication = require('./api/routes/searchRoutes');
 var configApplication = require('./api/routes/configRoutes');
 var routesDataWareHouse = require('./api/routes/dataWareHouseRoutes');
-
+var routesLogin = require('./api/routes/loginRoutes');
+var serviceAccount = require("./firebase/whiletrue-1920-firebase-adminsdk-ue5hg-137a99caa4.json");
 
 routesActors(app);
 routesSponsorships(app);
@@ -51,6 +64,7 @@ routesApplication(app);
 searchApplication(app);
 configApplication(app);
 routesDataWareHouse(app);
+routesLogin(app);
 
 
 console.log("Connecting DB to: " + mongoDBURI);
@@ -63,4 +77,10 @@ mongoose.connection.on("open", function (err, conn) {
 mongoose.connection.on("error", function (err, conn) {
     console.error("DB init error " + err);
 });
-DataWareHouseTools.createDataWareHouseJob();
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://whiletrue-1920.firebaseio.com"
+  });
+  
+//DataWareHouseTools.createDataWareHouseJob();
