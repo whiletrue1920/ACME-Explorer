@@ -119,6 +119,62 @@ exports.unban_an_actor = function(req,res){
           })
 }
 
+/*---------------LOGIN----------------------*/
+
+exports.login_an_actor = async function(req, res) {
+  
+  console.log(Date(), ` -GET /login/?=${req.query.email} , starting login an actor`)
+  
+  var emailParam = req.query.email;
+  var password = req.query.password;
+  Actor.findOne({ email: emailParam }, function (err, actor) {
+      if (err) { 
+        console.error(Date(), ` ERROR: - GET /login/?=${req.query.email} , Some error occurred: ${err.message}`);
+        res.send(err); 
+      }
+
+      // No actor found with that email as username
+      else if (!actor) {
+        console.error(Date(), ` ERROR: - GET /login/?=${req.query.email} , Not found user with email: ${req.query.email}`);
+        res.status(401); //an access token isn’t provided, or is invalid
+        res.json({message: 'forbidden',error: err});
+      }
+
+      else if ((actor.role.includes( 'CLERK' )) && (actor.validated == false)) {
+        console.error(Date(), ` ERROR: - GET /login/?=${req.query.email} , Invalid actor role for login`);
+        res.status(403); //an access token is valid, but requires more privileges
+        res.json({message: 'forbidden',error: err});
+      }
+      else{
+        // Make sure the password is correct
+        actor.verifyPassword(password, async function(err, isMatch) {
+          if (err) {
+            console.error(Date(), ` ERROR: - GET /login/?=${req.query.email} , Some error occurred: ${err.message}`);
+            res.send(err);
+          }
+
+          // Password did not match
+          else if (!isMatch) {
+            console.error(Date(), ` ERROR: - GET /login/?=${req.query.email} , Password did not match`);
+            res.status(401); //an access token isn’t provided, or is invalid
+            res.json({message: 'forbidden',error: err});
+          }
+
+          else {
+              try{
+                var customToken = await admin.auth().createCustomToken(actor.email);
+              } catch (error){
+                console.log("Error creating custom token:", error);
+              }
+              actor.customToken = customToken;
+              console.log('Login Success... sending JSON with custom token');
+              res.json(actor);
+          }
+      });
+    }
+  });
+};
+
 //Suma de dinero gastado de cada usuario(rol=explorer) durante un intervalo de tiempo (min 1 mes, máximo 36 meses).
 async function amount_of_money_that_explorer_has_spent_on_trips_during_period(){
   console.log(Date(), ` amount_of_money_that_explorer_has_spent_on_trips_during_period`);
