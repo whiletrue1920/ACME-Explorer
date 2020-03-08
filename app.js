@@ -43,6 +43,7 @@ var routesApplication = require('./api/routes/applicationRoutes');
 var searchApplication = require('./api/routes/searchRoutes');
 var configApplication = require('./api/routes/configRoutes');
 var routesDataWareHouse = require('./api/routes/dataWareHouseRoutes');
+var routesLogin = require('./api/routes/loginRoutes');
 var serviceAccount = require("./firebase/whiletrue-1920-firebase-adminsdk-ue5hg-137a99caa4.json");
 
 routesActors(app);
@@ -52,6 +53,7 @@ routesApplication(app);
 searchApplication(app);
 configApplication(app);
 routesDataWareHouse(app);
+routesLogin(app);
 
 
 console.log("Connecting DB to: " + mongoDBURI);
