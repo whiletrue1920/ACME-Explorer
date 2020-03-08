@@ -10,7 +10,8 @@ var express = require('express'),
   Config = require('./api/models/configModel'),
   DataWareHouse = require('./api/models/dataWareHouseModel'),
   DataWareHouseTools = require('./api/controllers/dataWareHouseController'),
-  bodyParser = require('body-parser');
+  bodyParser = require('body-parser'),
+  admin = require("firebase-admin");
 
 // MongoDB URI building
 //var mongoDBHostname = process.env.mongoDBHostname || "localhost";
@@ -42,7 +43,7 @@ var routesApplication = require('./api/routes/applicationRoutes');
 var searchApplication = require('./api/routes/searchRoutes');
 var configApplication = require('./api/routes/configRoutes');
 var routesDataWareHouse = require('./api/routes/dataWareHouseRoutes');
-
+var serviceAccount = require("./firebase/whiletrue-1920-firebase-adminsdk-ue5hg-137a99caa4.json");
 
 routesActors(app);
 routesSponsorships(app);
@@ -63,4 +64,10 @@ mongoose.connection.on("open", function (err, conn) {
 mongoose.connection.on("error", function (err, conn) {
     console.error("DB init error " + err);
 });
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://whiletrue-1920.firebaseio.com"
+  });
+  
 DataWareHouseTools.createDataWareHouseJob();
