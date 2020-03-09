@@ -15,6 +15,9 @@ module.exports = function(app) {
    * @param {string} price_range
   */
  app.route('/v1/searches')
- .get(searches.get_search_by_user)
+ .get(searches.get_search_by_user);
+
+ app.route('/v2/searches')
+ .get(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),searches.get_search_by_user);
       
 };
