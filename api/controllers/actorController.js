@@ -151,7 +151,7 @@ exports.ban_an_actor = function(req,res){
 exports.unban_an_actor = function(req,res){
   //If not and admin, res.status(403); "More privileges required due to this action"
   Actor.findOneAndUpdate({ _id: req.params.actorId},
-      { $set: {"state": "REACTIVATED"}},
+      { $set: {"state": "ACTIVATED"}},
           {new: true},
           function (err,actor){
               if (err){
