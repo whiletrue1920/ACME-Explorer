@@ -22,5 +22,11 @@ module.exports = function(app) {
     .post(configs.create_configs)
     .delete(configs.delete_config)
     .put(configs.edit_config);
+  
+  app.route('/v2/configs')
+		.get(authController.verifyUser(['ADMINISTRATORS']),configs.get_configs)
+    .post(authController.verifyUser(['ADMINISTRATORS']),configs.create_configs)
+    .delete(authController.verifyUser(['ADMINISTRATORS']),configs.delete_config)
+    .put(authController.verifyUser(['ADMINISTRATORS']),configs.edit_config);
 
 };
