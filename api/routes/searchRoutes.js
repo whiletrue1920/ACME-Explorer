@@ -1,6 +1,7 @@
 'use strict';
 module.exports = function(app) {
   var searches = require('../controllers/searchController');
+  var authController = require('../controllers/authController');
 
     /**
    * Search engine for trips

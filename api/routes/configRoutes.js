@@ -1,6 +1,7 @@
 'use strict';
 module.exports = function(app) {
   var configs = require('../controllers/configController');
+  var authController = require('../controllers/authController');
 
   /**
    * Manage configs of API: 

@@ -1,6 +1,7 @@
 'use strict';
 module.exports = function(app) {
   var applications = require('../controllers/applicationController');
+  var authController = require('../controllers/authController');
 
   /**
    * Manage catalogue of applications: 
@@ -43,7 +44,7 @@ module.exports = function(app) {
 
   app.route('/v2/applications/:applicationId')
     .get(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),applications.get_application_verified_user)
-    .put(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),applications.update_application)
-    .delete(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),applications.delete_application);
+    .put(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),applications.update_application_verified_user)
+    .delete(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),applications.delete_application_verified_user);
 
 };

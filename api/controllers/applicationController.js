@@ -55,8 +55,40 @@ exports.get_application = function(req, res) {
     });
 };
 
+exports.get_application_verified_user = function(req, res) {
+  console.log(Date(), ` -GET /applications/${req.params.applicationId}`)
+  Application.findById(req.params.applicationId, function(err, application) {
+      if (err){
+        console.error(Date(), ` ERROR: - GET /applications/${req.params.applicationId} , Some error ocurred while retrieving a trip : ${err.message}`);
+        res.status(500).send(err);
+      }
+      else{
+        console.log(Date(), ` SUCCESS: -GET /applications`);
+        res.json(application);
+      }
+    });
+};
+
 
 exports.update_application = function(req, res) {
+  console.log(Date(), ` -PUT /applications/${req.params.applicationId}`)
+  Application.findOneAndUpdate({_id: req.params.applicationId}, req.body, {new: true}, function(err, application) {
+      if (err){
+        if(err.name=='ValidationError') {
+          console.error(Date(), ` ERROR: - PUT /applications/${req.params.applicationId} , The trip is publish can not update`);  
+          res.status(422).send(err);
+        }
+        else{
+          res.status(500).send(err);
+        }
+      }
+      else{
+        res.json(application);
+      }
+    });
+};
+
+exports.update_application_verified_user = function(req, res) {
   console.log(Date(), ` -PUT /applications/${req.params.applicationId}`)
   Application.findOneAndUpdate({_id: req.params.applicationId}, req.body, {new: true}, function(err, application) {
       if (err){
@@ -96,6 +128,19 @@ exports.delete_all_applications = function(req, res) {
       res.json({ message:'success'});
     }
   });
+};
+
+exports.delete_application_verified_user = function(req, res) {
+  //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
+  Application.deleteOne({_id: req.params.applicationId}, function(err, application) {
+        if (err){
+          res.status(500).send(err);
+        }
+        else{
+          console.log(Date(), ` SUCCESS: -DELETE /applications/${req.params.applicationId}`);
+          res.json({ message: 'Application successfully deleted' });
+        }
+    });
 };
 
 //Búsqueda de las aplicaciones por “actor_id” y agrupado por “status”. 
