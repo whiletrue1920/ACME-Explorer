@@ -35,5 +35,15 @@ module.exports = function(app) {
     .get(applications.get_application)
     .put(applications.update_application)
     .delete(applications.delete_application);
+  
+  app.route('/v2/applications')
+    .get(authController.verifyUser(['ADMINISTRATORS']),applications.list_all_applications)
+    .post(authController.verifyUser(['ADMINISTRATORS']),applications.create_an_application)
+    .delete(authController.verifyUser(['ADMINISTRATORS']),applications.delete_all_applications);
+
+  app.route('/v2/applications/:applicationId')
+    .get(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),applications.get_application_verified_user)
+    .put(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),applications.update_application)
+    .delete(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),applications.delete_application);
 
 };
