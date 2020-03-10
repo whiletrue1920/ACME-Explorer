@@ -1,7 +1,7 @@
 'use strict';
 module.exports = function(app) {
   var dataWareHouse = require('../controllers/dataWareHouseController');
-
+  var authController = require('../controllers/authController');
 
   	/**
 	 * Get a list of all indicators or post a new computation period for rebuilding
