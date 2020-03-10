@@ -5,10 +5,10 @@ module.exports = function(app) {
 
   	/**
 	 * Get a list of all indicators or post a new computation period for rebuilding
-	 * RequiredRole: Administrator
+	 * RequiredRole: NONE
 	 * @section dataWareHouse
 	 * @type get post
-	 * @url /dataWareHouse
+	 * @url /v1/dataWareHouse
 	 * @param [string] rebuildPeriod
 	 * 
 	*/
@@ -17,8 +17,21 @@ module.exports = function(app) {
 	.post(dataWareHouse.rebuildPeriod);
 
 	/**
-	 * Get a list of last computed indicator
+	 * Get a list of all indicators or post a new computation period for rebuilding
 	 * RequiredRole: Administrator
+	 * @section dataWareHouse
+	 * @type get post
+	 * @url /v2/dataWareHouse
+	 * @param [string] rebuildPeriod
+	 * 
+	*/
+	app.route('/v2/dataWareHouse')
+	.get(authController.verifyUser(['ADMINISTRATORS']),dataWareHouse.list_all_indicators)
+	.post(authController.verifyUser(['ADMINISTRATORS']),dataWareHouse.rebuildPeriod);
+
+	/**
+	 * Get a list of last computed indicator
+	 * RequiredRole: NONE
 	 * @section dataWareHouse
 	 * @type get
 	 * @url /dataWareHouse/latest
@@ -26,4 +39,15 @@ module.exports = function(app) {
 	*/
 	app.route('/v1/dataWareHouse/latest')
 	.get(dataWareHouse.last_indicator);
+
+	/**
+	 * Get a list of last computed indicator
+	 * RequiredRole: Administrator
+	 * @section dataWareHouse
+	 * @type get
+	 * @url /v2/dataWareHouse/latest
+	 * 
+	*/
+	app.route('/v2/dataWareHouse/latest')
+	.get(authController.verifyUser(['ADMINISTRATORS']),dataWareHouse.last_indicator);
 };
