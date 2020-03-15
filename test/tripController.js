@@ -1,17 +1,20 @@
 const mongoose = require('mongoose');
-const Trip = require('../api/models/tripModel.js');
+const Trip = require('../api/models/tripModel');
 
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const expect = require("chai").expect
 const app = require("../app.js");
-const should = chai.should();
+const sinon = require("sinon");
 
 chai.use(chaiHttp);
 
 describe("TRIPS: GET methods", () => {
 
     it('should return all trips', (done) => {
+
+        sinon.mock(Trip).expects('find').withArgs('').yields(null, []);
+
         chai
             .request(app)
             .get('/v1/trips')
