@@ -1,6 +1,7 @@
 var express = require('express'),
   app = express(),
-  port = process.env.PORT || 443,
+  //port = process.env.PORT || 443,
+  port = process.env.PORT || 8080,
   fs = require('fs'),
   mongoose = require('mongoose'),
   Actor = require('./api/models/actorModel'),
@@ -68,7 +69,7 @@ configApplication(app);
 routesDataWareHouse(app);
 routesLogin(app);
 
-
+/*
 console.log("Connecting DB to: " + mongoDBURI);
 mongoose.connection.on("open", function (err, conn) {
     https.createServer({
@@ -76,6 +77,13 @@ mongoose.connection.on("open", function (err, conn) {
         cert: fs.readFileSync('my_cert.crt')
     }, app).listen(port, function(){
         console.log("My https server listening on port " + port + "...");
+    });
+});
+*/
+console.log("Connecting DB to: " + mongoDBURI);
+mongoose.connection.on("open", function (err, conn) {
+    app.listen(port, function () {
+        console.log('ACME-Explorer RESTful API server started on: ' + port);
     });
 });
 

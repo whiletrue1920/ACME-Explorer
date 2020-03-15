@@ -1,10 +1,13 @@
 'use strict';
 var mongoose = require('mongoose'),
  Trip = mongoose.model('Trips'),
- Search = mongoose.model('Searches');
+ Search = mongoose.model('Searches'),
+ Config = mongoose.model('Configs');
 /*---------------SEARCH----------------------*/
 
 exports.get_search_by_user = function(req, res) {
+  var finder_minutes = checkCache();
+  console.log("Test: "+finder_minutes);
   var query = {};
   var query_search = {};
   var tick = "";
@@ -117,6 +120,20 @@ function saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,trips) {
       if (err) return console.log(err);
       // saved!
   })
+}
+
+function checkCache() {
+  var ress = Config.aggregate([{$project:{"_id":0,"date_finder_minutes":1}}],
+    function(err, res){
+      if (err){
+        return console.log(err);
+      }else{
+        console.log(res[0].date_finder_minutes);
+        return res[0].date_finder_minutes;
+      }
+  });
+  console.log("ress "+ress[0].date_finder_minutes);
+  return ress[0].date_finder_minutes;
 }
 
 //Búsqueda de la media de dinero gastado dentro de un rango de precio
