@@ -30,6 +30,8 @@
     "https": "^1.0.0",
     "mocha": "^7.1.0",
     "mongoose": "^5.8.11",
-    "nanoid": "^2.1.11"
+    "nanoid": "^2.1.11",
+    "sinon": "^9.0.1",
+    "sinon-mongoose": "^2.3.0"
   }
 }
