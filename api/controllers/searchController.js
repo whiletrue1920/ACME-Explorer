@@ -6,8 +6,7 @@ var mongoose = require('mongoose'),
 /*---------------SEARCH----------------------*/
 
 exports.get_search_by_user = function(req, res) {
-  var finder_minutes = checkCache();
-  console.log("Test: "+finder_minutes);
+  var finder_minutes = getConfigs();
   var query = {};
   var query_search = {};
   var tick = "";
@@ -88,6 +87,8 @@ exports.get_search_by_user = function(req, res) {
       });
     }
     else{
+      console.log(categs[0].createdAt);
+      
       res.json(categs);
     }
   });
@@ -122,18 +123,50 @@ function saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,trips) {
   })
 }
 
-function checkCache() {
-  var ress = Config.aggregate([{$project:{"_id":0,"date_finder_minutes":1}}],
-    function(err, res){
-      if (err){
-        return console.log(err);
-      }else{
-        console.log(res[0].date_finder_minutes);
-        return res[0].date_finder_minutes;
-      }
+function getConfigs(req, res){
+  Config.find(function(err, configs) {
+    if (err){
+      console.error(Date(), ` ERROR: - GET /configs , Some error ocurred while retrieving applications: ${err.message}`);
+      res.status(500).send(err);
+    }
+    else{
+      console.log(Date(), ` SUCCESS: -GET /configs`);
+      console.log(configs[0].date_finder_minutes);
+      return configs[0].date_finder_minutes;
+    }
   });
-  console.log("ress "+ress[0].date_finder_minutes);
-  return ress[0].date_finder_minutes;
+}
+
+async function checkCache() {
+  /*Config.aggregate([
+    {
+      '$project':{
+        "_id":0,
+        "date_finder_minutes":1
+      }
+   }
+  ]).exec((err, results) => {
+    if (err){
+      console.log(err);
+      return;
+    }else{
+      const data = results[0];
+      console.log(data.date_finder_minutes);
+
+    }
+  })*/
+  var ress = Config.aggregate([
+    {
+      '$project':{
+        "_id":0,
+        "date_finder_minutes":1
+      }
+   }
+  ]).exec();
+
+  let res = await ress;
+  //console.log(res[0].date_finder_minutes);
+  return res[0].date_finder_minutes;
 }
 
 //Búsqueda de la media de dinero gastado dentro de un rango de precio
