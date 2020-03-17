@@ -6,13 +6,23 @@ const expect = require("chai").expect
 const app = require("../app.js");
 const sinon = require("sinon");
 
+
 chai.use(chaiHttp);
 
 describe("TRIPS: GET methods", () => {
 
-   /* it('should return all trips', (done) => {
+    let sandbox;
+    beforeEach(function () {
+        sandbox = sinon.createSandbox();
+    });
 
-        sinon.mock(Trip).expects('find').withArgs('').yields(null, []);
+    afterEach(function () {
+        sandbox.restore();
+    });
+
+    it('GET /trips 200 OK', (done) => {
+
+        sandbox.mock(mongoose.Model).expects('find').chain().yields(null, []);
 
         chai
             .request(app)
@@ -23,9 +33,9 @@ describe("TRIPS: GET methods", () => {
                 expect(res.body.length).should.be.eql(0);
                 done();
             });
-    });*/
+    });
 
-    it('200 OK: should return one trip', done => {
+    it('GET /trips/{tripId} 200 OK', done => {
 
         let trip = {
             "_id": "5e65633baa30356c43cee9b5",
@@ -49,7 +59,7 @@ describe("TRIPS: GET methods", () => {
             }]
         }
 
-        sinon.mock(mongoose.Model).expects('findById').withArgs('5e65633baa30356c43cee9b5').yields(null, trip);
+        sandbox.mock(mongoose.Model).expects('findById').withArgs('5e65633baa30356c43cee9b5').yields(null, trip);
 
         chai
             .request(app)
@@ -61,6 +71,19 @@ describe("TRIPS: GET methods", () => {
                 expect(res.body.title).to.equal("My Title");
                 expect(res.body.date_start).to.equal("2020-01-29T17:08:51.000Z");
                 expect(res.body.organizedBy).to.equal("5e5bf4011c9d440000ebdb6d");
+                done();
+            });
+    });
+
+    it('GET /trips/{tripId} 404 Not Found', done => {
+
+        sandbox.mock(mongoose.Model).expects('findById').withArgs('5e65633baa30356c43cee9b5').yields(null, null);
+
+        chai
+            .request(app)
+            .get('/v1/trips/5e65633baa30356c43cee9b5')
+            .end((err, res) => {
+                expect(res).to.have.status(404);
                 done();
             });
     });
