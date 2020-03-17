@@ -22,15 +22,70 @@ describe("TRIPS: GET methods", () => {
 
     it('GET /trips 200 OK', (done) => {
 
-        sandbox.mock(mongoose.Model).expects('find').chain().yields(null, []);
+        let trips = [{
+            "_id": "5e65633baa30356c43cee9b5",
+            "ticker": "6137-PRGJ",
+            "title": "Spain",
+            "description": "Route abaout Spain",
+            "requirements": "requirements",
+            "date_start": "2020-01-29T17:08:51.000Z",
+            "date_end": "2020-02-15T17:08:51.000Z",
+            "canceled": false,
+            "reason": "",
+            "full_price": 350,
+            "organizedBy": "5e5bf4011c9d440000ebdb6d",
+            "stages": [{
+                "title": "Sevilla",
+                "description": "Sevilla description",
+                "price": 100
+            },{
+                "title": "Cádiz stage",
+                "description": "Cádiz description",
+                "price": 250
+            }]
+        },{
+            "_id": "5e65633baa30356c43cee9b5",
+            "ticker": "6137-PRGJ",
+            "title": "My Title",
+            "description": "My description",
+            "requirements": "requirements",
+            "date_start": "2020-01-29T17:08:51.000Z",
+            "date_end": "2020-01-29T17:08:51.000Z",
+            "canceled": false,
+            "reason": "",
+            "organizedBy": "5e5bf4011c9d440000ebdb6d",
+            "stages": [{
+                "title": "first stage",
+                "description": "first stage description",
+                "price": 100
+            },{
+                "title": "second stage",
+                "description": "second stage description",
+                "price": 250
+            }]
+        }]
+
+        sandbox.mock(mongoose.Model).expects('find').withArgs().yields(null, trips);
 
         chai
             .request(app)
             .get('/v1/trips')
             .end((err, res) => {
-                console.log(res)
                 expect(res).to.have.status(200);
-                expect(res.body.length).should.be.eql(0);
+                expect(res.body.length).eql(2);
+                done();
+            });
+    });
+
+    it('GET /trips 500 Internal Server Error', (done) => {
+
+        sandbox.mock(mongoose.Model).expects('find').withArgs().yields(new Error(), null);
+
+        chai
+            .request(app)
+            .get('/v1/trips')
+            .end((err, res) => {
+                expect(res).to.have.status(500);
                 done();
             });
     });
@@ -77,13 +132,26 @@ describe("TRIPS: GET methods", () => {
 
     it('GET /trips/{tripId} 404 Not Found', done => {
 
-        sandbox.mock(mongoose.Model).expects('findById').withArgs('5e65633baa30356c43cee9b5').yields(null, null);
+        sandbox.mock(mongoose.Model).expects('findById').withArgs('0005633baa00000c43cee9b5').yields(null, null);
 
         chai
             .request(app)
-            .get('/v1/trips/5e65633baa30356c43cee9b5')
+            .get('/v1/trips/0005633baa00000c43cee9b5')
             .end((err, res) => {
                 expect(res).to.have.status(404);
+                done();
+            });
+    });
+
+    it('GET /trips/{tripId} 500 Internal Server Error', (done) => {
+
+        sandbox.mock(mongoose.Model).expects('findById').withArgs('0005633baa00000c43cee9b5').yields(new Error(), null);
+
+        chai
+            .request(app)
+            .get('/v1/trips/0005633baa00000c43cee9b5')
+            .end((err, res) => {
+                expect(res).to.have.status(500);
                 done();
             });
     });
