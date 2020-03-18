@@ -80,7 +80,9 @@ exports.get_search_by_user = function(req, res) {
           res.send(err);
         }
         else{
-          var minitrips = [{'ticker': searc[0].ticker,'title': searc[0].title,'description':  searc[0].description,'date_end': searc[0].date_end}];
+          //poner try catch
+          console.log(categs[0]);
+          var minitrips =   [{'ticker': searc[0].ticker,'title': searc[0].title,'description':  searc[0].description,'date_end': searc[0].date_end}];
           console.log(minitrips);
           saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,minitrips);
           res.json(searc);
@@ -108,9 +110,9 @@ exports.get_search_by_user = function(req, res) {
             res.send(err);
           }
           else{
-            var trips = JSON.stringify(searc);
-            console.log(trips);
-            saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,trips);
+            var minitrips = [{'ticker': searc[0].ticker,'title': searc[0].title,'description':  searc[0].description,'date_end': searc[0].date_end}];
+            console.log(minitrips);
+            saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,minitrips);
             res.json(searc);
           }
         });
@@ -170,19 +172,15 @@ function diffDates(date1, date2) {
   if (diff == 0){
     dt1 = dateFormat(dt1, "HH:MM:ss");
     dt2 = dateFormat(dt2, "HH:MM:ss");
-    console.log(dt1);
-    console.log(dt2);
     var cut1 = dt1.split(':');
     var cut2 = dt2.split(':');
-    console.log(cut1);
-    console.log(cut2);
     var diff_h = cut2[0]-cut1[0];
-    console.log(diff_h);
     if (cut2[0]-cut1[0]==0){
       var diff_m = cut2[1]-cut1[1];
       return diff_m;
     }else{
-      return diff_h * 60;
+      var diff_m = cut2[1]-cut1[1];
+      return diff_m + diff_h * 60;
     }
   }else{
     return diff;
