@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
  Trip = mongoose.model('Trips'),
  Search = mongoose.model('Searches'),
  Config = mongoose.model('Configs');
+var dateFormat = require('dateformat');
 /*---------------SEARCH----------------------*/
 
 exports.get_search_by_user = function(req, res) {
@@ -88,7 +89,32 @@ exports.get_search_by_user = function(req, res) {
     }
     else{
       console.log(categs[0].createdAt);
-      
+      var fechaBusqueda = new Date(categs[0].createdAt);
+      var now = Date(Date.now());
+      now = dateFormat(now, "yyyy-mm-dd HH:MM:ss");
+      fechaBusqueda = dateFormat(fechaBusqueda, "yyyy-mm-dd HH:MM:ss");
+      console.log(fechaBusqueda);
+      console.log(now);
+      console.log(diffDates(fechaBusqueda,now));
+      var diff = diffDates(fechaBusqueda,now);
+      if (diff > 60){
+        console.log('The search has expired');
+        Trip.find(query)
+            .sort(sort)
+            .lean()
+            .exec(function(err, searc){
+          console.log('Start searching trips in trips');
+          if(err){
+            res.send(err);
+          }
+          else{
+            var trips = JSON.stringify(searc);
+            console.log(trips);
+            saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,trips);
+            res.json(searc);
+          }
+        });
+      }
       res.json(categs);
     }
   });
@@ -135,6 +161,12 @@ function getConfigs(req, res){
       return configs[0].date_finder_minutes;
     }
   });
+}
+
+function diffDates(date1, date2) {
+  var dt1 = new Date(date1);
+  var dt2 = new Date(date2);
+  return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24)*24*60);
 }
 
 async function checkCache() {
