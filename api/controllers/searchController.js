@@ -80,9 +80,9 @@ exports.get_search_by_user = function(req, res) {
           res.send(err);
         }
         else{
-          var trips = JSON.stringify(searc);
-          console.log(trips);
-          saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,trips);
+          var minitrips = [{'ticker': searc[0].ticker,'title': searc[0].title,'description':  searc[0].description,'date_end': searc[0].date_end}];
+          console.log(minitrips);
+          saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,minitrips);
           res.json(searc);
         }
       });
@@ -95,8 +95,8 @@ exports.get_search_by_user = function(req, res) {
       fechaBusqueda = dateFormat(fechaBusqueda, "yyyy-mm-dd HH:MM:ss");
       console.log(fechaBusqueda);
       console.log(now);
-      console.log(diffDates(fechaBusqueda,now));
       var diff = diffDates(fechaBusqueda,now);
+      console.log(diff);
       if (diff > 60){
         console.log('The search has expired');
         Trip.find(query)
@@ -166,7 +166,28 @@ function getConfigs(req, res){
 function diffDates(date1, date2) {
   var dt1 = new Date(date1);
   var dt2 = new Date(date2);
-  return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24)*24*60);
+  var diff = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
+  if (diff == 0){
+    dt1 = dateFormat(dt1, "HH:MM:ss");
+    dt2 = dateFormat(dt2, "HH:MM:ss");
+    console.log(dt1);
+    console.log(dt2);
+    var cut1 = dt1.split(':');
+    var cut2 = dt2.split(':');
+    console.log(cut1);
+    console.log(cut2);
+    var diff_h = cut2[0]-cut1[0];
+    console.log(diff_h);
+    if (cut2[0]-cut1[0]==0){
+      var diff_m = cut2[1]-cut1[1];
+      return diff_m;
+    }else{
+      return diff_h * 60;
+    }
+  }else{
+    return diff;
+  }
+  
 }
 
 async function checkCache() {
