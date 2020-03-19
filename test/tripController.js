@@ -327,3 +327,113 @@ describe("TRIPS: DELETE methods", () => {
     });
 
 })
+
+describe("TRIPS: PUT methods", () => {
+
+    let sandbox;
+    beforeEach(function () {
+        sandbox = sinon.createSandbox();
+    });
+
+    afterEach(function () {
+        sandbox.restore();
+    });
+
+    let trip = {
+        "_id": "5e65633baa30356c43cee9b5",
+        "ticker": "6137-PRGJ",
+        "title": "My Title",
+        "description": "My description",
+        "requirements": "requirements",
+        "date_start": "2020-01-29T17:08:51.000Z",
+        "date_end": "2020-01-29T17:08:51.000Z",
+        "canceled": false,
+        "reason": "",
+        "publish": false,
+        "organizedBy": "5e5bf4011c9d440000ebdb6d",
+        "stages": [{
+            "title": "first stage",
+            "description": "first stage description",
+            "price": 100
+        },{
+            "title": "second stage",
+            "description": "second stage description",
+            "price": 250
+        }]
+    }
+
+    it('PUT /trips/{tripId} 200 OK', done => {
+
+        sandbox.mock(mongoose.Model).expects('findById').withArgs('5e65633baa30356c43cee9b5').resolves(trip)
+        sandbox.mock(mongoose.Model).expects('findOneAndUpdate').withArgs({_id: '5e65633baa30356c43cee9b5'},trip,{new: true}).yields(null, trip);
+        
+        chai
+            .request(app)
+            .put('/v1/trips/5e65633baa30356c43cee9b5')
+            .send(trip)
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                done();
+            });
+    });
+
+    it('PUT /trips/{tripId} 404 Not Found', done => {
+
+        sandbox.mock(mongoose.Model).expects('findById').withArgs('0005633baa00000c43cee9b5').resolves(trip)
+        sandbox.mock(mongoose.Model).expects('findOneAndUpdate').withArgs({_id: '0005633baa00000c43cee9b5'},trip,{new: true}).yields(null, null);
+
+        chai
+            .request(app)
+            .put('/v1/trips/0005633baa00000c43cee9b5')
+            .send(trip)
+            .end((err, res) => {
+                expect(res).to.have.status(404);
+                done();
+            });
+    });
+
+    it('PUT /trips/{tripId} 404 Not Found (fail in isPublish)', done => {
+
+        sandbox.mock(mongoose.Model).expects('findById').withArgs('0005633baa00000c43cee9b5').resolves(null);
+
+        chai
+            .request(app)
+            .put('/v1/trips/0005633baa00000c43cee9b5')
+            .send(trip)
+            .end((err, res) => {
+                expect(res).to.have.status(404);
+                done();
+            });
+    });
+
+    it('PUT /trips/{tripId} 500 Internal Server Error', (done) => {
+
+        sandbox.mock(mongoose.Model).expects('findById').withArgs('0005633baa00000c43cee9b5').resolves(trip)
+        sandbox.mock(mongoose.Model).expects('findOneAndUpdate').withArgs({_id: '0005633baa00000c43cee9b5'},trip,{new: true}).yields(new Error(), null);
+
+        chai
+            .request(app)
+            .put('/v1/trips/0005633baa00000c43cee9b5')
+            .send(trip)
+            .end((err, res) => {
+                expect(res).to.have.status(500);
+                done();
+            });
+    });
+
+    it('PUT /trips/{tripId} 400 Bad Request isPublish', done => {
+
+        trip.publish=true
+        sandbox.mock(mongoose.Model).expects('findById').withArgs('0005633baa00000c43cee9b5').resolves(trip);
+
+        chai
+            .request(app)
+            .put('/v1/trips/0005633baa00000c43cee9b5')
+            .send(trip)
+            .end((err, res) => {
+                expect(res).to.have.status(400);
+                done();
+            });
+    });
+
+})
