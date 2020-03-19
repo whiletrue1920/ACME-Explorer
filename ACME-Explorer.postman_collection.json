@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f65b93dc-0b22-408b-a79f-896d0adb05d0",
+		"_postman_id": "ac1569e6-15f6-4111-b0c9-be9cdce04347",
 		"name": "ACME-Explorer",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -34,7 +34,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e556da9820e654e50d39c7c",
+							"raw": "localhost:8080/v1/trips/5e65633baa30356c43cee9b3",
 							"host": [
 								"localhost"
 							],
@@ -42,7 +42,7 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e556da9820e654e50d39c7c"
+								"5e65633baa30356c43cee9b3"
 							]
 						}
 					},
@@ -159,7 +159,7 @@
 							"raw": "{\n\t\"title\": \"My Title 2 UPDATE\",\n\t\"description\": \"My description UPDATE 66\",\n\t\"requirements\": \"requirements UPDATE 66\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE\",\n\t\t\"description\": \"first stage description UPDATE\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e556f4023d54d21bd1c5f33",
+							"raw": "localhost:8080/v1/trips/5e73d62930482837b6739739",
 							"host": [
 								"localhost"
 							],
@@ -167,36 +167,7 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e556f4023d54d21bd1c5f33"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "PUT Trip publish 400 Bad Request",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"title\": \"My Title UPDATE\",\n\t\"description\": \"My description UPDATE 66\",\n\t\"requirements\": \"requirements UPDATE 66\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"canceled\": false,\n\t\"publish\": true,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE\",\n\t\t\"description\": \"first stage description UPDATE\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
-						},
-						"url": {
-							"raw": "localhost:8080/v1/trips/5e556e0123d54d21bd1c5f2b",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"trips",
-								"5e556e0123d54d21bd1c5f2b"
+								"5e73d62930482837b6739739"
 							]
 						}
 					},
@@ -246,7 +217,7 @@
 							"raw": "{\n\t\"title\": \"My Title\",\n\t\"description\": \"My description\",\n\t\"full_price\": 500,\n\t\"requirements\": \"requirements\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"address\": \"myAddress\",\n\t\"canceled\": false\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e47340e4fde431aa15e891f0",
+							"raw": "localhost:8080/v1/trips/5e73d71630482837b6739741",
 							"host": [
 								"localhost"
 							],
@@ -254,7 +225,7 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e47340e4fde431aa15e891f0"
+								"5e73d71630482837b6739741"
 							]
 						}
 					},
@@ -275,7 +246,7 @@
 							"raw": "{\n\t\"title\": \"My Title UPDATE 2\",\n\t\"description\": \"My description UPDATE 2\",\n\t\"requirements\": \"requirements UPDATE 2\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"extraField\": \"EXTRA FIELD FOR THROW EXCEPTION\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE 2\",\n\t\t\"description\": \"first stage description UPDATE 2\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage 2\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e556f4023d54d21bd1c5f33",
+							"raw": "localhost:8080/v1/trips/5e73d62930482837b6739739",
 							"host": [
 								"localhost"
 							],
@@ -283,7 +254,217 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e556f4023d54d21bd1c5f33"
+								"5e73d62930482837b6739739"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Publish Trip 200 Ok",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/publish/5e73d75730482837b6739747",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"publish",
+								"5e73d75730482837b6739747"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Publish Trip 404 Not Found",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/publish/5e472fb81638091727de25fb",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"publish",
+								"5e472fb81638091727de25fb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Cancel Trip 200 Ok",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/cancel/5e73d80530482837b6739750",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"cancel",
+								"5e73d80530482837b6739750"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Cancel Trip 400 Bad Request Accepted applications",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/cancel/5e73d76a30482837b673974a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"cancel",
+								"5e73d76a30482837b673974a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Cancel Trip 400 Bad Request date over",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/cancel/5e73d82c30482837b673975b",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"cancel",
+								"5e73d82c30482837b673975b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Cancel Trip 400 Bad Request publish",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/cancel/5e73d76a30482837b673974a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"cancel",
+								"5e73d76a30482837b673974a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT pay Trip 200 Ok",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/pay/5e6399981fc4ae1171088d8a/5e5bc0ffe54fd053125b0e9e",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"pay",
+								"5e6399981fc4ae1171088d8a",
+								"5e5bc0ffe54fd053125b0e9e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT pay Trip 404 Not Found",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/pay/5e62b0376c86c925d9ad5872/5e5bc0ffe54fd053125b0e9e",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"pay",
+								"5e62b0376c86c925d9ad5872",
+								"5e5bc0ffe54fd053125b0e9e"
 							]
 						}
 					},
@@ -295,7 +476,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e5082d77f14057102207ceb",
+							"raw": "localhost:8080/v1/trips/5e73d89d30482837b6739761",
 							"host": [
 								"localhost"
 							],
@@ -303,7 +484,7 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e5082d77f14057102207ceb"
+								"5e73d89d30482837b6739761"
 							]
 						}
 					},
@@ -315,7 +496,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e556e0123d54d21bd1c5f2b",
+							"raw": "localhost:8080/v1/trips/5e73d87530482837b673975e",
 							"host": [
 								"localhost"
 							],
@@ -323,7 +504,7 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e556e0123d54d21bd1c5f2b"
+								"5e73d87530482837b673975e"
 							]
 						}
 					},
@@ -335,7 +516,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/v1/trips/5e472fb81638091727de25fb",
+							"raw": "localhost:8080/v1/trips/5e62895fae82497ee15fe500",
 							"host": [
 								"localhost"
 							],
@@ -343,7 +524,7 @@
 							"path": [
 								"v1",
 								"trips",
-								"5e472fb81638091727de25fb"
+								"5e62895fae82497ee15fe500"
 							]
 						}
 					},
@@ -652,6 +833,48 @@
 							"port": "8080",
 							"path": [
 								"v1",
+								"actors",
+								"5e4ae0e0ec52fc00943a9e0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT ACTORS/ID with Auth",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "idtoken",
+								"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTU4MzY3NTMxMiwiZXhwIjoxNTgzNjc4OTEyLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay11ZTVoZ0B3aGlsZXRydWUtMTkyMC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInN1YiI6ImZpcmViYXNlLWFkbWluc2RrLXVlNWhnQHdoaWxldHJ1ZS0xOTIwLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwidWlkIjoiZW5yZ3VlZmVyQGFsdW0udXMuZXMifQ.bZQ80Hgyp0EXgUaOzEIclW7bHMh2wf5Go0297yBYEBVJ4TB0heGJZ42RmO7RLvj7maRUAFi8Ixtvd1dxAyLJnAq-qvQQKryjUJL1AuVq3c_SXaRu6pJEENPgAgDEwIhy6scUzW_JMj5-pggohy45VZCXzHTivZ9MCe0RvNvFAXypBzJOyciNbofUUDlgph2XHOxbh5wWV3eWteUv9C8S1A5_Bia5y6MDVE-Ab5IZTDK5NOxleyBox34JU9g6neIo_LsQ7lv4iEB7iMiVN9wB7a7k81jg0U5kcyXESxETr1IVZRUCOP5ZTi04mpoEOEe8PZ2KE-z-rIB4hkJWNMGYig",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5e4ae0e0ec52fc00943a9e0f\",\n\t\"state\": \"REACTIVATED\",\n\t\"name\": \"Customer7Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer7@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"address\": \"Calle Pera\",\n\t\"role\": \"MANAGERS\",\n\t\"link\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v2/actors/5e4ae0e0ec52fc00943a9e0f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v2",
 								"actors",
 								"5e4ae0e0ec52fc00943a9e0f"
 							]
