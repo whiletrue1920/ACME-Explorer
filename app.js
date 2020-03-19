@@ -97,3 +97,5 @@ admin.initializeApp({
   });
   
 //DataWareHouseTools.createDataWareHouseJob();
+
+module.exports = app;
