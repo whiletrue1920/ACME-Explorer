@@ -331,12 +331,16 @@ describe("TRIPS: DELETE methods", () => {
 describe("TRIPS: PUT methods", () => {
 
     let sandbox;
+    let clock;
+
     beforeEach(function () {
         sandbox = sinon.createSandbox();
+        clock = sinon.useFakeTimers(new Date(2021,1,1).getTime());
     });
 
     afterEach(function () {
         sandbox.restore();
+        clock.restore()
     });
 
     let trip = {
@@ -362,6 +366,29 @@ describe("TRIPS: PUT methods", () => {
         }]
     }
 
+    let trip_publish = {
+        "_id": "5e65633baa30356c43cee9b5",
+        "ticker": "6137-PRGJ",
+        "title": "My Title",
+        "description": "My description",
+        "requirements": "requirements",
+        "date_start": "2020-01-29T17:08:51.000Z",
+        "date_end": "2020-01-29T17:08:51.000Z",
+        "canceled": false,
+        "reason": "",
+        "publish": true,
+        "organizedBy": "5e5bf4011c9d440000ebdb6d",
+        "stages": [{
+            "title": "first stage",
+            "description": "first stage description",
+            "price": 100
+        },{
+            "title": "second stage",
+            "description": "second stage description",
+            "price": 250
+        }]
+    }
+
     it('PUT /trips/{tripId} 200 OK', done => {
 
         sandbox.mock(mongoose.Model).expects('findById').withArgs('5e65633baa30356c43cee9b5').resolves(trip)
@@ -373,6 +400,10 @@ describe("TRIPS: PUT methods", () => {
             .send(trip)
             .end((err, res) => {
                 expect(res).to.have.status(200);
+                expect(res.body.title).to.equal('My Title');
+                expect(res.body.description).to.equal('My description');
+                expect(res.body.organizedBy).to.equal('5e5bf4011c9d440000ebdb6d');
+                expect(res.body.stages[0].title).to.equal('first stage');
                 done();
             });
     });
@@ -432,6 +463,155 @@ describe("TRIPS: PUT methods", () => {
             .send(trip)
             .end((err, res) => {
                 expect(res).to.have.status(400);
+                done();
+            });
+    });
+
+    it('PUT /trips/publish/{tripId} 200 OK', done => {
+
+        sandbox.mock(mongoose.Model).expects('findOneAndUpdate').withArgs(
+            { $and: [
+                {_id: '5e65633baa30356c43cee9b5'},
+                {date_start: {$gt: new Date()} }
+            ]},
+            { $set: { publish: true}},
+            {new: true}
+        ).yields(null, trip_publish);
+        
+        chai
+            .request(app)
+            .put('/v1/trips/publish/5e65633baa30356c43cee9b5')
+            .send(trip_publish)
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body.title).to.equal('My Title');
+                expect(res.body.description).to.equal('My description');
+                expect(res.body.organizedBy).to.equal('5e5bf4011c9d440000ebdb6d');
+                expect(res.body.publish).to.equal(true);
+                expect(res.body.stages[0].title).to.equal('first stage');
+                done();
+            });
+
+    });
+
+    it('PUT /trips/publish/{tripId} 404 Not Found', done => {
+
+        sandbox.mock(mongoose.Model).expects('findOneAndUpdate').withArgs(
+            { $and: [
+                {_id: '5e65633baa30356c43cee9b5'},
+                {date_start: {$gt: new Date()} }
+            ]},
+            { $set: { publish: true}},
+            {new: true}
+        ).yields(null, null);
+        
+        chai
+            .request(app)
+            .put('/v1/trips/publish/5e65633baa30356c43cee9b5')
+            .send(trip)
+            .end((err, res) => {
+                expect(res).to.have.status(404);
+                done();
+            });
+    });
+
+    it('PUT /trips/publish/{tripId} 500 Internal Server Error', done => {
+
+        sandbox.mock(mongoose.Model).expects('findOneAndUpdate').withArgs(
+            { $and: [
+                {_id: '5e65633baa30356c43cee9b5'},
+                {date_start: {$gt: new Date()} }
+            ]},
+            { $set: { publish: true}},
+            {new: true}
+        ).yields(new Error(), null);
+        
+        chai
+            .request(app)
+            .put('/v1/trips/publish/5e65633baa30356c43cee9b5')
+            .send(trip)
+            .end((err, res) => {
+                expect(res).to.have.status(500);
+                done();
+            });
+    });
+
+    it('PUT /trips/pay/{tripId} 200 OK', done => {
+
+        let application = {
+            "_id":"5e67d11eaa30356c432e7a25",
+            "actorId":"5e63c941aa30356c4392188b",
+            "tripId":"5e65633baa30356c43cee9b3",
+            "comment":"xujiriygubxbmszdvgmltdswthqisbwpidmgrfjqrxabjhduerhjvwcuvfij",
+            "status":"CANCELLED",
+            "created":"2019-06-13 10:04:40"
+        }
+
+        sandbox.mock(mongoose.Model).expects('findOneAndUpdate').withArgs(
+            { $and: [
+                {actorId: '5e63c941aa30356c4392188b'},
+                {tripId: '5e65633baa30356c43cee9b3'},
+                {status: 'DUE'} 
+            ]}, 
+            { $set: {
+                status: 'ACCEPTED'
+            }},
+            {new: true}
+        ).yields(null, application);
+        
+        chai
+            .request(app)
+            .put('/v1/trips/pay/5e65633baa30356c43cee9b3/5e63c941aa30356c4392188b')
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                done();
+            });
+
+    });
+
+    it('PUT /trips/pay/{tripId} 404 Not Found', done => {
+
+        sandbox.mock(mongoose.Model).expects('findOneAndUpdate').withArgs(
+            { $and: [
+                {actorId: '5e63c941aa30356c4392188b'},
+                {tripId: '5e65633baa30356c43cee9b3'},
+                {status: 'DUE'} 
+            ]}, 
+            { $set: {
+                status: 'ACCEPTED'
+            }},
+            {new: true}
+        ).yields(null, null);
+        
+        chai
+            .request(app)
+            .put('/v1/trips/pay/5e65633baa30356c43cee9b3/5e63c941aa30356c4392188b')
+            .end((err, res) => {
+                expect(res).to.have.status(404);
+                done();
+            });
+    });
+
+    it('PUT /trips/pay/{tripId} 500 Internal Server Error', done => {
+
+        sandbox.mock(mongoose.Model).expects('findOneAndUpdate').withArgs(
+            { $and: [
+                {actorId: '5e63c941aa30356c4392188b'},
+                {tripId: '5e65633baa30356c43cee9b3'},
+                {status: 'DUE'} 
+            ]}, 
+            { $set: {
+                status: 'ACCEPTED'
+            }},
+            {new: true}
+        ).yields(new Error(), null);
+        
+        chai
+            .request(app)
+            .put('/v1/trips/pay/5e65633baa30356c43cee9b3/5e63c941aa30356c4392188b')
+            .send(trip)
+            .end((err, res) => {
+                expect(res).to.have.status(500);
                 done();
             });
     });
