@@ -38,8 +38,8 @@ module.exports = function(app) {
     .delete(applications.delete_application);
   
   app.route('/v2/applications')
-    .get(authController.verifyUser(['ADMINISTRATORS','MANAGERS']),applications.list_all_applications)
-    .post(authController.verifyUser(['ADMINISTRATORS']),applications.create_an_application)
+    .get(authController.verifyUser(['ADMINISTRATORS','MANAGERS']),applications.list_all_applications_verified_user)
+    .post(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),applications.create_an_application)
     .delete(authController.verifyUser(['ADMINISTRATORS']),applications.delete_all_applications);
 
   app.route('/v2/applications/:applicationId')
