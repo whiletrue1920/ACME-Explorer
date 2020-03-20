@@ -81,9 +81,13 @@ exports.delete_an_sponsorship = function(req, res) {
     });
 };
 
-
-//TODO: pagar un sponsorship
 exports.pay_an_sponsorship = function(req, res) {
-  console.log(Date(), ` -POT /sponsorships/pay/${req.params.sponsorshipId}`)
-  res.json({});
+    Sponsorship.findOneAndUpdate({_id: req.params.sponsorshipId}, { $set: {"payed": "true" }}, {new: true}, function(err, sponsorship) {
+      if (err){
+        res.status(500).send(err);
+      }
+      else{
+        res.json(sponsorship);
+      }
+    });
 };
