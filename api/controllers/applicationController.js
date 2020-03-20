@@ -1,8 +1,8 @@
 'use strict';
 
 /*---------------APPLICATION----------------------*/
-var mongoose = require('mongoose');
-Actor = mongoose.model('Actors');  
+var mongoose = require('mongoose'),
+Actor = mongoose.model('Actors'),
 Application = mongoose.model('Applications');
 var admin = require('firebase-admin');
 var authController = require('./authController');
