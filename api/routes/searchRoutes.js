@@ -15,10 +15,10 @@ module.exports = function(app) {
    * @param {string} date_max
    * @param {string} price_range
   */
- app.route('/v1/searches')
+ app.route('/v1/searches/trips')
  .get(searches.get_search_by_user);
 
- app.route('/v2/searches')
+ app.route('/v2/searches/trips')
  .get(searches.get_search_by_user);
       
 };
