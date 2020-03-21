@@ -37,8 +37,11 @@ module.exports = function(app) {
     .put(applications.update_application)
     .delete(applications.delete_application);
   
-  app.route('/v1/applications/:applicationId')    
+  app.route('/v1/trips/apply/:tripId')    
     .post(applications.apply_valid_trip)
+
+  app.route('/v1/applications/cancel/:applicationId')    
+    .put(applications.cancel_application)    
   
   app.route('/v2/applications')
     .get(authController.verifyUser(['ADMINISTRATORS','MANAGERS']),applications.list_all_applications_verified_user)

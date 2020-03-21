@@ -211,6 +211,37 @@ exports.update_application = function(req, res) {
     });
 };
 
+exports.cancel_application = function(req, res) {
+  console.log(Date(), ` -PUT /applications/cancel/${req.params.applicationId}`);
+  Application.findById(req.params.applicationId,async function(err, app){
+    if (err){
+      res.send(err);
+    }
+    else{
+      if(app[0].status == 'ACCEPTED' ||app[0].status == 'ACCEPTED'){
+        Application.findOneAndUpdate({_id: req.params.applicationId}, req.body, {new: true}, function(err, application) {
+          if (err){
+            if(err.name=='ValidationError') {
+              console.error(Date(), ` ERROR: - PUT /applications/${req.params.applicationId} , The trip is publish can not update`);  
+              res.status(422).send(err);
+            }
+            else{
+              res.status(500).send(err);
+            }
+          }
+          else{
+            res.json(application);
+          }
+        });
+      }
+      else{
+        res.status(403); 
+        res.send('The application has a invalid status');
+      }
+    }
+  });
+};
+
 exports.update_application_verified_user = function(req, res) {
   console.log(Date(), ` -PUT /applications/${req.params.applicationId}`)
   Actor.findById(req.params.actorId, async function(err, actor) {
