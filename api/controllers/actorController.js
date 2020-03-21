@@ -12,7 +12,7 @@ const STATUS_CODE_INTERNAL_SERVER_ERROR=500;
 /*---------------ACTOR----------------------*/
 var mongoose = require('mongoose'),
   admin = require('firebase-admin'),
-  authController = require('./authController');
+  authController = require('./authController'),
   Actor = mongoose.model('Actors');
 
 exports.list_all_actors = function(req, res) {
