@@ -14,7 +14,8 @@ var SponsorshipSchema = new Schema({
   },
   banner: {
     data: Buffer, 
-    contentType: String
+    contentType: String,
+    unique: true
   },
   link: {
     type: String,
