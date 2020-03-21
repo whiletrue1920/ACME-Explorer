@@ -12,6 +12,7 @@ const STATUS_CODE_INTERNAL_SERVER_ERROR=500;
 /*---------------ACTOR----------------------*/
 var mongoose = require('mongoose'),
   admin = require('firebase-admin'),
+  authController = require('./authController'),
   Actor = mongoose.model('Actors');
 
 exports.list_all_actors = function(req, res) {
@@ -22,7 +23,7 @@ exports.list_all_actors = function(req, res) {
     }
     Actor.find({}, function(err, actors) {
         if (err){
-          res.status(500).send(err);
+          res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send(err);
         }
         else{
             res.json(actors);
@@ -33,24 +34,29 @@ exports.list_all_actors = function(req, res) {
 //Should be an admin
 exports.create_an_actor = function(req, res) {
   var new_actor = new Actor(req.body);
-  new_actor.save(function(err, actor) {
-    if (err){
-      res.send(err);
-    }
-    else{
-      res.status(CREATED).json(actor);
-    }
-  });
+
+  if(new_actor.role.includes('ADMINISTRATORS')){
+    res.status(STATUS_CODE_VALIDATION_ERROR).send("Creation of an actor with administrator role is not allowed")
+  }else{
+    new_actor.save(function(err, actor) {
+      if (err){
+        res.send(err);
+      }
+      else{
+        res.status(CREATED).json(actor);
+      }
+    });
+  }
 };
 
 //Should be an admin
 exports.read_an_actor = function(req, res) {
   Actor.findById(req.params.actorId, function(err, actor) {
     if (err){
-      res.status(500).send(err);
+      res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send(err);
     }
     else{
-      res.json(actor);
+      res.staus(200).json(actor);
     }
   });
 };
@@ -76,7 +82,7 @@ exports.update_a_verified_actor = function(req, res) {
     else{
       console.log('actor: '+actor);
       var idToken = req.headers['idtoken'];//WE NEED the FireBase custom token in the req.header['idToken']... it is created by FireBase!!
-      if (actor.role.includes('MANAGERS') || actor.role.includes('EXPLORERS') || actor.role.includes('SPONSOR')){
+      if (actor.role.includes('MANAGERS') || actor.role.includes('EXPLORERS') || actor.role.includes('SPONSORS')){
         var authenticatedUserId = await authController.getUserId(idToken);
         if (authenticatedUserId == req.params.actorId){
           Actor.findOneAndUpdate({_id: req.params.actorId}, req.body, {new: true}, function(err, actor) {
@@ -124,7 +130,7 @@ exports.validate_an_actor = function(req, res) {
 exports.delete_an_actor = function(req, res) {
     Actor.deleteOne({_id: req.params.actorId}, function(err, actor) {
         if (err){
-            res.status(500).send(err);
+            res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send(err);
         }
         else{
             res.status(NO_CONTENT).json({ message: 'Actor successfully deleted' });
@@ -141,7 +147,7 @@ exports.ban_an_actor = function(req,res){
           {new: true},
           function (err,actor){
               if (err){
-                  res.status(500).send(err);
+                  res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send(err);
               }else{
                   res.json(actor);
               }
@@ -155,7 +161,7 @@ exports.unban_an_actor = function(req,res){
           {new: true},
           function (err,actor){
               if (err){
-                  res.status(500).send(err);
+                  res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send(err);
               }else{
                   res.json(actor);
               }

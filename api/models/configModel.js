@@ -10,6 +10,8 @@ var ConfigSchema = new Schema({
   },
   flat_rate: {
     type: Number,
+    min: 10,
+    default: 30,
     required: 'Kindly enter the flat rate'
   },
   finder_limit: {

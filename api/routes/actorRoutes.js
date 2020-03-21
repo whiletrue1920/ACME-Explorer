@@ -32,9 +32,14 @@ module.exports = function(app) {
 	 * @type get put
 	 * @url /v1/actors/:actorId
   */  
- app.route('/v2/actors/:actorId')
+  app.route('/v2/actors/:actorId')
     .get(actors.read_an_actor)
-    .put(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),actors.update_a_verified_actor) 
-     
+    .put(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),actors.update_a_verified_actor);
+
+  app.route('/v2/actors/:actorId/ban')
+    .put(authController.verifyUser(['ADMINISTRATORS']),actors.ban_an_actor);
+
+  app.route('/v2/actors/:actorId/unban')
+    .put(authController.verifyUser(['ADMINISTRATORS']),actors.unban_an_actor);    
 
 };
