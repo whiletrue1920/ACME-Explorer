@@ -110,7 +110,7 @@ exports.apply_valid_trip = function(req, res) {
     }
     else{
       var now = new Date();
-      if (req.params.canceled == false && req.params.date_start > now)
+      if (req.params.canceled == false && req.params.publish == true && req.params.date_start > now)
         new_application.save(function(err, application) {
           if (err){
             if(err.name=='ValidationError') {
