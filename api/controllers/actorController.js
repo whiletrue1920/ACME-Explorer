@@ -225,26 +225,3 @@ exports.login_an_actor = async function(req, res) {
     }
   });
 };
-
-//Suma de dinero gastado de cada usuario(rol=explorer) durante un intervalo de tiempo (min 1 mes, máximo 36 meses).
-async function amount_of_money_that_explorer_has_spent_on_trips_during_period(){
-  console.log(Date(), ` amount_of_money_that_explorer_has_spent_on_trips_during_period`);
-  
-
-  //REVISARLO
-  // var actors_explorer = await Actor.aggregate([
-  //   {$match:{role: {$eq:"EXPLORERS"}}}
-  // ]).toArray().exec();
-
-  // var money = await Application.aggregate(
-  //     [
-  //       {$group:{_id:{$in:actors_explorer},
-  //       viajes:{$push: "$tripId"}}}
-  //     ]).exec();
-  // console.log(money);
-
-  // var trips = await Trip.aggregate([
-  //     {$group:{_id:"$full_price"}}
-  //     ]).exec();
-  //return money;
-}

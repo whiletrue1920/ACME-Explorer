@@ -3,7 +3,9 @@ var async = require("async");
 var mongoose = require('mongoose'),
   DataWareHouse = mongoose.model('DataWareHouse'),
   Trips = mongoose.model('Trips'),
-  Application = mongoose.model('Applications');
+  Actor = mongoose.model('Actors'),
+  Application = mongoose.model('Applications'),
+  Cubes;
 
 exports.list_all_indicators = function(req, res) {
   console.log('Requesting indicators');
@@ -58,7 +60,9 @@ function createDataWareHouseJob(){
         computeTripsPerManager,
         computeApplicationsPerTrips,
         computeFullPriceTrips,
-        computeRatioApplicationsPerStatus
+        computeRatioApplicationsPerStatus,
+        datosCubo  
+
       ], function (err, results) {
         if (err){
           console.log("Error computing datawarehouse: "+err);
@@ -82,6 +86,7 @@ function createDataWareHouseJob(){
         }
       });
     }, null, true, 'Europe/Madrid');
+
 }
 
 module.exports.createDataWareHouseJob = createDataWareHouseJob;
@@ -155,3 +160,126 @@ function computeRatioApplicationsPerStatus (callback) {
         callback(err, res)
     });
 };
+
+
+
+/* ----------------- Cubo ----------- */
+
+
+// Returns the amount of money that explorer e has spent on trips during period p, which can be M01-M36 to 
+// denote any of the last 1-36 months or Y01-Y03 to denote any of the last three years
+exports.cube = function (req, res) {
+
+  var explorerId = req.params.explorer;
+  var mes = req.params.period;
+
+  for (var i = 1; i < 37; i++) {
+    var mes = "M";
+    if (i < 10) {
+        mes = mes + "0" + i;
+    } else {
+        mes = mes + i;
+    }
+    var minDateRange = new Date();
+    
+    minDateRange.setMonth(minDateRange.getMonth() - i);
+    //console.log(minDateRange);
+
+    var actors_explorer = Actor.aggregate([
+      {$match:{role: {$eq:"EXPLORERS"}}}
+    ])
+  
+  //  var resultado;
+    
+    for(var i=0; i<actors_explorer.length;i++){
+    
+        var actorId = actors_explorer[i];
+    
+        var applications = Application.aggregate([
+            {$match:{
+                status: "ACCEPTED",
+                explorer: explorerId,
+                created:{
+                $gte: minDateRange
+            }}},
+            {$group:{_id:actorId,tripId:{$push: "$tripId"}}}
+        ])
+    
+        var trips = Trips.aggregate([
+            {$match:{_id:{$in:applications}}},
+            {$project:{total:{$sum:"$full_price"}}}
+        ])
+    
+        //resultado.put(actorId, trips.total)
+
+      };
+
+    }
+
+    res.json(trips);
+
+};
+
+// function getMongoOperator(coString) {
+//   var co;
+//   switch (coString) {
+//       case "==":
+//           co = "$eq";
+//           break;
+//       case '!=':
+//           co = "$ne";
+//           break;
+//       case '>':
+//           co = "$gt";
+//           break;
+//       case '>=':
+//           co = "$gte";
+//           break;
+//       case '<':
+//           co = "$lt";
+//           break;
+//       case '<=':
+//           co = "$lte";
+//           break;
+//       default:
+//           co = null
+//           break;
+//   }
+//   return co;
+// }
+
+// // Given the period 'p', an amount of money 'm and a comparison operator 'co', 
+// // returns the explorers that have spent 'co' than 'm' during 'p'.
+// exports.cube_explorers = function (req, res) {
+//   var supportedCO = ['==', '!=', '>', '>=', '<', '<='];
+//   var queryCO = req.query.co;
+//   var period = req.query.period;
+//   var money = req.query.money;
+//   if (co.in(supportedCO)) {
+//       var jsonCO = {};
+//       var co = getMongoOperator(queryCO);
+//       jsonCO[co] = money; // if 'co' is >=, and money = 20, this will give {$gte: 20}
+//       Cubes.aggregate([
+//           {
+//               $match: {
+//                   period: period,
+//                   money: jsonCO
+//               }
+//           }, { $group: { _id: "$explorer", explorers: { $push: "$explorer" } } },
+//           {
+//               $project: {
+//                   _id: 0,
+//                   explorers: "$explorers"
+//               }
+//           }
+//       ], function(err, explorersReturned){
+//           if (err) {
+//               res.status(404);
+//           } else {
+//               res.send(explorersReturned);
+//           }
+//       });
+//   } else {
+//       res.status(400).send("Comparison operator not supported");
+//   }
+// };
