@@ -17,7 +17,7 @@ module.exports = function(app) {
 	.post(dataWareHouse.rebuildPeriod);
 
 	app.route('/v1/cube/:explorer/:period')
-		.get(dataWareHouse.cube);
+		.get(dataWareHouse.cubeEnrique);
 
 	/**
 	 * Get a list of all indicators or post a new computation period for rebuilding

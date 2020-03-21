@@ -173,6 +173,9 @@ exports.cube = function (req, res) {
   var explorerId = req.params.explorer;
   var mes = req.params.period;
 
+  getMaxDate(req.params.period);
+
+  
   for (var i = 1; i < 37; i++) {
     var mes = "M";
     if (i < 10) {
@@ -219,6 +222,95 @@ exports.cube = function (req, res) {
     res.json(trips);
 
 };
+
+/*Launch a process to compute a cube of the form M[e, p] that returns the amount of
+money that explorer e has spent on trips during period p, which can be M01-M36 to
+denote any of the last 1-36 months or Y01-Y03 to denote any of the last three years*/ 
+
+exports.cubeEnrique = async function (req, res) {
+
+  let explorer_Id = mongoose.Types.ObjectId(req.params.explorer);
+
+  //1. Calculamos la fecha máxima a procesar
+  let maxDate = await getMaxDate(req.params.period);
+
+  //2. Obtenemos el explorador
+  var explorer = await Actor.aggregate([
+    {$match: {
+        _id: explorer_Id,
+        role: {$eq:"EXPLORERS"}
+    }}
+  ]).exec();
+
+  //TODO: ¿DEVOLVER ERROR SI NO ENCUENTRA EL EXPLORER?
+
+  //3. Obtenemos el array de Applications que posee el explorador en estado "ACCEPTED". Mayores a la fecha actual y menores a la fecha futura
+  var applications = await Application.aggregate([
+    { $match: {
+          status: "ACCEPTED",
+          actorId: req.params.explorer,
+          created: {
+              $gte: new Date(),
+              $lte: maxDate
+      },
+      }},
+      {$group:{_id:"$tripId"}}
+  ]).exec();
+
+  let amount=0;
+
+  //4. Obtenemos el precio de los trips y lo añadimos a la variable acumuladora amount
+  for(var i = 0; i < applications.length; i++){
+    tripId = mongoose.Types.ObjectId(applications[i]._id);
+    var trip = await Trips.aggregate([
+      {$match: {
+        _id: tripId
+      }
+      }]).exec();
+    amount = amount + trip[0].full_price;
+  }
+
+  res.json(amount);
+
+};
+
+function getMaxDate(period){
+
+  //Los posibles formatos en los que puede venir el periodo
+  //period1= "M01-M36"
+  //period2= "Y01-Y03"
+
+  let interval=period.split("-")[1]
+  let format = interval.charAt(0)
+  let date = new Date();
+  
+  if(format=="M"){
+    let month = interval.substr(interval.length - 2);
+    return addMonths(date,month);
+  }else{
+    let years = interval.substr(interval.length - 2);
+    return addYears(date,years)
+  }
+  //TODO: ¿DEVOLVER ERROR SI NO ENCUENTRA EL EXPLORER?
+}
+
+function addMonths(date, months) {
+  var d = date.getDate();
+  date.setMonth(date.getMonth() + +months);
+  if (date.getDate() != d) {
+    date.setDate(0);
+  }
+  return date;
+}
+
+function addYears(date, years) {
+  var d = date.getDate();
+  date.setFullYear(date.getFullYear() + +years);
+  if (date.getDate() != d) {
+    date.setDate(0);
+  }
+  return date;
+}
 
 // function getMongoOperator(coString) {
 //   var co;
