@@ -5,15 +5,19 @@ var Schema = mongoose.Schema;
 var MiniTripsSchema = new Schema({
     ticker: {
         type: String,
-        required: 'Kindly enter the stage title'
+        required: 'Kindly enter the ticker of the trip'
     },
     title: {
         type: String,
-        required: 'Kindly enter the stage title'
+        required: 'Kindly enter the tittle of the trip'
+    },
+    full_price: {
+        type: Number,
+        required: 'Kindly enter the full price of the trip'
     },
     description: {
         type: String,
-        required: 'Kindly enter the stage description'
+        required: 'Kindly enter the description of the trip'
     },
     date_end: {
         type: Date,
