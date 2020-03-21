@@ -20,6 +20,4 @@ var ConfigSchema = new Schema({
   }
 }, { strict: false });
 
-ConfigSchema.index({ actorId: 1 });
-
 module.exports = mongoose.model('Configs', ConfigSchema);
