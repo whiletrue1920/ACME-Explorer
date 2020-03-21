@@ -3,7 +3,8 @@
 /*---------------APPLICATION----------------------*/
 var mongoose = require('mongoose'),
 Actor = mongoose.model('Actors'),
-Application = mongoose.model('Applications');
+Application = mongoose.model('Applications'),
+Trip = mongoose.model('Trips');
 var admin = require('firebase-admin');
 var authController = require('./authController');
 
@@ -81,6 +82,57 @@ exports.list_all_applications_verified_user = function(req, res) {
 
 exports.create_an_application = function(req, res) {
   //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
+  var new_application = new Application(req.body);
+  new_application.save(function(err, application) {
+    if (err){
+      if(err.name=='ValidationError') {
+        console.error(Date(), ` ERROR: - POST /applications , Some error ocurred validating the apllication: ${err.message}`);
+        res.status(422).send(err);
+      }
+      else{
+        console.error(Date(), ` ERROR: - POST /applications , Some error ocurred while saving the application: ${err.message}`);
+        res.status(500).send(err);
+      }
+    }
+    else{
+      console.log(Date(), ` -POST /applications`);
+      res.json(application);
+    }
+  });
+};
+
+exports.apply_valid_trip = function(req, res) {
+  console.log('Validating trip...');
+  var new_application = new Application(req.body);
+  Trip.findById(req.params.tripId,async function(err, actor){
+    if(err){
+      res.send(err);
+    }
+    else{
+      var now = new Date();
+      if (req.params.canceled == false && req.params.date_start > now)
+        new_application.save(function(err, application) {
+          if (err){
+            if(err.name=='ValidationError') {
+              console.error(Date(), ` ERROR: - POST /applications , Some error ocurred validating the apllication: ${err.message}`);
+              res.status(422).send(err);
+            }
+            else{
+              console.error(Date(), ` ERROR: - POST /applications , Some error ocurred while saving the application: ${err.message}`);
+              res.status(500).send(err);
+            }
+          }
+          else{
+            console.log(Date(), ` -POST /applications`);
+            res.json(application);
+          }
+        });
+      else{
+        res.status(404); //Auth error
+        res.send('There not exist a valid trip');
+      }
+    }
+  })
   var new_application = new Application(req.body);
   new_application.save(function(err, application) {
     if (err){
