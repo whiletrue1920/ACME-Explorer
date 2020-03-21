@@ -2,6 +2,7 @@
 
 module.exports = function(app) {
   var sponsorships = require('../controllers/sponsorshipController');
+  var authController = require('../controllers/authController');
 
   app.route('/v1/sponsorships')
 	  .get(sponsorships.list_all_sponsorships)
