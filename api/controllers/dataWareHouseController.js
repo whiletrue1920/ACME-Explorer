@@ -172,9 +172,6 @@ exports.cube = function (req, res) {
 
   var explorerId = req.params.explorer;
   var mes = req.params.period;
-
-  getMaxDate(req.params.period);
-
   
   for (var i = 1; i < 37; i++) {
     var mes = "M";
@@ -291,7 +288,7 @@ function getMaxDate(period){
     let years = interval.substr(interval.length - 2);
     return addYears(date,years)
   }
-  //TODO: ¿DEVOLVER ERROR SI NO ENCUENTRA EL EXPLORER?
+  //TODO: ¿DEVOLVER ERROR SI EL PERIODO NO SE ADAPTA AL FORMATO M01-M36 Y Y01-Y03?
 }
 
 function addMonths(date, months) {
