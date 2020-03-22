@@ -16,8 +16,13 @@ module.exports = function(app) {
 	.get(dataWareHouse.list_all_indicators)
 	.post(dataWareHouse.rebuildPeriod);
 
+	/* Given e and p, return M[e, p] */
 	app.route('/v1/cube/:explorer/:period')
-		.get(dataWareHouse.cubeEnrique);
+		.get(dataWareHouse.cubeAmountMoney);
+
+	/* Given p, return the explorers e such that M[e, p] q v */
+	app.route('/v1/cube/explorers/:operator/:amountMoney/:period')
+		.get(dataWareHouse.cubeExplorersComparator);
 
 	/**
 	 * Get a list of all indicators or post a new computation period for rebuilding

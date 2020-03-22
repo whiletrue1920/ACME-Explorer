@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
   Trips = mongoose.model('Trips'),
   Actor = mongoose.model('Actors'),
   Application = mongoose.model('Applications'),
-  Cubes;
+  Cube = mongoose.model('Cubes');
 
 exports.list_all_indicators = function(req, res) {
   console.log('Requesting indicators');
@@ -60,8 +60,7 @@ function createDataWareHouseJob(){
         computeTripsPerManager,
         computeApplicationsPerTrips,
         computeFullPriceTrips,
-        computeRatioApplicationsPerStatus,
-        datosCubo  
+        computeRatioApplicationsPerStatus
 
       ], function (err, results) {
         if (err){
@@ -165,66 +164,13 @@ function computeRatioApplicationsPerStatus (callback) {
 
 /* ----------------- Cubo ----------- */
 
-
-// Returns the amount of money that explorer e has spent on trips during period p, which can be M01-M36 to 
-// denote any of the last 1-36 months or Y01-Y03 to denote any of the last three years
-exports.cube = function (req, res) {
-
-  var explorerId = req.params.explorer;
-  var mes = req.params.period;
-  
-  for (var i = 1; i < 37; i++) {
-    var mes = "M";
-    if (i < 10) {
-        mes = mes + "0" + i;
-    } else {
-        mes = mes + i;
-    }
-    var minDateRange = new Date();
-    
-    minDateRange.setMonth(minDateRange.getMonth() - i);
-    //console.log(minDateRange);
-
-    var actors_explorer = Actor.aggregate([
-      {$match:{role: {$eq:"EXPLORERS"}}}
-    ])
-  
-  //  var resultado;
-    
-    for(var i=0; i<actors_explorer.length;i++){
-    
-        var actorId = actors_explorer[i];
-    
-        var applications = Application.aggregate([
-            {$match:{
-                status: "ACCEPTED",
-                explorer: explorerId,
-                created:{
-                $gte: minDateRange
-            }}},
-            {$group:{_id:actorId,tripId:{$push: "$tripId"}}}
-        ])
-    
-        var trips = Trips.aggregate([
-            {$match:{_id:{$in:applications}}},
-            {$project:{total:{$sum:"$full_price"}}}
-        ])
-    
-        //resultado.put(actorId, trips.total)
-
-      };
-
-    }
-
-    res.json(trips);
-
-};
-
 /*Launch a process to compute a cube of the form M[e, p] that returns the amount of
 money that explorer e has spent on trips during period p, which can be M01-M36 to
 denote any of the last 1-36 months or Y01-Y03 to denote any of the last three years*/ 
 
-exports.cubeEnrique = async function (req, res) {
+/* ---- a --- */
+
+exports.cubeAmountMoney = async function (req, res) {
 
   let explorer_Id = mongoose.Types.ObjectId(req.params.explorer);
 
@@ -265,11 +211,24 @@ exports.cubeEnrique = async function (req, res) {
       }
       }]).exec();
     amount = amount + trip[0].full_price;
-  }
+  };
+  
+      var new_cube = new Cube();
+      new_cube.actorId = explorer_Id;
+      new_cube.money = amount;
+      new_cube.period = req.params.period;
+  
+      new_cube.save(async function (err, cubeSaved) {
+          if (err) {
+              console.log("Error al guardar el cubo:  " + err);
+          } else {
+              console.log("Añadido correctamente un nuevo registro al cubo. Fecha: " + new Date());
+          }
+      });
 
   res.json(amount);
 
-};
+}
 
 function getMaxDate(period){
 
@@ -309,66 +268,79 @@ function addYears(date, years) {
   return date;
 }
 
-// function getMongoOperator(coString) {
-//   var co;
-//   switch (coString) {
-//       case "==":
-//           co = "$eq";
-//           break;
-//       case '!=':
-//           co = "$ne";
-//           break;
-//       case '>':
-//           co = "$gt";
-//           break;
-//       case '>=':
-//           co = "$gte";
-//           break;
-//       case '<':
-//           co = "$lt";
-//           break;
-//       case '<=':
-//           co = "$lte";
-//           break;
-//       default:
-//           co = null
-//           break;
-//   }
-//   return co;
-// }
+/* ---- b --- */
 
-// // Given the period 'p', an amount of money 'm and a comparison operator 'co', 
-// // returns the explorers that have spent 'co' than 'm' during 'p'.
-// exports.cube_explorers = function (req, res) {
-//   var supportedCO = ['==', '!=', '>', '>=', '<', '<='];
-//   var queryCO = req.query.co;
-//   var period = req.query.period;
-//   var money = req.query.money;
-//   if (co.in(supportedCO)) {
-//       var jsonCO = {};
-//       var co = getMongoOperator(queryCO);
-//       jsonCO[co] = money; // if 'co' is >=, and money = 20, this will give {$gte: 20}
-//       Cubes.aggregate([
-//           {
-//               $match: {
-//                   period: period,
-//                   money: jsonCO
-//               }
-//           }, { $group: { _id: "$explorer", explorers: { $push: "$explorer" } } },
-//           {
-//               $project: {
-//                   _id: 0,
-//                   explorers: "$explorers"
-//               }
-//           }
-//       ], function(err, explorersReturned){
-//           if (err) {
-//               res.status(404);
-//           } else {
-//               res.send(explorersReturned);
-//           }
-//       });
-//   } else {
-//       res.status(400).send("Comparison operator not supported");
-//   }
-// };
+/* Given p, return the explorers e such that M[e, p] q v, where v denotes an arbitrary amount of money and q is a comparison 
+operator (that is, “equal”, “not equal”, “greater than”, “greater than or equal”, “smaller than”, or “smaller than or equal”) */
+
+exports.cubeExplorersComparator = async function (req, res) {
+
+  var period = req.params.period;
+  var querycomparators = req.params.operator;
+  var money = Number(req.params.amountMoney);
+
+  var operators = {
+    "eq": (amountToCompare) => amountToCompare == money,
+    "ne": (amountToCompare) => amountToCompare != money,
+    "gt": (amountToCompare) => amountToCompare > money,
+    "gte": (amountToCompare) => amountToCompare >= money,
+    "lt": (amountToCompare) => amountToCompare < money,
+    "lte": (amountToCompare) => amountToCompare <= money
+  }
+
+  if (querycomparators in operators) {
+    
+      var amount = {};
+      var operator = getOperator(querycomparators);
+      amount[operator] = money; 
+
+      Cube.aggregate([
+          {
+              $match: {
+                  period: period,
+                  money: amount
+              },
+          }, { $group: { 
+                  _id: "$actorId"
+       
+              } 
+          }
+      ],function(err, explorersResult){
+          if (err) {
+              res.status(404);
+          } else {
+              res.send(explorersResult);
+          }
+      });
+  } else {
+      res.status(400).send("Comparison operator not supported.Check the comparator");
+  }
+};
+
+function getOperator(string) {
+  var operator;
+  switch (string) {
+      case 'eq':
+          operator = "$eq";
+          break;
+      case 'ne':
+          operator = "$ne";
+          break;
+      case 'gt':
+          operator = "$gt";
+          break;
+      case 'gte':
+          operator = "$gte";
+          break;
+      case 'lt':
+          operator = "$lt";
+          break;
+      case 'lte':
+          operator = "$lte";
+          break;
+      default:
+          operator = null;
+          break;
+  }
+  return operator;
+}
