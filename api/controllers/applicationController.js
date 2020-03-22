@@ -161,7 +161,7 @@ exports.get_application = function(req, res) {
         res.status(500).send(err);
       }
       else{
-        console.log(Date(), ` SUCCESS: -GET /applications`);
+        console.log(Date(), ` SUCCESS: -GET /applications/${req.params.applicationId}`);
         res.json(application);
       }
     });
