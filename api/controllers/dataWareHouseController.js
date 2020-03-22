@@ -1,6 +1,6 @@
 
 var async = require("async");
-var top10 = require('./../controllers/searchController.js');
+var searches = require('./../controllers/searchController.js');
 var mongoose = require('mongoose'),
   DataWareHouse = mongoose.model('DataWareHouse'),
   Trips = mongoose.model('Trips'),
@@ -61,7 +61,9 @@ function createDataWareHouseJob(){
         computeTripsPerManager,
         computeApplicationsPerTrips,
         computeFullPriceTrips,
-        computeRatioApplicationsPerStatus
+        computeRatioApplicationsPerStatus,
+        computeKeywords,
+        computePriceRangeSearches
       ], function (err, results) {
         if (err){
           console.log("Error computing datawarehouse: "+err);
@@ -72,9 +74,11 @@ function createDataWareHouseJob(){
           new_dataWareHouse.applicationsPerTrips = results[1];
           new_dataWareHouse.fullPriceTrips = results[2];
           new_dataWareHouse.ratioApplicationsPerStatus = results[3];
-          new_dataWareHouse.keywords = results[4];
+          new_dataWareHouse.top10keywords = results[4];
+          new_dataWareHouse.pricerangesearches = results[5];
           new_dataWareHouse.rebuildPeriod = rebuildPeriod;
-    
+          
+          
           new_dataWareHouse.save(function(err, datawarehouse) {
             if (err){
               console.log("Error saving datawarehouse: "+err);
@@ -345,3 +349,15 @@ function getOperator(string) {
   }
   return operator;
 }
+
+async function computeKeywords(callback) {
+  var res = await searches.top10keyword();
+  console.log('Top 10 keywords: ', JSON.parse(res));
+  return JSON.parse(res);
+};
+
+async function computePriceRangeSearches(callback) {
+  var res = await searches.pricerangesearches();
+  console.log('Price Range Searches: ', JSON.parse(res));
+  return JSON.parse(res);
+};

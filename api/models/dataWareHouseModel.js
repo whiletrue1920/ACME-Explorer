@@ -2,6 +2,15 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var TopKeywordSchema = new Schema({
+  _id: {
+      type: String
+  },
+  count: {
+      type: Number
+  }
+});
+
 var AvgMinMaxStdDevSchema = new Schema({
   avg: {
       type: Number
@@ -22,6 +31,10 @@ var DataWareHouseSchema = new mongoose.Schema({
   applicationsPerTrips: [AvgMinMaxStdDevSchema],
   fullPriceTrips: [AvgMinMaxStdDevSchema],
   ratioApplicationsPerStatus: [AvgMinMaxStdDevSchema],
+  top10keywords: [TopKeywordSchema],
+  pricerangesearches: {
+    type: Number
+  },
   computationMoment: {
     type: Date,
     default: Date.now

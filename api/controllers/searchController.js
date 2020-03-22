@@ -271,13 +271,13 @@ exports.top10keyword = async function (req, res) {
 
   var lista = title.concat(description);
   lista = lista.concat(ticker);
-  console.log(lista);
+  //console.log(lista);
   lista = lista.filter(function( obj ) {
     return obj._id !== null;
   });
-  console.log(lista);
+  //console.log(lista);
   var top10 = lista.sort(function(a, b) { return a.count < b.count ? 1 : -1; }).slice(0, 10);
-  return res.json(top10);
+  return JSON.stringify(top10);
 }
 
 exports.pricerangesearches = async function (req, res) {
@@ -296,8 +296,7 @@ exports.pricerangesearches = async function (req, res) {
   console.log(lista);
   const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
   const result = average(lista);
-  console.log(result);
-  return res.json(result);
+  return JSON.stringify(result);
 }
 
 //Búsqueda de la media de dinero gastado dentro de un rango de precio
