@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ac1569e6-15f6-4111-b0c9-be9cdce04347",
+		"_postman_id": "3147f239-3c59-4bd2-8a66-47511a55a8aa",
 		"name": "ACME-Explorer",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1107,6 +1107,72 @@
 								"v1",
 								"sponsorships",
 								"5e5bb61136c8953b44d0f6d4"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Cubo",
+			"item": [
+				{
+					"name": "CuboMoney",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<=20"
+						},
+						"url": {
+							"raw": "http://localhost:9000/v1/cube/5e63c941aa30356c4392188b/M01-M15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"cube",
+								"5e63c941aa30356c4392188b",
+								"M01-M15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CuboExplorers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<=20"
+						},
+						"url": {
+							"raw": "http://localhost:9000/v1/cube/explorers/gte/200/M01-M03",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"cube",
+								"explorers",
+								"gte",
+								"200",
+								"M01-M03"
 							]
 						}
 					},
