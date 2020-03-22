@@ -55,8 +55,8 @@ var routesActors = require('./api/routes/actorRoutes');
 var routesSponsorships = require('./api/routes/sponsorshipRoutes');
 var routesTrips = require('./api/routes/tripRoutes');
 var routesApplication = require('./api/routes/applicationRoutes');
-var searchApplication = require('./api/routes/searchRoutes');
-var configApplication = require('./api/routes/configRoutes');
+var routesSearch = require('./api/routes/searchRoutes');
+var routesConfig = require('./api/routes/configRoutes');
 var routesDataWareHouse = require('./api/routes/dataWareHouseRoutes');
 var routesLogin = require('./api/routes/loginRoutes');
 
@@ -64,8 +64,8 @@ routesActors(app);
 routesSponsorships(app);
 routesTrips(app);
 routesApplication(app);
-searchApplication(app);
-configApplication(app);
+routesSearch(app);
+routesConfig(app);
 routesDataWareHouse(app);
 routesLogin(app);
 
