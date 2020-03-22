@@ -1,7 +1,7 @@
 'use strict';
 module.exports = function(app) {
   var searches = require('../controllers/searchController');
-  var authController = require('../controllers/authController');
+  var dwh = require('../controllers/dataWareHouseController');
 
     /**
    * Search engine for trips
@@ -17,6 +17,12 @@ module.exports = function(app) {
   */
  app.route('/v1/searches/trips')
  .get(searches.get_search_by_user);
+
+ app.route('/v1/searches/10keyword')
+ .get(searches.top10keyword);
+
+ app.route('/v1/searches/avgrangeprices')
+ .get(searches.pricerangesearches);
 
  app.route('/v2/searches/trips')
  .get(searches.get_search_by_user);

@@ -231,6 +231,75 @@ function diffDates(date1, date2) {
   
 }
 
+exports.top10keyword = async function (req, res) {
+  
+  var title = await Search.aggregate([
+    {
+      $group: {
+        _id: "$title",
+        count: { $sum: 1 }
+      },
+    }
+  ]).exec();
+
+  var description = await Search.aggregate([
+    {
+      $group: {
+        _id: "$description",
+        count: { $sum: 1 }
+      },
+    }
+  ]).exec();
+
+  var ticker = await Search.aggregate([
+    {
+      $group: {
+        _id: "$ticker",
+        count: { $sum: 1 }
+      },
+    }
+  ]).exec();
+
+  var ticker = await Search.aggregate([
+    {
+      $group: {
+        _id: "$ticker",
+        count: { $sum: 1 }
+      },
+    }
+  ]).exec();
+
+  var lista = title.concat(description);
+  lista = lista.concat(ticker);
+  console.log(lista);
+  lista = lista.filter(function( obj ) {
+    return obj._id !== null;
+  });
+  console.log(lista);
+  var top10 = lista.sort(function(a, b) { return a.count < b.count ? 1 : -1; }).slice(0, 10);
+  res.json(top10);
+}
+
+exports.pricerangesearches = async function (req, res) {
+  var range_price = await Search.aggregate([
+    { 
+      $project : 
+        { _id : 0 , price_range : 1 } 
+    } 
+  ]).exec();
+  var lista = [];
+  for (let mykey of range_price){
+    var price_range = mykey.price_range;
+    var range_list = price_range.split("-");
+    lista.push(Number(range_list[1]));
+  }
+  console.log(lista);
+  const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+  const result = average(lista);
+  console.log(result);
+  res.json(result);
+}
+
 //Búsqueda de la media de dinero gastado dentro de un rango de precio
 async function search_searches_avg_by_money_inside_range(){
   console.log(Date(), ` search_searches_avg_by_money_inside_range`);
