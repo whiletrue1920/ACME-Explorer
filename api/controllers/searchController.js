@@ -51,12 +51,12 @@ exports.get_search_by_user = function(req, res) {
         var date_list = req.query.date_max;
         var date_end_concat = date_list+"T00:00:00.000Z";
         query.date_end = {"$lte": new Date(date_end_concat).toISOString()};
-        query_search.date_max = {"$lte": new Date(date_end_concat).toISOString()};
+        query_search.date_max = {"$lte": new Date(date_end_concat)};
         date_maxi = new Date(date_end_concat);
         var utc = new Date().toJSON().slice(0,10);
         var utc = utc+"T00:00:00.000Z";
         query.date_start = {"$gte": new Date(utc).toISOString()};
-        query_search.date_min = {"$gte": new Date(utc).toISOString()};
+        query_search.date_min = {"$gte": new Date(utc)};
         date_mini = new Date(utc);
       }
       //Rango de precios
@@ -76,6 +76,7 @@ exports.get_search_by_user = function(req, res) {
       console.log(JSON.stringify(query_search));
       console.log("Query: "+JSON.stringify(query));
       Search.find(query_search,function(err, categs) {
+        //console.log(categs);
         if (err||categs.length==0){
           console.log('The search does not exists');
           Trip.find(query)
@@ -92,23 +93,29 @@ exports.get_search_by_user = function(req, res) {
               res.status(500).send({err:'Any trips with these parameters'});
             }
             else {
-              var minitrips = {};
-              if (searc[0].ticker){
-                minitrips.ticker = searc[0].ticker;
+              var listminitrips = [];
+              for (let mykey of searc){
+                var minitrips = {};
+                //console.log(mykey);
+                if (mykey.ticker){
+                  minitrips.ticker = mykey.ticker;
+                }
+                if (mykey.title){
+                  minitrips.title = mykey.title;
+                }
+                if (mykey.description){
+                  minitrips.description = mykey.description;
+                }
+                if (mykey.date_end){
+                  minitrips.date_end = mykey.date_end;
+                }
+                if (mykey.full_price){
+                  minitrips.full_price = mykey.full_price;
+                }
+                listminitrips.push(minitrips);
               }
-              if (searc[0].title){
-                minitrips.title = searc[0].title;
-              }
-              if (searc[0].description){
-                minitrips.description = searc[0].description;
-              }
-              if (searc[0].date_end){
-                minitrips.date_end = searc[0].date_end;
-              }
-              if (searc[0].full_price){
-                minitrips.full_price = searc[0].full_price;
-              }
-              saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,minitrips);
+              console.log(listminitrips);
+              saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,listminitrips);
               res.json(searc);
             }
           });
@@ -122,6 +129,7 @@ exports.get_search_by_user = function(req, res) {
           console.log(fechaBusqueda);
           console.log(now);
           var diff = diffDates(fechaBusqueda,now);
+          console.log(diff);
           if (diff > finder_minutes){
             console.log('The search has expired');
             Trip.find(query)
@@ -134,10 +142,31 @@ exports.get_search_by_user = function(req, res) {
                 res.send(err);
               }
               else{
-                var minitrips = [{'ticker': searc[0].ticker,'title': searc[0].title,'description':  searc[0].description,'date_end': searc[0].date_end}];
-                console.log(minitrips);
-                saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,minitrips);
-                res.json(searc);
+                var listminitrips = [];
+                for (let mykey of searc){
+                  var minitrips = {};
+                  //console.log(mykey);
+                  if (mykey.ticker){
+                    minitrips.ticker = mykey.ticker;
+                  }
+                  if (mykey.title){
+                    minitrips.title = mykey.title;
+                  }
+                  if (mykey.description){
+                    minitrips.description = mykey.description;
+                  }
+                  if (mykey.date_end){
+                    minitrips.date_end = mykey.date_end;
+                  }
+                  if (mykey.full_price){
+                    minitrips.full_price = mykey.full_price;
+                  }
+                  listminitrips.push(minitrips);
+                }
+                //var minitrips = [{'ticker': searc[0].ticker,'title': searc[0].title,'description':  searc[0].description,'date_end': searc[0].date_end,'full_price': searc[0].full_price}];
+                console.log(listminitrips);
+                saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,listminitrips);
+                //res.json(searc);
               }
             });
           }
@@ -170,26 +199,13 @@ function saveData(tick,tit,descrip,actor,range_pri,date_maxi,date_mini,trips) {
   }
   search.date_min = date_mini;
   search.date_max = date_maxi;
+  console.log(trips)
   search.trips = trips;
   console.log(search);
   search.save(function (err) {
       if (err) return console.log(err);
       // saved!
   })
-}
-
-function getConfigs(req, res){
-  Config.find(function(err, configs) {
-    if (err){
-      console.error(Date(), ` ERROR: - GET /configs , Some error ocurred while retrieving applications: ${err.message}`);
-      res.status(500).send(err);
-    }
-    else{
-      console.log(Date(), ` SUCCESS: -GET /configs`);
-      console.log(configs[0]);
-      res.send(configs);
-    }
-  });
 }
 
 function diffDates(date1, date2) {
@@ -210,7 +226,7 @@ function diffDates(date1, date2) {
       return diff_m + diff_h * 60;
     }
   }else{
-    return diff;
+    return diff*24*60;
   }
   
 }
