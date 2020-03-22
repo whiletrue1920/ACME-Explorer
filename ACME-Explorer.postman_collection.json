@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3147f239-3c59-4bd2-8a66-47511a55a8aa",
+		"_postman_id": "234d9086-e813-4ff6-88a7-9262374774bf",
 		"name": "ACME-Explorer",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -615,36 +615,31 @@
 					"response": []
 				},
 				{
-					"name": "PUT APPLICATION",
+					"name": "GET APPLICATIONS",
 					"request": {
-						"method": "DELETE",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
 								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"Customer2Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"CUSTOMER\"\n}"
-						},
 						"url": {
-							"raw": "http://localhost:8080/v1/applications",
+							"raw": "http://localhost:8080/categories",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"v1",
-								"applications"
+								"categories"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "GET APPLICATIONS",
+					"name": "GET APPLICATION",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1173,6 +1168,86 @@
 								"gte",
 								"200",
 								"M01-M03"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Config",
+			"item": [
+				{
+					"name": "GET Config",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost/v1/configs",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"v1",
+								"configs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Configs",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"date_finder_minutes\":60,\n\t\"flat_rate\":350,\n\t\"finder_limit\":10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/v1/configs",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"v1",
+								"configs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Configs",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/configs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"configs"
 							]
 						}
 					},

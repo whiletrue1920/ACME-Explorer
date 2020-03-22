@@ -23,19 +23,6 @@ exports.list_all_applications = function(req, res) {
 };
 
 exports.list_all_applications_verified_user = function(req, res) {
-  //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
-  Application.find(function(err, applications) {
-    if (err){
-      console.error(Date(), ` ERROR: - GET /applications , Some error ocurred while retrieving applications: ${err.message}`);
-      res.status(500).send(err);
-    }
-    else{
-      console.log(Date(), ` SUCCESS: -GET /applications`);
-      res.json(applications);
-    }
-  });
-
-  //Customer and Clerks can update theirselves, administrators can update any actor
   console.log('Starting to update the actor...');
   Actor.findById(req.params.actorId, async function(err, actor) {
     if (err){
@@ -72,6 +59,20 @@ exports.list_all_applications_verified_user = function(req, res) {
               res.json(applications);
             }
           });
+      } else if (actor.role.includes('EXPLORERS')){
+        Application.aggregate(
+          { $match : { actorId : req.params.actorId } } ,
+          { $group : {_id: {status: "$status",actorId: "$actorId"},applications: { $push: "$$ROOT" } } } ,
+            function(err, actor) {
+          if (err){
+            console.error(Date(), ` ERROR: - GET /applications , Some error ocurred while retrieving applications: ${err.message}`);
+            res.status(500).send(err);
+          }
+          else{
+            console.log(Date(), ` SUCCESS: -GET /applications`);
+            res.json(applications);
+          }
+        });
       } else {
         res.status(405); //Not allowed
         res.send('The Actor has unidentified roles');
@@ -160,7 +161,7 @@ exports.get_application = function(req, res) {
         res.status(500).send(err);
       }
       else{
-        console.log(Date(), ` SUCCESS: -GET /applications`);
+        console.log(Date(), ` SUCCESS: -GET /applications/${req.params.applicationId}`);
         res.json(application);
       }
     });

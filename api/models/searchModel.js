@@ -13,7 +13,6 @@ var MiniTripsSchema = new Schema({
     },
     full_price: {
         type: Number,
-        required: 'Kindly enter the full price of the trip'
     },
     description: {
         type: String,

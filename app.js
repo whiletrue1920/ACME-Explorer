@@ -97,6 +97,6 @@ admin.initializeApp({
     databaseURL: "https://whiletrue-1920.firebaseio.com"
   });
   
-DataWareHouseTools.createDataWareHouseJob();
+//DataWareHouseTools.createDataWareHouseJob();
 
 module.exports = app;
