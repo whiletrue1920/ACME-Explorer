@@ -1,5 +1,6 @@
 
 var async = require("async");
+var top10 = require('./../controllers/searchController.js');
 var mongoose = require('mongoose'),
   DataWareHouse = mongoose.model('DataWareHouse'),
   Trips = mongoose.model('Trips'),
@@ -58,7 +59,8 @@ function createDataWareHouseJob(){
         computeTripsPerManager,
         computeApplicationsPerTrips,
         computeFullPriceTrips,
-        computeRatioApplicationsPerStatus
+        computeRatioApplicationsPerStatus,
+        keywords
       ], function (err, results) {
         if (err){
           console.log("Error computing datawarehouse: "+err);
@@ -69,6 +71,7 @@ function createDataWareHouseJob(){
           new_dataWareHouse.applicationsPerTrips = results[1];
           new_dataWareHouse.fullPriceTrips = results[2];
           new_dataWareHouse.ratioApplicationsPerStatus = results[3];
+          new_dataWareHouse.keywords = results[4];
           new_dataWareHouse.rebuildPeriod = rebuildPeriod;
     
           new_dataWareHouse.save(function(err, datawarehouse) {
@@ -154,4 +157,11 @@ function computeRatioApplicationsPerStatus (callback) {
       console.log('Application per Status ', res)
         callback(err, res)
     });
+};
+
+function keywords(callback) {
+  top10.top10keyword(function(err, res){
+    console.log('Keywords: ', res);
+    callback(err, res)
+  });
 };

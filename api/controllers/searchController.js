@@ -277,7 +277,7 @@ exports.top10keyword = async function (req, res) {
   });
   console.log(lista);
   var top10 = lista.sort(function(a, b) { return a.count < b.count ? 1 : -1; }).slice(0, 10);
-  res.json(top10);
+  return res.json(top10);
 }
 
 exports.pricerangesearches = async function (req, res) {
@@ -297,7 +297,7 @@ exports.pricerangesearches = async function (req, res) {
   const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
   const result = average(lista);
   console.log(result);
-  res.json(result);
+  return res.json(result);
 }
 
 //Búsqueda de la media de dinero gastado dentro de un rango de precio
