@@ -44,7 +44,7 @@ module.exports = function(app) {
     .put(applications.cancel_application)    
   
   app.route('/v2/applications')
-    .get(authController.verifyUser(['ADMINISTRATORS','MANAGERS']),applications.list_all_applications_verified_user)
+    .get(authController.verifyUser(['ADMINISTRATORS','MANAGERS','EXPLORERS']),applications.list_all_applications_verified_user)
     .post(authController.verifyUser(['ADMINISTRATORS', 'MANAGERS', 'EXPLORERS', 'SPONSORS']),applications.create_an_application)
     .delete(authController.verifyUser(['ADMINISTRATORS']),applications.delete_all_applications);
 
