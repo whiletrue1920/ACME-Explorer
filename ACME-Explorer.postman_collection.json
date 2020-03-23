@@ -1,0 +1,1261 @@
+{
+	"info": {
+		"_postman_id": "234d9086-e813-4ff6-88a7-9262374774bf",
+		"name": "ACME-Explorer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Trips",
+			"item": [
+				{
+					"name": "GET ALL Trips",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Trip 200 Ok",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e65633baa30356c43cee9b3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e65633baa30356c43cee9b3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Trip 404 Not Found",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e46e1354c541425de549e3a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e46e1354c541425de549e3a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Trip 400 Bad Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e46e135d4c541425de549e3a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e46e135d4c541425de549e3a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Trip 201 Created",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Title3\",\n\t\"description\": \"My description3\",\n\t\"requirements\": \"requirements\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"canceled\": true,\n\t\"reason\": \" \",\n\t\"organizedBy\": \"5e5bf4011c9d440000ebdb6d\",\n\t\"stages\": [{\n\t\t\"title\": \"first stage\",\n\t\t\"description\": \"first stage description\",\n\t\t\"price\": 100\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description\",\n\t\t\"price\": 250\n\t}]\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Trip 422 Unprocessable Entity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"ClerkName\",\n\t\"surname\": \"ClerkSurname\",\n\t\"email\": \"clerk@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345679\",\n\t\"role\": \"CLERK\",\n\t\"address\": \"myAddress\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Trip 200 Ok",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Title 2 UPDATE\",\n\t\"description\": \"My description UPDATE 66\",\n\t\"requirements\": \"requirements UPDATE 66\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE\",\n\t\t\"description\": \"first stage description UPDATE\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e73d62930482837b6739739",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e73d62930482837b6739739"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Trip 404 Not Found",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Title UPDATE\",\n\t\"description\": \"My description UPDATE\",\n\t\"requirements\": \"requirements UPDATE\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE\",\n\t\t\"description\": \"first stage description UPDATE\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e472fb81638091727de25fb",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e472fb81638091727de25fb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Trip 400 Bad Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Title\",\n\t\"description\": \"My description\",\n\t\"full_price\": 500,\n\t\"requirements\": \"requirements\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"address\": \"myAddress\",\n\t\"canceled\": false\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e73d71630482837b6739741",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e73d71630482837b6739741"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Trip 422 Unprocessable Entity",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Title UPDATE 2\",\n\t\"description\": \"My description UPDATE 2\",\n\t\"requirements\": \"requirements UPDATE 2\",\n\t\"date_start\": \"2020-01-29T17:08:51.000Z\",\n\t\"date_end\": \"2020-01-29T17:08:51.000Z\",\n\t\"extraField\": \"EXTRA FIELD FOR THROW EXCEPTION\",\n\t\"canceled\": false,\n\t\"stages\": [{\n\t\t\"title\": \"first stage UPDATE 2\",\n\t\t\"description\": \"first stage description UPDATE 2\",\n\t\t\"price\": 200\n\t},{\n\t\t\"title\": \"second stage 2\",\n\t\t\"description\": \"second stage description UPDATE\",\n\t\t\"price\": 50\n\t}]\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e73d62930482837b6739739",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e73d62930482837b6739739"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Publish Trip 200 Ok",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/publish/5e73d75730482837b6739747",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"publish",
+								"5e73d75730482837b6739747"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Publish Trip 404 Not Found",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/publish/5e472fb81638091727de25fb",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"publish",
+								"5e472fb81638091727de25fb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Cancel Trip 200 Ok",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/cancel/5e73d80530482837b6739750",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"cancel",
+								"5e73d80530482837b6739750"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Cancel Trip 400 Bad Request Accepted applications",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/cancel/5e73d76a30482837b673974a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"cancel",
+								"5e73d76a30482837b673974a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Cancel Trip 400 Bad Request date over",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/cancel/5e73d82c30482837b673975b",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"cancel",
+								"5e73d82c30482837b673975b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Cancel Trip 400 Bad Request publish",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/cancel/5e73d76a30482837b673974a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"cancel",
+								"5e73d76a30482837b673974a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT pay Trip 200 Ok",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/pay/5e6399981fc4ae1171088d8a/5e5bc0ffe54fd053125b0e9e",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"pay",
+								"5e6399981fc4ae1171088d8a",
+								"5e5bc0ffe54fd053125b0e9e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT pay Trip 404 Not Found",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/v1/trips/pay/5e62b0376c86c925d9ad5872/5e5bc0ffe54fd053125b0e9e",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"pay",
+								"5e62b0376c86c925d9ad5872",
+								"5e5bc0ffe54fd053125b0e9e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE trip 204 No content",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e73d89d30482837b6739761",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e73d89d30482837b6739761"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE trip publish 400 Bad Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e73d87530482837b673975e",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e73d87530482837b673975e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE trip 404 Not Found",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e62895fae82497ee15fe500",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e62895fae82497ee15fe500"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE trip 400 Bad Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/v1/trips/5e472fb81638091727de25fbh",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"trips",
+								"5e472fb81638091727de25fbh"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Application",
+			"item": [
+				{
+					"name": "POST APPLICATION",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"Customer2Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"CUSTOMER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/applications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"applications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT APPLICATION",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"Customer2Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"CUSTOMER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/applications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"applications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET APPLICATIONS",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET APPLICATION",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE ALL APPLICATIONS",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"Customer2Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"CUSTOMER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/applications/5e4ad7eac268f06c0d6debc5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"applications",
+								"5e4ad7eac268f06c0d6debc5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE APPLICATION",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"Customer2Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"CUSTOMER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/applications/5e4ad7eac268f06c0d6debc5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"applications",
+								"5e4ad7eac268f06c0d6debc5"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Actors",
+			"item": [
+				{
+					"name": "GET ALL ACTORS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/actors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ACTORS/ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/actors/5e4ae0e0ec52fc00943a9e0f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"actors",
+								"5e4ae0e0ec52fc00943a9e0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST ACTOR",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"state\": \"ACTIVATED\",\n\t\"name\": \"Customer7Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer7@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"address\": \"Calle Pera\",\n\t\"role\": \"SPONSORS\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/actors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT ACTORS/ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5e4ae0e0ec52fc00943a9e0f\",\n\t\"state\": \"REACTIVATED\",\n\t\"name\": \"Customer7Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer7@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"address\": \"Calle Pera\",\n\t\"role\": \"MANAGERS\",\n\t\"link\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/actors/5e4ae0e0ec52fc00943a9e0f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"actors",
+								"5e4ae0e0ec52fc00943a9e0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT ACTORS/ID with Auth",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "idtoken",
+								"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTU4MzY3NTMxMiwiZXhwIjoxNTgzNjc4OTEyLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay11ZTVoZ0B3aGlsZXRydWUtMTkyMC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInN1YiI6ImZpcmViYXNlLWFkbWluc2RrLXVlNWhnQHdoaWxldHJ1ZS0xOTIwLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwidWlkIjoiZW5yZ3VlZmVyQGFsdW0udXMuZXMifQ.bZQ80Hgyp0EXgUaOzEIclW7bHMh2wf5Go0297yBYEBVJ4TB0heGJZ42RmO7RLvj7maRUAFi8Ixtvd1dxAyLJnAq-qvQQKryjUJL1AuVq3c_SXaRu6pJEENPgAgDEwIhy6scUzW_JMj5-pggohy45VZCXzHTivZ9MCe0RvNvFAXypBzJOyciNbofUUDlgph2XHOxbh5wWV3eWteUv9C8S1A5_Bia5y6MDVE-Ab5IZTDK5NOxleyBox34JU9g6neIo_LsQ7lv4iEB7iMiVN9wB7a7k81jg0U5kcyXESxETr1IVZRUCOP5ZTi04mpoEOEe8PZ2KE-z-rIB4hkJWNMGYig",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5e4ae0e0ec52fc00943a9e0f\",\n\t\"state\": \"REACTIVATED\",\n\t\"name\": \"Customer7Name\",\n\t\"surname\": \"CustomerSurname\",\n\t\"email\": \"customer7@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"address\": \"Calle Pera\",\n\t\"role\": \"MANAGERS\",\n\t\"link\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v2/actors/5e4ae0e0ec52fc00943a9e0f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v2",
+								"actors",
+								"5e4ae0e0ec52fc00943a9e0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE ACTORS/ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/actors/5e52b709c529db1db8c36929",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"actors",
+								"5e52b709c529db1db8c36929"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "GET ",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/searches?ticker=0413-HFEV&title=My Title&date_max=2020-04-01&price_range=0-350",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"searches"
+							],
+							"query": [
+								{
+									"key": "actorId",
+									"value": "5e5bc0ffe54fd053125b0e9e",
+									"disabled": true
+								},
+								{
+									"key": "ticker",
+									"value": "0413-HFEV"
+								},
+								{
+									"key": "title",
+									"value": "My Title"
+								},
+								{
+									"key": "date_max",
+									"value": "2020-04-01"
+								},
+								{
+									"key": "price_range",
+									"value": "0-350"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Sponsorships",
+			"item": [
+				{
+					"name": "POST SPONSORSHIP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"actorId\": \"5e4ae5a1b40f572600bdc4c8\",\n\t\"tripId\": \"5e5b911fb7cd204afca49064\",\n\t\"banner\": \"\",\n\t\"link\":\"url1\",\n\t\"payed\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/sponsorships",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"sponsorships"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET SPONSORSHIP",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"actorId\": \"5e4ae5a1b40f572600bdc4c8\",\n\t\"tripId\": \"5e5b911fb7cd204afca49064\",\n\t\"banner\": \"\",\n\t\"link\":\"url1\",\n\t\"payed\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/sponsorships",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"sponsorships"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET SPONSORSHIP/:id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"actorId\": \"5e4ae5a1b40f572600bdc4c8\",\n\t\"tripId\": \"5e5b911fb7cd204afca49064\",\n\t\"banner\": \"\",\n\t\"link\":\"url1\",\n\t\"payed\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/sponsorships/5e5bb61136c8953b44d0f6d4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"sponsorships",
+								"5e5bb61136c8953b44d0f6d4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE SPONSORSHIP",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"actorId\": \"5e4ae5a1b40f572600bdc4c8\",\n\t\"tripId\": \"5e5b911fb7cd204afca49064\",\n\t\"banner\": \"\",\n\t\"link\":\"url1\",\n\t\"payed\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/sponsorships/5e5bb61136c8953b44d0f6d4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"sponsorships",
+								"5e5bb61136c8953b44d0f6d4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT SPONSORSHIP/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": \"5e5bb61136c8953b44d0f6d4\",\n\t\"actorId\": \"5e4ae5a1b40f572600bdc4c8\",\n\t\"tripId\": \"5e5b911fb7cd204afca49064\",\n\t\"banner\": \"\",\n\t\"link\":\"url2\",\n\t\"payed\": false\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/sponsorships/5e5bb61136c8953b44d0f6d4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"sponsorships",
+								"5e5bb61136c8953b44d0f6d4"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Cubo",
+			"item": [
+				{
+					"name": "CuboMoney",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<=20"
+						},
+						"url": {
+							"raw": "http://localhost:9000/v1/cube/5e63c941aa30356c4392188b/M01-M15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"cube",
+								"5e63c941aa30356c4392188b",
+								"M01-M15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CuboExplorers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<=20"
+						},
+						"url": {
+							"raw": "http://localhost:9000/v1/cube/explorers/gte/200/M01-M03",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"cube",
+								"explorers",
+								"gte",
+								"200",
+								"M01-M03"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Config",
+			"item": [
+				{
+					"name": "GET Config",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost/v1/configs",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"v1",
+								"configs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Configs",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"date_finder_minutes\":60,\n\t\"flat_rate\":350,\n\t\"finder_limit\":10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/v1/configs",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"v1",
+								"configs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Configs",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/configs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"configs"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
