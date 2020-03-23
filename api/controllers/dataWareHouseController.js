@@ -178,7 +178,7 @@ denote any of the last 1-36 months or Y01-Y03 to denote any of the last three ye
 exports.cubeAmountMoney = async function (req, res) {
 
   let explorer_Id = mongoose.Types.ObjectId(req.params.explorer);
-
+  
   //1. Calculamos la fecha máxima a procesar
   let maxDate = await getMaxDate(req.params.period);
 
@@ -189,8 +189,6 @@ exports.cubeAmountMoney = async function (req, res) {
         role: {$eq:"EXPLORERS"}
     }}
   ]).exec();
-
-  //TODO: ¿DEVOLVER ERROR SI NO ENCUENTRA EL EXPLORER?
 
   //3. Obtenemos el array de Applications que posee el explorador en estado "ACCEPTED". Mayores a la fecha actual y menores a la fecha futura
   var applications = await Application.aggregate([
@@ -218,12 +216,12 @@ exports.cubeAmountMoney = async function (req, res) {
     amount = amount + trip[0].full_price;
   };
   
-      var new_cube = new Cube();
-      new_cube.actorId = explorer_Id;
-      new_cube.money = amount;
-      new_cube.period = req.params.period;
+      var cube = new Cube();
+      cube.actorId = explorer_Id;
+      cube.money = amount;
+      cube.period = req.params.period;
   
-      new_cube.save(async function (err, cubeSaved) {
+      cube.save(async function (err, cubeSaved) {
           if (err) {
               console.log("Error al guardar el cubo:  " + err);
           } else {
@@ -232,10 +230,9 @@ exports.cubeAmountMoney = async function (req, res) {
       });
 
   res.json(amount);
+};
 
-}
-
-function getMaxDate(period){
+async function getMaxDate(period){
 
   //Los posibles formatos en los que puede venir el periodo
   //period1= "M01-M36"
@@ -245,13 +242,15 @@ function getMaxDate(period){
   let format = interval.charAt(0)
   let date = new Date();
   
+
   if(format=="M"){
     let month = interval.substr(interval.length - 2);
     return addMonths(date,month);
-  }else{
+  }else if (format=="Y"){
     let years = interval.substr(interval.length - 2);
-    return addYears(date,years)
+    return addYears(date,years);
   }
+
   //TODO: ¿DEVOLVER ERROR SI EL PERIODO NO SE ADAPTA AL FORMATO M01-M36 Y Y01-Y03?
 }
 
@@ -285,12 +284,12 @@ exports.cubeExplorersComparator = async function (req, res) {
   var money = Number(req.params.amountMoney);
 
   var operators = {
-    "eq": (amountToCompare) => amountToCompare == money,
-    "ne": (amountToCompare) => amountToCompare != money,
-    "gt": (amountToCompare) => amountToCompare > money,
-    "gte": (amountToCompare) => amountToCompare >= money,
-    "lt": (amountToCompare) => amountToCompare < money,
-    "lte": (amountToCompare) => amountToCompare <= money
+    "eq": (op) => op == money,
+    "ne": (op) => op != money,
+    "gt": (op) => op > money,
+    "gte": (op) => op >= money,
+    "lt": (op) => op < money,
+    "lte": (op) => op <= money
   }
 
   if (querycomparators in operators) {
