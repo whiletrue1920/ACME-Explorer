@@ -60,6 +60,7 @@ var routesSearch = require('./api/routes/searchRoutes');
 var routesConfig = require('./api/routes/configRoutes');
 var routesDataWareHouse = require('./api/routes/dataWareHouseRoutes');
 var routesLogin = require('./api/routes/loginRoutes');
+var routesPois = require('./api/routes/poiRoutes');
 
 routesActors(app);
 routesSponsorships(app);
@@ -69,6 +70,7 @@ routesSearch(app);
 routesConfig(app);
 routesDataWareHouse(app);
 routesLogin(app);
+routesPois(app);
 
 /*
 console.log("Connecting DB to: " + mongoDBURI);

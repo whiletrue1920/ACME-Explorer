@@ -5,6 +5,24 @@ var Schema = mongoose.Schema;
 const generate = require('nanoid/generate');
 const dateFormat = require('dateformat');
 
+var POISchema = new Schema({
+    title: {
+        type: String,
+        required: 'Kindly enter the POI title'
+    },
+    description: {
+        type: String,
+        required: 'Kindly enter the POI description'
+    },
+    type: {
+        type: String,
+        required: 'Kindly enter the POI typr'
+    },
+    coordinates: {
+        type: [Number],
+    }
+}, { strict: 'throw' });
+
 var StageSchema = new Schema({
     title: {
         type: String,
@@ -126,3 +144,4 @@ TripSchema.index({ full_price: 1, date_start: 1, date_end: 1 });
 
 module.exports = mongoose.model('Trips', TripSchema);
 module.exports = mongoose.model('Stages', StageSchema);
+module.exports = mongoose.model('Pois', POISchema);
