@@ -10,6 +10,7 @@ var express = require('express'),
   Application = require('./api/models/applicationModel'),
   Search = require('./api/models/searchModel'),
   Config = require('./api/models/configModel'),
+  Poi = require('./api/models/poiModel'),
   DataWareHouse = require('./api/models/dataWareHouseModel'),
   Cube = require('./api/models/cubeModel'),
   DataWareHouseTools = require('./api/controllers/dataWareHouseController'),
@@ -19,11 +20,11 @@ var express = require('express'),
   serviceAccount = require("./whiletrue-1920-firebase-adminsdk-ue5hg-137a99caa4.json");
 
 // MongoDB URI building
-//var mongoDBHostname = process.env.mongoDBHostname || "localhost";
-//var mongoDBPort = process.env.mongoDBPort || "27017";
-//var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
-//var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
-var mongoDBURI = "mongodb+srv://consulta:consulta@acme-explorer-rmm7f.mongodb.net/test?retryWrites=true&w=majority";
+var mongoDBHostname = process.env.mongoDBHostname || "localhost";
+var mongoDBPort = process.env.mongoDBPort || "27017";
+var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
+var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
+//var mongoDBURI = "mongodb+srv://consulta:consulta@acme-explorer-rmm7f.mongodb.net/test?retryWrites=true&w=majority";
 
 mongoose.connect(mongoDBURI, {
     //reconnectTries: 10,
@@ -60,6 +61,7 @@ var routesSearch = require('./api/routes/searchRoutes');
 var routesConfig = require('./api/routes/configRoutes');
 var routesDataWareHouse = require('./api/routes/dataWareHouseRoutes');
 var routesLogin = require('./api/routes/loginRoutes');
+var routesPoi = require('./api/routes/poiRoutes');
 
 routesActors(app);
 routesSponsorships(app);
@@ -69,6 +71,7 @@ routesSearch(app);
 routesConfig(app);
 routesDataWareHouse(app);
 routesLogin(app);
+routesPoi(app);
 
 /*
 console.log("Connecting DB to: " + mongoDBURI);

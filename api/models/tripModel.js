@@ -1,9 +1,23 @@
 'use strict';
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+module.exports = {
+    'Pois': require('../models/poiModel'),
+  };
 
 const generate = require('nanoid/generate');
 const dateFormat = require('dateformat');
+
+var miniPoiSchema = new Schema({
+    title: {
+        type: String,
+        required: 'Kindly enter the stage title'
+    },
+    poiId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Pois'
+    }
+}, { strict: 'throw' });
 
 var StageSchema = new Schema({
     title: {
@@ -17,7 +31,8 @@ var StageSchema = new Schema({
     price: {
         type: Number,
         required: 'Kindly enter the stage price'
-    }
+    },
+    pois: [miniPoiSchema]
 }, { strict: 'throw' });
 
 var TripSchema = new Schema({

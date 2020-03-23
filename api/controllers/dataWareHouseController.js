@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
   Trips = mongoose.model('Trips'),
   Actor = mongoose.model('Actors'),
   Application = mongoose.model('Applications'),
+  Poi = mongoose.model('Pois'),
   Cube = mongoose.model('Cubes');
 
 exports.list_all_indicators = function(req, res) {
@@ -63,7 +64,8 @@ function createDataWareHouseJob(){
         computeFullPriceTrips,
         computeRatioApplicationsPerStatus,
         computeKeywords,
-        computePriceRangeSearches
+        computePriceRangeSearches,
+        computeVisitPois
       ], function (err, results) {
         if (err){
           console.log("Error computing datawarehouse: "+err);
@@ -76,6 +78,7 @@ function createDataWareHouseJob(){
           new_dataWareHouse.ratioApplicationsPerStatus = results[3];
           new_dataWareHouse.top10keywords = results[4];
           new_dataWareHouse.pricerangesearches = results[5];
+          new_dataWareHouse.numberVisitPois = results[6];
           new_dataWareHouse.rebuildPeriod = rebuildPeriod;
           
           
@@ -164,8 +167,24 @@ function computeRatioApplicationsPerStatus (callback) {
         callback(err, res)
     });
 };
-
-
+//No me ha dado tiempo a hacer la agregacion pero la he incluido en el DWH y en el modelo del DWH
+function computeVisitPois (callback) {
+  Application.aggregate([
+    {$group: {
+      "_id": "$status",
+      "num": {$sum:1}}}
+    ,{$project: {
+      "status": 1,
+      "_id": 0, 
+      "avg": {$avg: "$num"},
+      "min":{$min:"$num"},
+      "max":{$max:"$num"},
+      "standard_desviation":{$stdDevPop:"$num"}}}
+    ], function(err, res){
+      console.log('Application per Status ', res)
+        callback(err, res)
+    });
+};
 
 /* ----------------- Cubo ----------- */
 

@@ -11,6 +11,15 @@ var TopKeywordSchema = new Schema({
   }
 });
 
+var mostVisitPoisSchema = new Schema({
+  type: {
+    type: String
+  },
+  count: {
+      type: Number
+  }
+});
+
 var AvgMinMaxStdDevSchema = new Schema({
   avg: {
       type: Number
@@ -35,6 +44,7 @@ var DataWareHouseSchema = new mongoose.Schema({
   pricerangesearches: {
     type: Number
   },
+  mostVisitPois: [mostVisitPoisSchema],
   computationMoment: {
     type: Date,
     default: Date.now
