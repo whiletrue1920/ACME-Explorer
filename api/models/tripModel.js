@@ -5,6 +5,21 @@ var Schema = mongoose.Schema;
 const generate = require('nanoid/generate');
 const dateFormat = require('dateformat');
 
+var StageSchema = new Schema({
+    title: {
+        type: String,
+        required: 'Kindly enter the stage title'
+    },
+    description: {
+        type: String,
+        required: 'Kindly enter the stage description'
+    },
+    price: {
+        type: Number,
+        required: 'Kindly enter the stage price'
+    }
+}, { strict: 'throw' });
+
 var POISchema = new Schema({
     title: {
         type: String,
@@ -20,21 +35,11 @@ var POISchema = new Schema({
     },
     coordinates: {
         type: [Number],
-    }
-}, { strict: 'throw' });
-
-var StageSchema = new Schema({
-    title: {
-        type: String,
-        required: 'Kindly enter the stage title'
     },
-    description: {
-        type: String,
-        required: 'Kindly enter the stage description'
-    },
-    price: {
+    isVisited: [StageSchema],
+    numberOfVisits: {
         type: Number,
-        required: 'Kindly enter the stage price'
+        default:0
     }
 }, { strict: 'throw' });
 
@@ -135,6 +140,21 @@ TripSchema.pre('findOneAndUpdate', function(callback){
             message: 'The reason is required if trip is canceled'
         });
     }
+    callback();
+});
+
+POISchema.pre('save', function(callback) {
+
+    //Cálculo del numVisitas
+    var new_poi = this;
+    new_poi.numberOfVisits = new_poi.isVisited!=undefined ? new_poi.isVisited.length : 0;
+    callback();
+});
+
+// Execute before each item.update() call
+POISchema.pre('findOneAndUpdate', function(callback){
+    //Recálculo del número de pois
+    this.getUpdate().numberOfVisits=this.getUpdate().isVisited!=undefined ? this.getUpdate().isVisited.length: 0 ;
     callback();
 });
 

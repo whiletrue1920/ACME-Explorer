@@ -89,6 +89,33 @@ exports.update_a_poi = async function(req, res) {
 
 };
 
+exports.assignStagesToPoi = async function(req, res) {
+
+    console.log(Date(), ` -PUT /pois/assingStages/${req.params.poiId}`)
+
+    body = req.body;
+
+    Poi.findOneAndUpdate(
+        {_id: req.params.poiId}, 
+        { $set: { stages: body}},
+        { new: true },
+        function(err, poiUpdate) {
+            if(err){
+                console.error(Date(), ` ERROR -PUT /pois/assingStages/${req.params.poiId} , Some error occurred while assign stages : ${err.message}`);
+                return processErrors(req, res, err);
+            }else{
+                if(!poiUpdate){
+                    console.error(Date(), ` ERROR -PUT /pois/assingStages/${req.params.poiId} , Not found a poi with id : ${req.params.tripId}`);
+                    return processErrors(req, res, {name: NOT_FOUND_PUBLISH, message: `Can not found a poi with id:  ${req.params.tripId}`});
+                }
+                console.log(Date(), ` SUCCESS -PUT /pois/assingStages/${req.params.poiId}`);
+                res.json(poiUpdate);
+            }
+        }
+    );
+
+};
+
 exports.delete_a_poi = async function(req, res) {
     
     console.log(Date(), ` -DELETE /pois/${req.params.poiId}`)
