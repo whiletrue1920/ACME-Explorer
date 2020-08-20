@@ -19,7 +19,7 @@
   "homepage": "https://github.com/whiletrue1920/ACME-Explorer#readme",
   "dependencies": {
     "async": "^2.6.2",
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.0.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "cron": "^1.6.0",
